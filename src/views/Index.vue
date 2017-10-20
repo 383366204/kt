@@ -43,7 +43,45 @@
         </el-row>
       </div>
       <div class="printing">
+        <el-row type="flex" justify="center">
+          <el-col :span="4">
+            <h1>印刷流程</h1>
+            <h2>Printing Sequence</h2>
+            <div class="underLine"></div>
+          </el-col>
+        </el-row>
+        <el-row type="flex" class="row-bg" justify="space-around">
+          <el-col :span="2">
+            <div class="printing-bottom-content bg-blue">
 
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <div class="printing-bottom-content bg-blue">
+
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <div class="printing-bottom-content bg-blue">
+
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <div class="printing-bottom-content bg-blue">
+
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <div class="printing-bottom-content bg-blue">
+
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <div class="printing-bottom-content bg-blue">
+
+            </div>
+          </el-col>
+        </el-row>
       </div>
   </main>
 </template>
@@ -93,7 +131,26 @@ export default {
   }
   /* 印刷流程层样式 */
   .printing{
-    height: 765px;
+    height: 613px;
+    padding: 76px 0; 
     background-color: #f3f4f8;
+    text-align: center
+  }
+   /* 标题及副标题的字体和颜色 */
+  .printing .el-row:first-child h1{
+    font-size: 30px;
+    color: #393939;
+  }
+  .printing .el-row:first-child h2{
+    font-size: 20px;
+    color: #797979;
+  }
+  .printing-bottom-content{
+    width: 158px;
+    height: 200px;
+  }
+  /*  */
+  .printing .el-row:last-child{
+    margin-top: 46px;
   }
 </style>

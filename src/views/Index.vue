@@ -9,7 +9,41 @@
             </el-carousel-item>
            </el-carousel>
           </el-col>
-        </el-row>      
+        </el-row>
+        <el-row type="flex" justify="space-around">
+            <el-col :span="2"></el-col>
+            <el-col :span="3">
+              <div class="carousel-bottom-content bg-blue">
+                <img src="../assets/img/poster-white.png" />
+              </div>
+              <div class="carousel-bottom-introduce">
+                <h1>海报设计</h1>
+                <h2>专为社团提供最快捷海报制作</h2>
+              </div>            
+            </el-col>
+            <el-col :span="3">
+              <div class="carousel-bottom-content bg-gray">
+                <img src="../assets/img/banner.png" />
+              </div>
+              <div class="carousel-bottom-introduce">
+                <h1>横幅制作</h1>
+                <h2>横幅想要与众不同只在团图</h2>
+              </div>  
+            </el-col>
+            <el-col :span="3">
+              <div class="carousel-bottom-content bg-gray">
+                <img src="../assets/img/clothes.png" />
+              </div>
+              <div class="carousel-bottom-introduce">
+                <h1>队服定制</h1>
+                <h2>衣服在线设计印刷一步搞定</h2>
+              </div>  
+            </el-col>
+            <el-col :span="2"></el-col>
+        </el-row>
+      </div>
+      <div class="printing">
+
       </div>
   </main>
 </template>
@@ -21,35 +55,45 @@ export default {
   name: 'Index',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      
     }
   }
 }
 </script>
 
 <style>
-  .indexTopBgColor{
-    height: 568px;
-    background:  linear-gradient(to bottom right,#2eb4e9, #5fcff3);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
-  } 
+/* 走马灯样式 */
   .carousel{
     padding-top: 114px;
     height: 821px;
   }
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
+  .el-carousel{
+    padding-bottom: 80px;
   }
-  
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+  .carousel-bottom-content {
+    width: 237px;
+    height: 130px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+  .carousel-bottom-introduce{
+    margin-top: 20px;
+    text-align: center;
+  }
+  .carousel-bottom-introduce h1{
+    font-size: 20px;
+    color:#393939;
+  }
+  .carousel-bottom-introduce h2{
+    margin-top: 8px;
+    font-size: 16px;
+    color: #797979;
+  }
+  /* 印刷流程层样式 */
+  .printing{
+    height: 765px;
+    background-color: #f3f4f8;
   }
 </style>

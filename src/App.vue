@@ -22,5 +22,9 @@ export default {
 </script>
 
 <style>
-
+/* .indexTopBgColor{
+    height: 568px;
+    background:  linear-gradient(to bottom right,#2eb4e9, #5fcff3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+  }  */
 </style>

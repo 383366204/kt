@@ -4,7 +4,6 @@
       <nav-header></nav-header>
     </div>   
     <router-view/>
-    <!-- <nav-footer></nav-footer> -->
   </div>
 </template>
 
@@ -23,8 +22,5 @@ export default {
 </script>
 
 <style>
-  .indexTopBgColor{
-    height: 568px;
-    background:  linear-gradient(to bottom right,#2eb4e9, #5fcff3); 
-  }
+
 </style>

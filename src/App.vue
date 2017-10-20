@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <nav-header></nav-header>   
+    <div class="indexTopBgColor">
+      <nav-header></nav-header>
+    </div>   
     <router-view/>
     <!-- <nav-footer></nav-footer> -->
   </div>
@@ -21,11 +23,8 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  .indexTopBgColor{
+    height: 568px;
+    background:  linear-gradient(to bottom right,#2eb4e9, #5fcff3); 
+  }
 </style>

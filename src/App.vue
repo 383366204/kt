@@ -2,6 +2,7 @@
   <div id="app">
     <div class="indexTopBgColor" :class="{'topHeight':getIndex}">
       <nav-header></nav-header>
+      <index-back-ground></index-back-ground>
     </div>   
     <router-view/>
     <nav-footer></nav-footer>
@@ -11,6 +12,7 @@
 <script>
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
+import IndexBackGround from '@/components/IndexBackGround';
 import "@/assets/css/base.css";
 
 export default {
@@ -22,7 +24,8 @@ export default {
   },
   components: {
     NavHeader,
-    NavFooter
+    NavFooter,
+    IndexBackGround
   },
   methods:{
     judgeIndex(){

@@ -50,12 +50,13 @@
             <div class="underLine"></div>
           </el-col>
         </el-row>
+        <!-- 两个for打印出6个卡片 -->
         <el-row type="flex" justify="space-around" v-for="cards in printingCard" :key="cards.id">
           <el-col :span="1"></el-col>
           <el-col :span="2" v-for="item in cards.cardContent" :key="item.id">
             <div class="printing-bottom-content bg-blue">
               <h1>{{item.title}}</h1>
-              <img src="../assets/img/poster-white.png" />
+              <img :src="item.src" width="80"/>
               <p>{{item.content}}</p>
             </div>
           </el-col>
@@ -77,18 +78,18 @@ export default {
           id:1,
           cardContent:
           [
-            {'id':'1','title':'①制作','src':'../assets/img/poster-white.png','content':'在线制作海报'},
-            {'id':'2','title':'②下单','src':'../assets/img/poster-white.png','content':'填写收货地址并付款'},
-            {'id':'3','title':'③安排','src':'../assets/img/poster-white.png','content':'下单24小时内安排印刷'}
+            {'id':'1','title':'①制作','src':'static/img/poster-white.png','content':'在线制作海报'},
+            {'id':'2','title':'②下单','src':'static/img/money.png','content':'填写收货地址并付款'},
+            {'id':'3','title':'③安排','src':'static/img/printer.png','content':'下单24小时内安排印刷'}
           ]
         },
         {
           id:2,
           cardContent:
           [
-            {'id':'4','title':'④印刷','src':'../assets/img/poster-white.png','content':'12小时内完成印刷'},
-            {'id':'5','title':'⑤发货','src':'../assets/img/poster-white.png','content':'印刷完成后12小时内安排发货'},
-            {'id':'6','title':'⑥送达','src':'../assets/img/poster-white.png','content':'敬请耐心等待海报送达'}
+            {'id':'4','title':'④印刷','src':'static/img/done.png','content':'12小时内完成印刷'},
+            {'id':'5','title':'⑤发货','src':'static/img/car.png','content':'印刷完成后12小时内安排发货'},
+            {'id':'6','title':'⑥送达','src':'static/img/package.png','content':'敬请耐心等待海报送达'}
           ]
         }        
       ]

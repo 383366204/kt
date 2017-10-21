@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="indexTopBgColor">
+    <div class="indexTopBgColor" :class="{'topHeight':getIndex}">
       <nav-header></nav-header>
     </div>   
     <router-view/>
@@ -14,16 +14,35 @@ import "@/assets/css/base.css";
 
 export default {
   name: 'app',
-  props:['isIndex'],
+  data() {
+    return{
+      isIndex : true
+    }
+  },
   components: {
     NavHeader,
     NavFooter
+  },
+  methods:{
+    judgeIndex(){
+      if(this.$route.path!="/"){
+        this.isIndex = false;
+      }
+    }
+  },
+  computed:{
+    getIndex(){
+      return this.isIndex;
+    }
+  },
+  watch: {
+      "$route": "judgeIndex"
   }
 }
 </script>
 
 <style>
-  .isIndex{
+  .topHeight{
     height: 568px;
   }
 </style>

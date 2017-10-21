@@ -50,10 +50,13 @@
             <div class="underLine"></div>
           </el-col>
         </el-row>
-        <el-row type="flex" class="row-bg" justify="space-around">
+        <el-row type="flex" justify="space-around">
+          <el-col :span="1"></el-col>
           <el-col :span="2">
             <div class="printing-bottom-content bg-blue">
-
+              <h1>①制作</h1>
+              <img src="../assets/img/poster-white.png" />
+              <h2>在线制作海报</h2>
             </div>
           </el-col>
           <el-col :span="2">
@@ -66,9 +69,13 @@
 
             </div>
           </el-col>
+          <el-col :span="1"></el-col>
+        </el-row>
+        <el-row type="flex" justify="space-around">
+          <el-col :span="1"></el-col>
           <el-col :span="2">
             <div class="printing-bottom-content bg-blue">
-
+              
             </div>
           </el-col>
           <el-col :span="2">
@@ -81,6 +88,7 @@
 
             </div>
           </el-col>
+          <el-col :span="1"></el-col>
         </el-row>
       </div>
   </main>
@@ -93,7 +101,14 @@ export default {
   name: 'Index',
   data () {
     return {
-      
+      printingCard:[
+        {'title':'①制作','src':'../assets/img/poster-white.png','content':'在线制作海报'},
+        {'title':'②下单','src':'../assets/img/poster-white.png','content':'填写收货地址并付款'},
+        {'title':'③安排','src':'../assets/img/poster-white.png','content':'下单24小时内安排印刷'},
+        {'title':'④印刷','src':'../assets/img/poster-white.png','content':'12小时内完成印刷'},
+        {'title':'⑤发货','src':'../assets/img/poster-white.png','content':'印刷完成后12小时内安排发货'},
+        {'title':'⑥送达','src':'../assets/img/poster-white.png','content':'敬请耐心等待海报送达'}
+      ]
     }
   }
 }
@@ -135,7 +150,10 @@ export default {
     height: 613px;
     padding: 76px 0; 
     background-color: #f3f4f8;
-    text-align: center
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
    /* 标题及副标题的字体和颜色 */
   .printing .el-row:first-child h1{
@@ -146,12 +164,26 @@ export default {
     font-size: 20px;
     color: #797979;
   }
+  /* 设定卡片的高度 */
   .printing-bottom-content{
-    width: 158px;
-    height: 200px;
+    height: 218px;
   }
-  /*  */
-  .printing .el-row:last-child{
-    margin-top: 46px;
+  /* 设定卡片的长度 */
+  .printing .el-row:nth-child(n+1) .el-col{
+     flex-basis: 187px;
+  }
+  /* 卡片的字体样式 */
+  .printing .el-row:nth-child(n+1) .el-col div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: #fff;
+  }
+  .printing .el-row:nth-child(n+1) .el-col h1{
+    font-size: 18px;
+  }
+  .printing .el-row:nth-child(n+1) .el-col h2{
+    font-size: 14px;
   }
 </style>

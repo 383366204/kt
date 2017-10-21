@@ -50,42 +50,13 @@
             <div class="underLine"></div>
           </el-col>
         </el-row>
-        <el-row type="flex" justify="space-around">
+        <el-row type="flex" justify="space-around" v-for="cards in printingCard" :key="cards.id">
           <el-col :span="1"></el-col>
-          <el-col :span="2">
+          <el-col :span="2" v-for="item in cards.cardContent" :key="item.id">
             <div class="printing-bottom-content bg-blue">
-              <h1>①制作</h1>
+              <h1>{{item.title}}</h1>
               <img src="../assets/img/poster-white.png" />
-              <h2>在线制作海报</h2>
-            </div>
-          </el-col>
-          <el-col :span="2">
-            <div class="printing-bottom-content bg-blue">
-
-            </div>
-          </el-col>
-          <el-col :span="2">
-            <div class="printing-bottom-content bg-blue">
-
-            </div>
-          </el-col>
-          <el-col :span="1"></el-col>
-        </el-row>
-        <el-row type="flex" justify="space-around">
-          <el-col :span="1"></el-col>
-          <el-col :span="2">
-            <div class="printing-bottom-content bg-blue">
-              
-            </div>
-          </el-col>
-          <el-col :span="2">
-            <div class="printing-bottom-content bg-blue">
-
-            </div>
-          </el-col>
-          <el-col :span="2">
-            <div class="printing-bottom-content bg-blue">
-
+              <p>{{item.content}}</p>
             </div>
           </el-col>
           <el-col :span="1"></el-col>
@@ -102,12 +73,24 @@ export default {
   data () {
     return {
       printingCard:[
-        {'title':'①制作','src':'../assets/img/poster-white.png','content':'在线制作海报'},
-        {'title':'②下单','src':'../assets/img/poster-white.png','content':'填写收货地址并付款'},
-        {'title':'③安排','src':'../assets/img/poster-white.png','content':'下单24小时内安排印刷'},
-        {'title':'④印刷','src':'../assets/img/poster-white.png','content':'12小时内完成印刷'},
-        {'title':'⑤发货','src':'../assets/img/poster-white.png','content':'印刷完成后12小时内安排发货'},
-        {'title':'⑥送达','src':'../assets/img/poster-white.png','content':'敬请耐心等待海报送达'}
+        {
+          id:1,
+          cardContent:
+          [
+            {'id':'1','title':'①制作','src':'../assets/img/poster-white.png','content':'在线制作海报'},
+            {'id':'2','title':'②下单','src':'../assets/img/poster-white.png','content':'填写收货地址并付款'},
+            {'id':'3','title':'③安排','src':'../assets/img/poster-white.png','content':'下单24小时内安排印刷'}
+          ]
+        },
+        {
+          id:2,
+          cardContent:
+          [
+            {'id':'4','title':'④印刷','src':'../assets/img/poster-white.png','content':'12小时内完成印刷'},
+            {'id':'5','title':'⑤发货','src':'../assets/img/poster-white.png','content':'印刷完成后12小时内安排发货'},
+            {'id':'6','title':'⑥送达','src':'../assets/img/poster-white.png','content':'敬请耐心等待海报送达'}
+          ]
+        }        
       ]
     }
   }
@@ -169,21 +152,22 @@ export default {
     height: 218px;
   }
   /* 设定卡片的长度 */
-  .printing .el-row:nth-child(n+1) .el-col{
+  .printing .el-row:nth-child(n+2) .el-col{
      flex-basis: 187px;
   }
   /* 卡片的字体样式 */
-  .printing .el-row:nth-child(n+1) .el-col div{
+  .printing .el-row:nth-child(n+2) .el-col div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     color: #fff;
   }
-  .printing .el-row:nth-child(n+1) .el-col h1{
+  .printing .el-row:nth-child(n+2) .el-col h1{
     font-size: 18px;
   }
-  .printing .el-row:nth-child(n+1) .el-col h2{
+  .printing .el-row:nth-child(n+2) .el-col p{
     font-size: 14px;
+    width: 80%;
   }
 </style>

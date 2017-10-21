@@ -42,9 +42,9 @@
             <el-col :span="2"></el-col>
         </el-row>
       </div>
-      <div class="printing">
+      <div class="floor printing">
         <el-row type="flex" justify="center">
-          <el-col :span="4">
+          <el-col :span="4" class="floor-title">
             <h1>印刷流程</h1>
             <h2>Printing Sequence</h2>
             <div class="underLine"></div>
@@ -61,6 +61,24 @@
             </div>
           </el-col>
           <el-col :span="1"></el-col>
+        </el-row>
+      </div>
+      <div class="floor chat">
+        <el-row type="flex" justify="center">
+          <el-col :span="4" class="floor-title">
+            <h1>TA对我们说</h1>
+            <h2>Evaluation</h2>
+            <div class="underLine"></div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="floor download">
+        <el-row type="flex" justify="center">
+          <el-col :span="4" class="floor-title">
+            <h1>App下载</h1>
+            <h2>Download</h2>
+            <div class="underLine"></div>
+          </el-col>
         </el-row>
       </div>
   </main>
@@ -99,6 +117,34 @@ export default {
 </script>
 
 <style scoped>
+/* 共用部分 */
+/* 标题及副标题的字体和颜色 */
+  .floor {
+    height: 613px;
+    padding: 76px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .floor-title h1{
+    text-align: center;
+    font-size: 30px;
+    color: #393939;
+  }
+  .floor-title h2{
+    text-align: center;
+    font-size: 20px;
+    color: #797979;
+  }
+  /* 蓝色下划线 */
+  .underLine {
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 48px;
+    height: 6px;
+    background-color: #3688fe;
+}
+/* 以上是共用部分 */
 
 /* 走马灯样式 */
   .carousel{
@@ -131,22 +177,7 @@ export default {
   }
   /* 印刷流程层样式 */
   .printing{
-    height: 613px;
-    padding: 76px 0; 
     background-color: #f3f4f8;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-   /* 标题及副标题的字体和颜色 */
-  .printing .el-row:first-child h1{
-    font-size: 30px;
-    color: #393939;
-  }
-  .printing .el-row:first-child h2{
-    font-size: 20px;
-    color: #797979;
   }
   /* 设定卡片的高度 */
   .printing-bottom-content{
@@ -163,6 +194,7 @@ export default {
     justify-content: space-around;
     align-items: center;
     color: #fff;
+    text-align: center;
   }
   .printing .el-row:nth-child(n+2) .el-col h1{
     font-size: 18px;
@@ -170,5 +202,13 @@ export default {
   .printing .el-row:nth-child(n+2) .el-col p{
     font-size: 14px;
     width: 80%;
+  }
+  /* TA要对我们说层 */
+  .chat{
+    background-color: #fff;
+  }
+  /* App下载层 */
+  .download{
+    background-color: #f3f4f8;
   }
 </style>

@@ -146,11 +146,3 @@ a:hover {
 .bg-gray {
     background: #edeef2;
 }
-
-.underLine {
-    margin: 0 auto;
-    margin-top: 20px;
-    width: 48px;
-    height: 6px;
-    background-color: #3688fe;
-}

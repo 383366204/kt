@@ -4,6 +4,7 @@
       <nav-header></nav-header>
     </div>   
     <router-view/>
+    <nav-footer></nav-footer>
   </div>
 </template>
 

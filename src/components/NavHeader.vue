@@ -1,6 +1,6 @@
 <template>
     <header class="header">          
-        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo bgcolor" mode="horizontal" @select="handleSelect" router>
+        <el-menu class="el-menu-demo bgcolor" mode="horizontal" @select="handleSelect" router>
           <el-row type="flex" class="headerFont" justify="center">
               <el-col :span="10">
                 <el-menu-item index="NewDesign" class="noCursor"><el-button size="small">新建设计</el-button></el-menu-item>              
@@ -22,7 +22,7 @@
   export default {
     data() {
       return {
-        activeIndex: 'help'
+        
       };
     },
     methods: {

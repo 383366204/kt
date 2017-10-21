@@ -2,7 +2,7 @@
   <div id="app">
     <div class="indexTopBgColor" :class="{'topHeight':getIndex}">
       <nav-header></nav-header>
-      <index-back-ground></index-back-ground>
+      <index-back-ground v-if="getIndex"></index-back-ground>
     </div>   
     <router-view/>
     <nav-footer></nav-footer>

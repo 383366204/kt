@@ -3,8 +3,8 @@
         <el-menu class="el-menu-demo bgcolor" mode="horizontal" @select="handleSelect" router>
           <el-row type="flex" class="headerFont" justify="center">
               <el-col :span="10">
-                <el-menu-item index="NewDesign" class="noCursor"><el-button size="small">新建设计</el-button></el-menu-item>              
-                <el-menu-item index="MyDesign" class="noCursor"><el-button size="small">我的设计</el-button></el-menu-item>
+                <el-menu-item index="NewDesign">新建设计</el-menu-item>              
+                <el-menu-item index="MyDesign">我的设计</el-menu-item>
                 <el-menu-item index="Document">帮助文档</el-menu-item>
                 <el-menu-item index="Download">App下载</el-menu-item>
                 <el-menu-item index="CustomDesign">定制设计</el-menu-item>
@@ -13,7 +13,7 @@
                 <el-menu-item index="CustomerService"><img src="../assets/icon/chat.png" width="30"/>在线客服</el-menu-item>
                 <el-menu-item index="Login" class="noCursor"><el-button size="small">登录/注册</el-button></el-menu-item>
               </el-col>
-              </el-row>   
+          </el-row>   
         </el-menu>       
     </header>
 </template>
@@ -36,10 +36,13 @@
     /* 导航栏清除默认背景+设置高度 */
     .el-menu{
       background:transparent;
-      height: 74px；
+    }
+    .el-menu-item{
+      height: 40px;
     }
     /* 鼠标经过导航选项 */
     .el-menu-item:hover{
+      /* height: 40px; */
       background-color: transparent !important;
     }
     /* 按钮颜色 */
@@ -84,9 +87,13 @@
       display: flex;
       justify-content: flex-end;
     }
-    /* 取消原本导航栏的鼠标样式 */
+    /* 取消登录按钮鼠标经过的效果 */
     .noCursor{
       cursor: default;
+    }
+    .headerFont .el-col{
+      display: flex;
+      align-items: center;
     }
 </style>
 

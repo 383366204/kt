@@ -12,8 +12,8 @@
         </el-row>
         <el-row type="flex" justify="space-around">
             <el-col :span="3" :push="2">
-              <div class="carousel-bottom-content bg-blue">
-                <img src="../assets/img/poster-white.png" />
+              <div class="carousel-bottom-content bg-gray">
+                <img src="../assets/img/poster.png" />
               </div>
               <div class="carousel-bottom-introduce">
                 <h1>海报设计</h1>
@@ -183,17 +183,30 @@ export default {
     padding-top: 114px;
     height: 821px;
   }
+  /* 走马灯的宽度 */
+  .carousel .el-row:first-child .el-col{
+    width: 1268px;
+  }
   .el-carousel{
     padding-bottom: 80px;
   }
+  /* 设定最低宽度 */
+  .carousel .el-row:nth-child(2) .el-col{
+    flex-basis: 237px;
+    align-items: center;
+  }
   .carousel-bottom-content {
-    width: 237px;
     height: 130px;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  /* 鼠标经过时背景变色 */
+  .carousel-bottom-content:hover{
+    background-color: #2eb4e9;
+  }
+  
   .carousel-bottom-introduce{
     margin-top: 20px;
     text-align: center;
@@ -207,12 +220,15 @@ export default {
     font-size: 16px;
     color: #797979;
   }
+  /* 走马灯样式结束 */
+
   /* 印刷流程层样式 */
   .printing{
     background-color: #f3f4f8;
   }
   /* 设定卡片的高度 */
   .printing-bottom-content{
+    /* align-items: center; */
     height: 218px;
   }
   /* 设定卡片的长度 */
@@ -243,12 +259,14 @@ export default {
   .chat .el-row:nth-child(2){
     margin-top: 32px;
   }
+  .chat .el-row:nth-child(2) .el-col{
+    width: 546px;
+  }
   /* 聊天框加头像的布局 */
   .chat .chat-word{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 410px;
   }
   /* 右列向下偏移 */
   .chat .chat-word.right{

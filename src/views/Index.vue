@@ -69,9 +69,25 @@
             <div class="underLine"></div>
           </el-col>
         </el-row>
-        <el-row type="flex" class="row-bg" justify="center">
-          <el-col :span="6"></el-col>
-          <el-col :span="6"></el-col>
+        <el-row type="flex" justify="center">
+          <el-col :span="7">
+            <div class="chat-word" v-for="index in 3" :key="index">
+                <img src="../assets/img/head-pic.png">
+                <div class="chat-border">
+                   <h1>机智少年  福师大信息学院足球协会</h1>
+                   <h2>一杯敬故乡，一杯敬远方，守着我的善良， 催着我成长。</h2>
+                </div>
+            </div>
+          </el-col>
+          <el-col :span="7">
+            <div class="chat-word right" v-for="index in 3" :key="index">             
+              <div class="chat-border right">
+                 <h1>机智少年  福师大信息学院足球协会</h1>
+                 <h2>一杯敬故乡，一杯敬远方，守着我的善良， 催着我成长。</h2>
+              </div>
+              <img src="../assets/img/head-pic.png">
+            </div>
+          </el-col>
         </el-row>
       </div>
       <div class="floor download">
@@ -222,7 +238,72 @@ export default {
   /* TA要对我们说层 */
   .chat{
     background-color: #fff;
+    justify-content: flex-start;
   }
+  .chat .el-row:nth-child(2){
+    margin-top: 32px;
+  }
+  /* 聊天框加头像的布局 */
+  .chat .chat-word{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 410px;
+  }
+  /* 右列向下偏移 */
+  .chat .chat-word.right{
+    margin-top:36px;
+  }
+  /* 对话框间距 */
+  .chat .chat-word:not(:first-child){
+    margin-top: 86px;
+  }
+  /* 左头像的位置 */
+  .chat .chat-word img{
+    margin-right: 20px;
+  }
+  /* 右头像的位置 */
+  .chat .chat-word img{
+    margin-left: 20px;
+  }
+  /* 对话框样式 */
+  .chat .chat-border{
+    width: 316px;
+    height: 84px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding-left: 12px;
+    position: relative;
+  }
+  /* 对话框左箭头 */
+  .chat .chat-border:after{
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: -20px;
+    border: 10px solid ;
+    border-color:  transparent #fff transparent transparent ;
+  }
+   /* 对话框左箭头 */
+  .chat .chat-border.right:after{
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 328px;
+    border: 10px solid;
+    border-color:  transparent transparent transparent #fff;
+  }
+  .chat .chat-border h1{
+    padding-top: 5px;
+    font-size: 12px;
+    font-weight: lighter;
+  }
+  .chat .chat-border h2{
+    margin-top: 7px;
+    font-size: 16px;
+    font-weight: lighter;
+  }
+
   /* App下载层 */
   .download{
     background-color: #f3f4f8;

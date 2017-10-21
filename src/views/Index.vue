@@ -99,7 +99,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 /* 走马灯样式 */
   .carousel{
     padding-top: 114px;

@@ -11,7 +11,7 @@
               </el-col>
               <el-col :span="4">
                 <el-menu-item index="CustomerService"><img src="../assets/icon/chat.png" width="30"/>在线客服</el-menu-item>
-                <el-menu-item index="MyDesign" class="noCursor"><el-button size="small">登录/注册</el-button></el-menu-item>
+                <el-menu-item index="Login" class="noCursor"><el-button size="small">登录/注册</el-button></el-menu-item>
               </el-col>
               </el-row>   
         </el-menu>       

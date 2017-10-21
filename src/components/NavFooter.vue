@@ -48,11 +48,15 @@
         background-color: #333334;
         color: #FFFFFF;
         text-align: center;
+        min-width: 1200px;
     }
     .footer .el-row .el-col{
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+    }
+    .el-col{
+        min-width: 600px;
     }
     .QR-code,.list{
         display: flex;

@@ -11,8 +11,7 @@
           </el-col>
         </el-row>
         <el-row type="flex" justify="space-around">
-            <el-col :span="2"></el-col>
-            <el-col :span="3">
+            <el-col :span="3" :push="2">
               <div class="carousel-bottom-content bg-blue">
                 <img src="../assets/img/poster-white.png" />
               </div>
@@ -30,7 +29,7 @@
                 <h2>横幅想要与众不同只在团图</h2>
               </div>  
             </el-col>
-            <el-col :span="3">
+            <el-col :span="3" :pull="2">
               <div class="carousel-bottom-content bg-gray">
                 <img src="../assets/img/clothes.png" />
               </div>
@@ -39,7 +38,6 @@
                 <h2>衣服在线设计印刷一步搞定</h2>
               </div>  
             </el-col>
-            <el-col :span="2"></el-col>
         </el-row>
       </div>
       <div class="floor printing">
@@ -78,6 +76,19 @@
             <h1>App下载</h1>
             <h2>Download</h2>
             <div class="underLine"></div>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+          <el-col :span="4">
+            <img src="../assets/img/phone.png" width="283">
+          </el-col>
+          <el-col :span="4">
+            <img src="../assets/img/QR-code.png" width="218">
+            <h1>安卓</h1>
+          </el-col>
+          <el-col :span="4"> 
+            <img src="../assets/img/QR-code.png" width="218">
+            <h1>IOS</h1>
           </el-col>
         </el-row>
       </div>
@@ -130,6 +141,7 @@ export default {
     text-align: center;
     font-size: 30px;
     color: #393939;
+    padding-bottom: 9px;
   }
   .floor-title h2{
     text-align: center;
@@ -210,5 +222,18 @@ export default {
   /* App下载层 */
   .download{
     background-color: #f3f4f8;
+  }
+  /* 内部布局 */
+  .download .el-row:nth-child(n+2) .el-col{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 286px;
+  }
+  /* 文字样式位置 */
+  .download .el-row:nth-child(n+2) .el-col:nth-child(n+2) h1{
+      margin-top: 26px;
+      font-size: 22px;
   }
 </style>

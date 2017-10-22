@@ -54,7 +54,7 @@
           <el-col :span="2" v-for="item in cards.cardContent" :key="item.id">
             <div class="printing-bottom-content bg-blue">
               <h1>{{item.title}}</h1>
-              <img :src="item.src" width="80"/>
+              <img :src="item.src" width="80" height="80"/>
               <p>{{item.content}}</p>
             </div>
           </el-col>

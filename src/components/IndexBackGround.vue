@@ -32,12 +32,15 @@
         padding-top: 66px;
     }
     /* 左边区域的布局 */
+    .indexBackground .el-row .el-col{
+        flex-basis: 538px;
+    }
+    /* 左边区域的布局 */
     .indexBackground .el-row .el-col:first-child{
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        align-items: center;
-        flex-basis: 538px;
+        align-items: center;   
     }
     /* 左边的按钮 */
     #startToDesign{

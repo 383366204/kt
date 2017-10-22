@@ -14,6 +14,7 @@ import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import IndexBackGround from '@/components/IndexBackGround';
 import "@/assets/css/base.css";
+import '@/assets/myIcon/iconfont.css';
 
 export default {
   name: 'app',

@@ -4,7 +4,7 @@
       <nav-header></nav-header>
       <index-back-ground v-if="getIndex"></index-back-ground>
     </div>   
-    <router-view/>
+    <router-view class="flex-bottom"/>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -52,12 +52,7 @@ export default {
 </script>
 
 <style>
-
   .topHeight{
     height: 568px;
-  }
-  #app{
-    display: flex;
-    flex-direction: column;
   }
 </style>

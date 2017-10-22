@@ -4,7 +4,7 @@
           <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
              <router-link to="/NewDesign"><el-button type="text">新建设计</el-button></router-link>
-             <router-link to="/MyDesign"><el-button type="text">我的设计</el-button></router-link>
+             <router-link to="/MyDesign/All"><el-button type="text">我的设计</el-button></router-link>
              <router-link to="/Document"><el-button type="text">帮助文档</el-button></router-link>
              <router-link to="/Download"><el-button type="text">APP下载</el-button></router-link>
              <router-link to="/CustomDesign"><el-button type="text">定制设计</el-button></router-link>
@@ -39,7 +39,7 @@
     /* 黑色底边和布局 */
     .header .el-row .el-col{
       display: flex;
-      flex-basis: 792px;
+      flex-basis: 870px;
       align-items: center;
       border-bottom: 1px solid #aaaaaa;
     }

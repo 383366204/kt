@@ -9,7 +9,7 @@
                 <el-button type="primary" id="startToDesign">开启设计</el-button>  
             </el-col>
             <el-col :span="7">
-                <img src="../assets/img/computer.png" width="593">
+                <img src="../assets/img/computer.png" width="600">
             </el-col>
         </el-row>
     </div>
@@ -33,7 +33,7 @@
     }
     /* 左边区域的布局 */
     .indexBackground .el-row .el-col{
-        flex-basis: 538px;
+        flex-basis: 600px;
     }
     /* 左边区域的布局 */
     .indexBackground .el-row .el-col:first-child{

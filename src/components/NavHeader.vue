@@ -10,7 +10,12 @@
              <router-link to="/CustomDesign"><el-button type="text">定制设计</el-button></router-link>
           </el-col>
           <el-col :span="4">      
-              <router-link to="/Service"><el-button type="text">在线客服</el-button></router-link>            
+              <router-link to="/Service">             
+              <el-button type="text" class="hasIcon">
+               <i class="el-icon-my icon-duihuakuang"></i>
+                在线客服
+                </el-button>
+              </router-link>            
               <router-link to="/Login"><el-button type="text">登录/注册</el-button></router-link>
           </el-col>
         </el-row>
@@ -51,9 +56,14 @@
     .header .el-row .el-button{
       width: 90px;
       height: 31px;
-      line-height: 10px;
+      line-height: 12px;
       font-size: 18px;
       color: #FFF;
+    }
+    /* 有icon的按钮 */
+    .header .el-row .el-button.hasIcon{
+      width: 110px;
+      height: 32px;
     }
     /* 按钮hover样式 */
     .header .el-row .el-button:hover{
@@ -69,6 +79,7 @@
     .header .el-col:last-child a:last-child .el-button{
        border: 1px solid #FFF;
        margin-left: 10px;
+       line-height: 10px;
        background-color: transparent;
     }
     /* 最后登录按钮hover样式 */
@@ -81,5 +92,4 @@
        color: #45c1ee;
        background-color: #FFF;
     }
-    
 </style>

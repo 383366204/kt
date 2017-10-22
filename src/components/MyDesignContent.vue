@@ -3,7 +3,7 @@
     <el-row type="flex">
       <el-col :span="6" v-for="index in 10 " :key="index">
         <el-card :body-style="{ padding: '12px 12px 0px 12px' }">
-          <img src="../assets/img/poster.png" width="192">
+          <img src="../../static/poster.png" width="192">
           <div style="padding: 4px;">
             <span>十佳歌手海报</span>
           </div>

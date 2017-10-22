@@ -13,7 +13,7 @@
         <el-row type="flex" justify="space-around">
             <el-col :span="3" :push="2">
                 <div class="carousel-bottom-content bg-gray">
-                  <i class="iconfont icon-tupian1"></i>
+                  <i class="iconfont icon-tupian2"></i>
                 </div>         
               <div class="carousel-bottom-introduce">
                 <h1>海报设计</h1>
@@ -127,7 +127,7 @@ export default {
           id:1,
           cardContent:
           [
-            {'id':'1','title':'①制作','src':'iconfont icon-tupian1','content':'在线制作海报'},
+            {'id':'1','title':'①制作','src':'iconfont icon-tupian2','content':'在线制作海报'},
             {'id':'2','title':'②下单','src':'iconfont icon-qian','content':'填写收货地址并付款'},
             {'id':'3','title':'③安排','src':'iconfont icon-yinshua','content':'下单24小时内安排印刷'}
           ]

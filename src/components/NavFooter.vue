@@ -43,12 +43,12 @@
 
 <style scoped>
     .footer{
+        width: 100%;
         padding: 36px 0 0px 0;
         height: 198px;
         background-color: #333334;
         color: #FFFFFF;
         text-align: center;
-        min-width: 1200px;
     }
     .footer .el-row .el-col{
         display: flex;

@@ -1,6 +1,6 @@
 <template>
     <header class="header">          
-         <el-row type="flex" class="row-bg" justify="center">
+         <el-row type="flex" justify="center">
           <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
              <router-link to="/NewDesign"><el-button type="text">新建设计</el-button></router-link>

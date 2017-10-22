@@ -57,4 +57,8 @@ export default {
   .topHeight{
     height: 568px;
   }
+  #app{
+    display: flex;
+    flex-direction: column;
+  }
 </style>

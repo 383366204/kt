@@ -41,6 +41,9 @@ export default {
   },
   watch: {
       "$route": "judgeIndex"
+  },
+  beforeMount: function () {
+      this.judgeIndex();
   }
 }
 </script>

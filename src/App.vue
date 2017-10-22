@@ -29,8 +29,12 @@ export default {
   },
   methods:{
     judgeIndex(){
+      console.log(this.$route.path);
       if(this.$route.path!="/"){
         this.isIndex = false;
+      }
+      else{
+        this.isIndex = true;
       }
     }
   },
@@ -40,7 +44,7 @@ export default {
     }
   },
   watch: {
-      "$route": "judgeIndex"
+      "$route.path": "judgeIndex"
   },
   beforeMount: function () {
       this.judgeIndex();

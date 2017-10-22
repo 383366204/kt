@@ -1,20 +1,22 @@
 <template>
     <header class="header">          
-        <el-menu class="el-menu-demo bgcolor" mode="horizontal" @select="handleSelect" router>
-          <el-row type="flex" class="headerFont" justify="center">
-              <el-col :span="10">
-                <el-menu-item index="NewDesign">新建设计</el-menu-item>              
-                <el-menu-item index="MyDesign">我的设计</el-menu-item>
-                <el-menu-item index="Document">帮助文档</el-menu-item>
-                <el-menu-item index="Download">App下载</el-menu-item>
-                <el-menu-item index="CustomDesign">定制设计</el-menu-item>
-              </el-col>
-              <el-col :span="4">
-                <el-menu-item index="CustomerService"><img src="../assets/icon/chat.png" width="30"/>在线客服</el-menu-item>
-                <el-menu-item index="Login" class="noCursor"><el-button size="small">登录/注册</el-button></el-menu-item>
-              </el-col>
-          </el-row>   
-        </el-menu>       
+         <el-row type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
+             <el-button type="text"><router-link to="/NewDesign">新建设计</router-link></el-button>
+             <el-button type="text"><router-link to="/MyDesign">我的设计</router-link></el-button>
+             <el-button type="text"><router-link to="/Document">帮助文档</router-link></el-button>
+             <el-button type="text"><router-link to="/Download">APP下载</router-link></el-button>
+             <el-button type="text"><router-link to="/CustomDesign">定制设计</router-link></el-button>
+          </el-col>
+          <el-col :span="4">
+            <img src="../assets/icon/chat.png" width="30">
+            <el-button type="text">
+              <router-link to="/Service">在线客服</router-link>             
+            </el-button>
+            <el-button type="text"><router-link to="/Login">登录/注册</router-link></el-button>
+          </el-col>
+        </el-row>
     </header>
 </template>
 
@@ -24,76 +26,59 @@
       return {
         
       };
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
     }
   }
 </script>
 <style scoped>
-    /* 导航栏清除默认背景+设置高度 */
-    .el-menu{
-      background:transparent;
+    /* 导航栏高度 */
+    .header .el-row{
+      height: 75px;
     }
-    .el-menu-item{
-      height: 40px;
-    }
-    /* 鼠标经过导航选项 */
-    .el-menu-item:hover{
-      /* height: 40px; */
-      background-color: transparent !important;
-    }
-    /* 按钮颜色 */
-    .el-button{
-      font-size:18px;
-      color: #2eb4e9;
-      border: 1px solid #2eb4e9;
-    }
-    /* 鼠标经过按钮 */
-    .el-button:hover{
-      color: #FFF;
-      background-color:transparent;
-      border: 1px solid #FFF;
-    }
-    /* 最后一个按钮的样式 */
-    .el-menu-item:last-child .el-button{
-      color: #FFF;
-      background-color:transparent;
-      border: 1px solid #FFF;
-    }
-    /* 鼠标最后经过一个按钮的样式 */
-    .el-menu-item:last-child .el-button:hover{
-       background-color: #FFF;
-       color: #2eb4e9;
-    }
-    /* 导航栏选项的样式 */
-    .el-menu-item{
-      font-size:18px;
-      color: #FFF;
-      height: 74px;
-      line-height: 74px;
-      padding: 0 12px;
-    }
-    .el-col:first-child .el-menu-item:nth-child(1){
-      padding: 0 0px;
-    }
-    .el-col{
+    /* 黑色底边和布局 */
+    .header .el-row .el-col{
+      display: flex;
+      flex-basis: 792px;
+      align-items: center;
       border-bottom: 1px solid #aaaaaa;
     }
-    /* 导航栏右边两个靠右 */
-    .el-col:last-child{
-      display: flex;
+    /* 覆盖默认的router-link样式 */
+    .header .el-row .el-col a{
+      font-size: 18px;
+      color: #FFF;
+    }
+    /* 黑色底边和布局 */
+    .header .el-row .el-col:first-child img{
+      margin-right: 30px;
+    }
+    /* 右两个按钮布局 */
+    .header .el-row .el-col:last-child{
       justify-content: flex-end;
+      flex-basis: 317px;
     }
-    /* 取消登录按钮鼠标经过的效果 */
-    .noCursor{
-      cursor: default;
+    /* 按钮样式 */
+    .header .el-row .el-button{
+      width: 90px;
+      height: 31px;
+      line-height: 10px;
+      font-size: 18px;
     }
-    .headerFont .el-col{
-      display: flex;
-      align-items: center;
+    /* 按钮hover样式 */
+    .header .el-row .el-button:hover{
+       background-color: #FFF;
+    }
+    /* 按钮hover样式 */
+    .header .el-row .el-button:hover a{
+       color:#2eb4e9;
+       text-decoration: none;
+    }
+    /* 最后一个,登录按钮样式 */
+    .header .el-col:last-child .el-button:last-child{
+       border: 1px solid #FFF;
+       background-color: transparent;
+    }
+    /* 最后一个,登录按钮hover样式 */
+    .header .el-col:last-child .el-button:last-child:hover{
+       color: #45c1ee;
+       background-color: #FFF;
     }
 </style>
-

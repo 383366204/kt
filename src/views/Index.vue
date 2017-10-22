@@ -13,7 +13,7 @@
         <el-row type="flex" justify="space-around">
             <el-col :span="3" :push="2">
                 <div class="carousel-bottom-content bg-gray">
-                  <i class="el-icon-my icon-tupian1"></i>
+                  <i class="iconfont icon-tupian1"></i>
                 </div>         
               <div class="carousel-bottom-introduce">
                 <h1>海报设计</h1>
@@ -22,7 +22,7 @@
             </el-col>
             <el-col :span="3">
               <div class="carousel-bottom-content bg-gray">
-                <i class="el-icon-my icon-chuandan"></i>
+                <i class="iconfont icon-chuandan"></i>
               </div>
               <div class="carousel-bottom-introduce">
                 <h1>横幅制作</h1>
@@ -31,7 +31,7 @@
             </el-col>
             <el-col :span="3" :pull="2">
               <div class="carousel-bottom-content bg-gray">
-                <i class="el-icon-my icon-weibiaoti101"></i>
+                <i class="iconfont icon-weibiaoti101"></i>
               </div>
               <div class="carousel-bottom-introduce">
                 <h1>队服定制</h1>
@@ -127,18 +127,18 @@ export default {
           id:1,
           cardContent:
           [
-            {'id':'1','title':'①制作','src':'el-icon-my icon-tupian1','content':'在线制作海报'},
-            {'id':'2','title':'②下单','src':'el-icon-my icon-qian','content':'填写收货地址并付款'},
-            {'id':'3','title':'③安排','src':'el-icon-my icon-yinshua','content':'下单24小时内安排印刷'}
+            {'id':'1','title':'①制作','src':'iconfont icon-tupian1','content':'在线制作海报'},
+            {'id':'2','title':'②下单','src':'iconfont icon-qian','content':'填写收货地址并付款'},
+            {'id':'3','title':'③安排','src':'iconfont icon-yinshua','content':'下单24小时内安排印刷'}
           ]
         },
         {
           id:2,
           cardContent:
           [
-            {'id':'4','title':'④印刷','src':'el-icon-my icon-wancheng','content':'12小时内完成印刷'},
-            {'id':'5','title':'⑤发货','src':'el-icon-my icon-fahuo','content':'印刷完成后12小时内安排发货'},
-            {'id':'6','title':'⑥送达','src':'el-icon-my icon-cargo','content':'敬请耐心等待海报送达'}
+            {'id':'4','title':'④印刷','src':'iconfont icon-wancheng','content':'12小时内完成印刷'},
+            {'id':'5','title':'⑤发货','src':'iconfont icon-fahuo','content':'印刷完成后12小时内安排发货'},
+            {'id':'6','title':'⑥送达','src':'iconfont icon-cargo','content':'敬请耐心等待海报送达'}
           ]
         }        
       ]

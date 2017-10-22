@@ -12,7 +12,7 @@
           <el-col :span="4">      
               <router-link to="/Service">             
               <el-button type="text" class="hasIcon">
-               <i class="el-icon-my icon-duihuakuang"></i>
+               <i class="iconfont icon-duihuakuang"></i>
                 在线客服
                 </el-button>
               </router-link>            

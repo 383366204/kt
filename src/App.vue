@@ -14,8 +14,6 @@ import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import IndexBackGround from '@/components/IndexBackGround';
 import "@/assets/css/base.css";
-import '@/assets/font/iconfont.css';
-
 export default {
   name: 'app',
   data() {
@@ -54,6 +52,7 @@ export default {
 </script>
 
 <style>
+
   .topHeight{
     height: 568px;
   }

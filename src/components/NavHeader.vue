@@ -3,18 +3,15 @@
          <el-row type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
-             <el-button type="text"><router-link to="/NewDesign">新建设计</router-link></el-button>
-             <el-button type="text"><router-link to="/MyDesign">我的设计</router-link></el-button>
-             <el-button type="text"><router-link to="/Document">帮助文档</router-link></el-button>
-             <el-button type="text"><router-link to="/Download">APP下载</router-link></el-button>
-             <el-button type="text"><router-link to="/CustomDesign">定制设计</router-link></el-button>
+             <router-link to="/NewDesign"><el-button type="text">新建设计</el-button></router-link>
+             <router-link to="/MyDesign"><el-button type="text">我的设计</el-button></router-link>
+             <router-link to="/Document"><el-button type="text">帮助文档</el-button></router-link>
+             <router-link to="/Download"><el-button type="text">APP下载</el-button></router-link>
+             <router-link to="/CustomDesign"><el-button type="text">定制设计</el-button></router-link>
           </el-col>
-          <el-col :span="4">
-            <img src="../assets/icon/chat.png" width="30">
-            <el-button type="text">
-              <router-link to="/Service">在线客服</router-link>             
-            </el-button>
-            <el-button type="text"><router-link to="/Login">登录/注册</router-link></el-button>
+          <el-col :span="4">      
+              <router-link to="/Service"><el-button type="text">在线客服</el-button></router-link>            
+              <router-link to="/Login"><el-button type="text">登录/注册</el-button></router-link>
           </el-col>
         </el-row>
     </header>
@@ -41,12 +38,7 @@
       align-items: center;
       border-bottom: 1px solid #aaaaaa;
     }
-    /* 覆盖默认的router-link样式 */
-    .header .el-row .el-col a{
-      font-size: 18px;
-      color: #FFF;
-    }
-    /* 黑色底边和布局 */
+    /* 左边Log的布局 */
     .header .el-row .el-col:first-child img{
       margin-right: 30px;
     }
@@ -61,24 +53,33 @@
       height: 31px;
       line-height: 10px;
       font-size: 18px;
+      color: #FFF;
     }
     /* 按钮hover样式 */
     .header .el-row .el-button:hover{
+       color: #2eb4e9;
        background-color: #FFF;
     }
-    /* 按钮hover样式 */
-    .header .el-row .el-button:hover a{
-       color:#2eb4e9;
-       text-decoration: none;
-    }
-    /* 最后一个,登录按钮样式 */
-    .header .el-col:last-child .el-button:last-child{
+    /* 选中后的样式 */
+     .header .el-row .el-col .router-link-active .el-button{
+       color: #2eb4e9;
+       background-color: #FFF;
+     }
+    /* 最后登录按钮样式 */
+    .header .el-col:last-child a:last-child .el-button{
        border: 1px solid #FFF;
+       margin-left: 10px;
        background-color: transparent;
     }
-    /* 最后一个,登录按钮hover样式 */
-    .header .el-col:last-child .el-button:last-child:hover{
+    /* 最后登录按钮hover样式 */
+    .header .el-col:last-child a:last-child .el-button:hover{
        color: #45c1ee;
        background-color: #FFF;
     }
+    /* 最后登录按钮选中样式 */
+    .header .el-col:last-child a:last-child.router-link-active .el-button{
+       color: #45c1ee;
+       background-color: #FFF;
+    }
+    
 </style>

@@ -7,7 +7,7 @@
             <el-menu-item-group>
               <el-menu-item index="All">全部设计</el-menu-item>
               <el-menu-item v-for="(item,index) in menus" :key="index" :index="item.category">{{item.name}}</el-menu-item>
-              <el-menu-item @click="addMenus()" index="add" class="text-center"><i class="el-icon-plus"></i></el-menu-item>
+              <el-menu-item @click="addMenus()" index="" class="text-center"><i class="el-icon-plus"></i></el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="RecyleBin"><i class="el-icon-delete"></i>回收站</el-menu-item>

@@ -1,17 +1,17 @@
 <template>
   <div class="content">
     <el-row type="flex">
-      <el-col :span="6" v-for="index in 10 " :key="index">
+      <el-col :span="6" v-for="(design,index) in designs" :key="index">
         <el-card :body-style="{ padding: '12px 12px 0px 12px' }">
-              <div class="operation">
-                <el-button>编辑</el-button>
-                <el-button>删除</el-button>
-                <el-button>移动</el-button>
-              </div>      
-              <img src="../../static/poster.png" width="192">                
-              <div style="padding: 4px; color:#6c6c6c">
-                <span>十佳歌手海报</span>             
-              </div>  
+          <div class="operation">
+            <el-button>编辑</el-button>
+            <el-button @click="delComfirm(design.id)">删除</el-button>
+            <el-button>移动</el-button>
+          </div>      
+          <img :src="design.src" width="192">                
+          <div style="padding: 4px; color:#6c6c6c">
+            <span>{{design.desription}}</span>             
+          </div>  
         </el-card>
       </el-col>
       <el-col>
@@ -26,8 +26,41 @@
   export default {
     data() {
       return {
-        
+        designs:[
+          {id:'1',src:'../../static/poster.png',description:'十佳歌手海报',folder:'0'},
+          {id:'168',src:'../../static/poster.png',description:'十佳歌手海报',folder:'1'},
+          {id:'45',src:'../../static/poster.png',description:'十佳歌手海报',folder:'1'},
+          {id:'99',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
+          {id:'13',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
+          {id:'2',src:'../../static/poster.png',description:'十佳歌手海报',folder:'3'},
+          {id:'4',src:'../../static/poster.png',description:'十佳歌手海报',folder:'4'},
+          {id:'5',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'}
+        ]
       };
+    },
+    methods:{
+      delComfirm(id){
+        this.$confirm('删除后将移至回收站, 可在回收站中彻底删除或恢复?', '确认删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 查找要删除的元素
+           let i = this.designs.findIndex((item)=>item.id==id);
+           this.designs.splice(i,1);
+           this.$notify.success({
+            title: '成功',
+            message: '删除设计成功',
+            offset:100
+          });
+        }).catch(() => {
+          this.$notify.warning({
+              title: '提示',
+              message: '已取消删除',
+              offset:100
+            });        
+        });
+      }
     }
   }
 </script>
@@ -37,25 +70,25 @@
     padding:45px 0 0 54px;
   }
   /* 换行及下外边距离 */
-   .el-row {
+  .content .el-row {
     flex-wrap: wrap;
     margin-bottom: 20px;
   }
-  .el-col {
+  .content .el-col {
     margin-top: 20px;
     margin-right: 18px;   
     flex-basis: 216px;
   }
   /* 最右边的margin设为0 */
-  .el-col:nth-child(4n) {
+  .content .el-col:nth-child(4n) {
     margin-right: 0px;
   }
   /* 相对定位 */
-  .el-card{
+  .content .el-card{
     position: relative;
   }
   /* hover后卡片里的操作 */
-  .el-card .operation{
+  .content .el-card .operation{
     position: absolute;   
     top: 26px;
     left: 35px;
@@ -63,7 +96,7 @@
     text-align: center;
   }
   /* 卡片里面隐藏的按钮 样式 */
-  .el-card .operation .el-button{
+  .content .el-card .operation .el-button{
     background-color: rgba(0, 0, 0, 0.8);
     height: 34px;
     width: 146px;
@@ -75,15 +108,15 @@
     visibility: hidden;
   }
   /* hover效果 */
-  .el-card:hover{
+  .content .el-card:hover{
     opacity: 0.7;
   }
   /* hover显示按钮 */
-  .el-card:hover .operation .el-button{
+  .content .el-card:hover .operation .el-button{
     visibility: visible;
   }
    /* hover按钮 */
-  .operation .el-button:hover{
+  .content .operation .el-button:hover{
     background-color: rgba(0, 0, 0, 0.9);
   }
   

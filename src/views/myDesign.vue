@@ -1,36 +1,41 @@
 <template>
   <el-row type="flex" justify="center">
       <el-col :span="3">
-      <el-menu default-active="All" @open="handleOpen" @close="handleClose" :router="true">
+      <el-menu default-active="0" @open="handleOpen" @close="handleClose">
           <el-submenu index="Folder">
             <template slot="title"><i class="el-icon-document"></i>文件夹</template>
             <el-menu-item-group>
-              <el-menu-item index="All">全部设计</el-menu-item>
-              <el-menu-item v-for="(item,index) in menus" :key="index" :index="item.category">{{item.name}}</el-menu-item>
-              <el-menu-item @click="addMenus()" index="" class="text-center"><i class="el-icon-plus"></i></el-menu-item>
+              <el-menu-item index="0">全部设计</el-menu-item>
+              <el-menu-item index="index" v-for="item in menus" :key="item.id">{{item.name}}</el-menu-item>
+              <el-menu-item index="add" @click="addMenus()" class="text-center"><i class="el-icon-plus"></i></el-menu-item>             
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="RecyleBin"><i class="el-icon-delete"></i>回收站</el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="11">
-        <router-view></router-view>
+        <my-design-content></my-design-content>
       </el-col>
   </el-row>
 </template>
 
 
 <script>
+  import MyDesignContent from '@/components/MyDesignContent';
   export default {
     data() {
       return {
         menus:[
-          {category:'Clothes',name:'服装'},
-          {category:'Poster',name:'海报'},
-          {category:'Banner',name:'横幅'}
+          {id :'1',name:'服装'},
+          {id :'2',name:'海报'},
+          {id :'3',name:'横幅'}
         ]
       };
-    },methods: {
+    },
+    components:{
+        MyDesignContent
+    },
+    methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },

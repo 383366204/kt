@@ -3,11 +3,11 @@
          <el-row type="flex" justify="center">
           <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
-             <router-link to="/NewDesign"><el-button type="text">新建设计</el-button></router-link>
-             <router-link to="/MyDesign/All"><el-button type="text">我的设计</el-button></router-link>
-             <router-link to="/Document"><el-button type="text">帮助文档</el-button></router-link>
-             <router-link to="/Download"><el-button type="text">APP下载</el-button></router-link>
-             <router-link to="/CustomDesign"><el-button type="text">定制设计</el-button></router-link>
+             <router-link to="NewDesign"><el-button type="text">新建设计</el-button></router-link>
+             <router-link to="MyDesign"><el-button type="text">我的设计</el-button></router-link>
+             <router-link to="Document"><el-button type="text">帮助文档</el-button></router-link>
+             <router-link to="Download"><el-button type="text">APP下载</el-button></router-link>
+             <router-link to="CustomDesign"><el-button type="text">定制设计</el-button></router-link>
           </el-col>
           <el-col :span="4">      
               <router-link to="/Service">             

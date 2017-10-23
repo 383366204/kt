@@ -25,7 +25,7 @@
                 </div>      
                 <img :src="design.src" width="192">                
                 <div style="padding: 4px; color:#6c6c6c">
-                  <span>{{design.desription}}</span>             
+                  <span>{{design.description}}123</span>             
                 </div>  
               </el-card>
             </el-col>
@@ -132,6 +132,7 @@
     }
 
     /* 这里开始是右边的样式 */
+
     /* 上和左内间距 */
   .content{
     padding:45px 0 0 54px;

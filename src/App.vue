@@ -54,5 +54,6 @@ export default {
 <style>
   .topHeight{
     height: 568px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   }
 </style>

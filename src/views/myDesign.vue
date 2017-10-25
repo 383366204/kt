@@ -21,7 +21,7 @@
                 <div class="operation">
                   <el-button>编辑</el-button>
                   <el-button @click="delComfirm(design.id)">删除</el-button>
-                  <el-button>移动</el-button>
+                  <el-button @click="move(design.id)">移动</el-button>
                 </div>      
                 <img :src="design.src" width="192">                
                 <div style="padding: 4px; color:#6c6c6c">
@@ -59,7 +59,25 @@
           {id:'2',src:'../../static/poster.png',description:'十佳歌手海报',folder:'3'},
           {id:'5',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'},
           {id:'10',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'}
-        ]
+        ],
+        moveSelect:'',
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: ''
       };
     },
     methods: {
@@ -111,6 +129,61 @@
               message: '已取消删除',
               offset:100
             });        
+        });
+      },
+      // <el-select v-model="value" placeholder="请选择">
+      //   <el-option
+      //     v-for="item in options"
+      //     :key="item.value"
+      //     :label="item.label"
+      //     :value="item.value">
+      //   </el-option>
+      // </el-select>
+      move(id){
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '确认移动',
+          message: h('div',null,[
+            
+              
+            // h('el-select',
+            //   {
+            //     style:{
+            //       width:'100%'
+            //     },
+            //   }
+            //   ,[
+            //   h('el-option',null,null)
+            // ])        
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '执行中...';
+              setTimeout(() => {
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 300);
+              }, 3000);
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          this.$message({
+            type: 'info',
+            message: 'action: ' + action
+          });
+        }).catch(()=>{
+           this.$notify.warning({
+              title: '提示',
+              message: '已取消移动',
+              offset:100
+            });
         });
       }
     }

@@ -15,8 +15,21 @@
                <i class="iconfont icon-duihuakuang"></i>
                 在线客服
                 </el-button>
-              </router-link>            
-              <router-link to="/Login"><el-button type="text">登录/注册</el-button></router-link>
+              </router-link>
+              <router-link to="/Message" class="message" v-if="!this.$store.state.isLogin">                 
+                  <el-button type="text" class="hasIcon">
+                    <i class="iconfont icon-xinfeng" style="font-size:18px;"></i>
+                  你的通知
+                  </el-button>
+              </router-link>
+              <div class="headPic" v-if="!this.$store.state.isLogin">
+                <el-badge :value="100" :max="99">
+                   <el-button size="small"><img src="../assets/img/head-pic.png" width="52"></el-button>
+                </el-badge>
+                <h1>团小图</h1>
+                <h2>超级会员</h2>
+              </div>        
+              <router-link to="/Login" v-if="this.$store.state.isLogin"><el-button type="text">登录/注册</el-button></router-link>
           </el-col>
         </el-row>
     </header>
@@ -39,7 +52,7 @@
     /* 黑色底边和布局 */
     .header .el-row .el-col{
       display: flex;
-      flex-basis: 870px;
+      flex-basis: 850px;
       align-items: center;
       border-bottom: 1px solid #aaaaaa;
     }
@@ -50,7 +63,7 @@
     /* 右两个按钮布局 */
     .header .el-row .el-col:last-child{
       justify-content: flex-end;
-      flex-basis: 317px;
+      flex-basis: 360px;
     }
     /* 按钮样式 */
     .header .el-row .el-button{
@@ -91,5 +104,43 @@
     .header .el-col:last-child a:last-child.router-link-active .el-button{
        color: #45c1ee;
        background-color: #FFF;
+    }
+  
+    .message{
+      width: 90px;
+    }
+    /* 登录后右边的头像 */
+    .headPic{
+      position: relative;
+      width: 126px;
+      margin-left: 26px;
+    }
+    /* 头像按钮 */
+    .headPic .el-badge .el-button{
+      position: relative;
+      width: 55px !important;
+      height: 55px !important;
+      border-radius: 50%;    
+    }
+    /* 头像hover效果*/
+    .headPic .el-badge .el-button:hover{
+      border: 1px solid #EEE;
+    }
+    /* 头像照片 */
+    .headPic .el-badge .el-button img{
+      position: absolute;
+      top: 1px;
+      left: 1px;
+    }
+    /* 名字和会员等级 */
+    .headPic h1,h2{
+      position: absolute;
+      color: #FFF;
+      top: 10px;
+      right: 16px;
+    }
+    .headPic h2{
+      top:30px;
+      right:0px;
     }
 </style>

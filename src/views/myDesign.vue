@@ -6,8 +6,8 @@
             <template slot="title"><i class="el-icon-document"></i>文件夹</template>
             <el-menu-item-group>
               <el-menu-item index="0">全部设计</el-menu-item>
-              <el-menu-item index="index" v-for="item in menus" :key="item.id">{{item.name}}</el-menu-item>
-              <el-menu-item index="add" @click="addMenus()" class="text-center"><i class="el-icon-plus"></i></el-menu-item>             
+              <el-menu-item :index="item.folderId" v-for="item in menus" :key="item.folderId">{{item.name}}</el-menu-item>
+              <el-menu-item index="-1" @click="addMenus()" class="text-center"><i class="el-icon-plus"></i></el-menu-item>             
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="RecyleBin"><i class="el-icon-delete"></i>回收站</el-menu-item>
@@ -46,9 +46,9 @@
     data() {
       return {
         menus:[
-          {id :'1',name:'服装'},
-          {id :'2',name:'海报'},
-          {id :'3',name:'横幅'}
+          {folderId :'1',name:'服装'},
+          {folderId :'2',name:'海报'},
+          {folderId :'3',name:'横幅'}
         ],
         designs:[
           {id:'1',src:'../../static/poster.png',description:'十佳歌手海报',folder:'0'},
@@ -57,7 +57,6 @@
           {id:'99',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
           {id:'13',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
           {id:'2',src:'../../static/poster.png',description:'十佳歌手海报',folder:'3'},
-          {id:'4',src:'../../static/poster.png',description:'十佳歌手海报',folder:'4'},
           {id:'5',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'},
           {id:'10',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'}
         ]
@@ -77,7 +76,8 @@
           inputPattern: /^.{1,6}$/,
           inputErrorMessage: '名称长度应为1-6个字符'
         }).then(({ value }) => {
-          this.menus.push({'category':'DIY','name':value});
+          let newFolderId = this.menus.length+1;
+          this.menus.push({'folderId': newFolderId.toString() ,'name':value});
           this.$notify.success({
             title: '成功',
             message: '新建文件夹成功',

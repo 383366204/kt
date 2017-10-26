@@ -131,6 +131,9 @@
             });        
         });
       },
+      createMsgElement(){
+        //  return this.render(<h1>消息</h1>);
+      },
       // <el-select v-model="value" placeholder="请选择">
       //   <el-option
       //     v-for="item in options"
@@ -143,19 +146,7 @@
         const h = this.$createElement;
         this.$msgbox({
           title: '确认移动',
-          message: h('div',null,[
-            
-              
-            // h('el-select',
-            //   {
-            //     style:{
-            //       width:'100%'
-            //     },
-            //   }
-            //   ,[
-            //   h('el-option',null,null)
-            // ])        
-          ]),
+          message: this.createMsgElement(),
           showCancelButton: true,
           confirmButtonText: '确定',
           cancelButtonText: '取消',

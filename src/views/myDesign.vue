@@ -37,6 +37,20 @@
           </el-row>
         </div>
       </el-col>
+      <el-dialog title="移入文件夹" :visible.sync="moveFormVisible" size="tiny" top="40%" @close="cancelMove()">
+        <el-form>
+          <el-form-item label="移动至" :label-width="formLabelWidth">
+            <el-select v-model="moveSelect" placeholder="请选择文件夹">
+              <el-option label="全部设计" value="0"></el-option>
+              <el-option v-for="menu in menus" :key="menu.folderId" :label="menu.name" :value="menu.folderId"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer">
+          <el-button @click="cancelMove()">取 消</el-button>
+          <el-button type="primary" @click="confirmMove()">确 定</el-button>
+        </div>
+      </el-dialog>
   </el-row>
 </template>
 
@@ -61,23 +75,9 @@
           {id:'10',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'}
         ],
         moveSelect:'',
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: ''
+        moveFormVisible: false,
+        formLabelWidth: '140px',
+        moveItemId:''
       };
     },
     methods: {
@@ -131,51 +131,22 @@
             });        
         });
       },
-      createMsgElement(){
-        //  return this.render(<h1>消息</h1>);
-      },
-      // <el-select v-model="value" placeholder="请选择">
-      //   <el-option
-      //     v-for="item in options"
-      //     :key="item.value"
-      //     :label="item.label"
-      //     :value="item.value">
-      //   </el-option>
-      // </el-select>
       move(id){
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '确认移动',
-          message: this.createMsgElement(),
-          showCancelButton: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = '执行中...';
-              setTimeout(() => {
-                done();
-                setTimeout(() => {
-                  instance.confirmButtonLoading = false;
-                }, 300);
-              }, 3000);
-            } else {
-              done();
-            }
-          }
-        }).then(action => {
-          this.$message({
-            type: 'info',
-            message: 'action: ' + action
-          });
-        }).catch(()=>{
-           this.$notify.warning({
-              title: '提示',
-              message: '已取消移动',
-              offset:100
-            });
-        });
+        // 查找要移动的元素位置
+        this.moveItemId = this.designs.findIndex((item)=>item.id==id);
+        this.moveFormVisible = true;
+      },
+      cancelMove(){
+        this.moveFormVisible = false;
+        this.moveSelect = '';
+        this.moveItemId = '';
+      },
+      confirmMove(){
+        if(this.moveItemId>=0){
+          this.designs[this.moveItemId].folderId = this.moveSelect;
+          this.cancelMove();
+          console.log(this.designs);
+        }
       }
     }
   }
@@ -191,7 +162,7 @@
         flex-basis: 222px;
     }
     /* 右边宽度 */
-   .el-row .el-col:last-child{
+   .el-row .el-col:nth-child(2){
         flex-basis: 980px;
     }
 

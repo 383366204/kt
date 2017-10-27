@@ -16,20 +16,20 @@
                 在线客服
                 </el-button>
               </router-link>
-              <router-link to="/Message" class="message" v-if="!this.$store.state.isLogin">                 
+              <router-link to="/Message" class="message" v-if="this.$store.state.isLogin">                 
                   <el-button type="text" class="hasIcon">
                     <i class="iconfont icon-xinfeng" style="font-size:18px;"></i>
                   你的通知
                   </el-button>
               </router-link>
-              <div class="headPic" v-if="!this.$store.state.isLogin">
+              <div class="headPic" v-if="this.$store.state.isLogin">
                 <el-badge :value="100" :max="99">
                    <el-button size="small"><img src="../assets/img/head-pic.png" width="52"></el-button>
                 </el-badge>
                 <h1>团小图</h1>
                 <h2>超级会员</h2>
               </div>        
-              <router-link to="/Login" v-if="this.$store.state.isLogin"><el-button type="text">登录/注册</el-button></router-link>
+              <router-link to="/Login" v-else><el-button type="text">登录/注册</el-button></router-link>
           </el-col>
         </el-row>
     </header>

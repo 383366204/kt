@@ -4,8 +4,8 @@ import Index from '@/views/Index'
 import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
 import Address from '@/views/Address'
-import order from '@/views/orderList'
-
+import orderList from '@/views/orderList'
+import order from '@/views/order'
 
 Vue.use(Router)
 
@@ -34,6 +34,11 @@ export default new Router({
             path: '/orderList',
             name: 'orderList',
             component: orderList
+        },
+        {
+            path: '/order',
+            name: 'order',
+            component: order
         }
     ]
 })

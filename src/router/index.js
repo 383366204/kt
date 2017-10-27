@@ -36,13 +36,13 @@ export default new Router({
             component: Address
         },
         {
-            path: '/orderList',
-            name: 'orderList',
+            path: '/OrderList',
+            name: 'OrderList',
             component: OrderList
         },
         {
-            path: '/order',
-            name: 'order',
+            path: '/Order',
+            name: 'Order',
             component: Order
         }
     ]

@@ -1,14 +1,67 @@
 <template>
   <main>
     <el-row>
+
+      <!-- 编辑收货地址 -->
       <el-col :span="22" :offset="1">
 
+        <el-row>
+          <el-col :span="24"><div class="cart-title"><i class="iconfont icon-shouhuo1"></i>收货地址</div></el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="22" :offset="1">
+            <el-row>
+              <el-col :span="2">
+                <div class="address-title"><i class="iconfont icon-dingwei"></i>寄送至</div>
+              </el-col>
+              <el-col :span="22">
+                <ul class="address">
+                  <li><input type="checkbox"></li>
+                  <li>福建省福州市闽侯县上街镇</li>
+                  <li>乌龙江大道高新区27号楼2单元101室</li>
+                  <li>（<span>团小图</span> 收）</li>
+                  <li>12345678901</li>
+                  <li>默认地址</li>
+                </ul>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="2"><div>&nbsp;</div></el-col>
+              <el-col :span="22">
+                <ul class="address">
+                  <li><input type="checkbox"></li>
+                  <li>福建省福州市闽侯县上街镇</li>
+                  <li>乌龙江大道高新区27号楼2单元101室</li>
+                  <li>（<span>团小图</span> 收）</li>
+                  <li>12345678901</li>
+                  <li></li>
+                </ul>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="2"><div>&nbsp;</div></el-col>
+              <el-col :span="22">
+                <ul class="address">
+                  <li><input type="checkbox"></li>
+                  <li>福建省福州市闽侯县上街镇</li>
+                  <li>乌龙江大道高新区27号楼2单元101室</li>
+                  <li>（<span>团小图</span> 收）</li>
+                  <li>12345678901</li>
+                  <li></li>
+                </ul>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-col>
+
+
+      <el-col :span="22" :offset="1">
         <!-- 标题 -->
         <el-row>
-          <el-col :span="24"><div class="cart-title"><i class="iconfont icon-gouwuche"></i>全部商品</div></el-col>
+          <el-col :span="24"><div class="cart-title"><i class="iconfont icon-queren2"></i>确认订单信息</div></el-col>
         </el-row>
-
-        <!-- 头部 -->
+        <!-- 订单头部 -->
         <el-row class="cart-thead">
           <el-col :span="11"><div>商品</div></el-col>
           <el-col :span="3"><div>规格</div></el-col>
@@ -17,16 +70,9 @@
           <el-col :span="2"><div>金额</div></el-col>
           <el-col :span="3"><div>操作</div></el-col>
         </el-row>
-
-        <!-- 全选 -->
-        <el-row>
-          <div id="checkbox-all">
-            <input type="checkbox">&nbsp;&nbsp;全选
-          </div>
-        </el-row>
-        <!-- 列表框 -->
+      
+        <!-- 订单列表框 -->
         <el-row class="cart-tbody">
-          <!-- 商品列 -->
           <el-col :span="11"><div>
             <el-row class="cart-tbody_first">
               <el-col :span="3"><input type="checkbox"></el-col>
@@ -35,7 +81,6 @@
               <el-col :span="7"><div>红色</div></el-col>
             </el-row>
           </div></el-col>
-          <!-- 规格列 -->
           <el-col :span="3"><div class="cart-tbody_second">
             <p>S</p>
             <p>M</p>
@@ -43,7 +88,6 @@
             <p>XL</p>
             <p>XXL</p>
           </div></el-col>
-          <!-- 数量列 -->
           <el-col :span="3"><div class="cart-tbody_third">
             <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" size="small"></el-input-number>
             <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" size="small"></el-input-number>
@@ -51,16 +95,12 @@
             <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" size="small"></el-input-number>
             <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" size="small"></el-input-number>
           </div></el-col>
-          <!-- 单价列 -->
           <el-col :span="2"><div>20元</div></el-col>
-          <!-- 金额列 -->
           <el-col :span="2"><div>300元</div></el-col>
-          <!-- 操作列 -->
           <el-col :span="3"><div><button class="cart-remove">删除</button></div></el-col>
         </el-row>
-
+        <!-- 订单列表框 -->
         <el-row class="cart-tbody">
-          <!-- 商品列 -->
           <el-col :span="11"><div>
             <el-row class="cart-tbody_first">
               <el-col :span="3"><input type="checkbox"></el-col>
@@ -69,24 +109,18 @@
               <!-- <el-col :span="7"><div>红色</div></el-col> -->
             </el-row>
           </div></el-col>
-          <!-- 规格列 -->
           <el-col :span="3"><div class="cart-tbody_second">
             <p>65*100cm</p>
           </div></el-col>
-          <!-- 数量列 -->
           <el-col :span="3"><div class="cart-tbody_third">
             <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" size="small"></el-input-number>
           </div></el-col>
-          <!-- 单价列 -->
           <el-col :span="2"><div>20元</div></el-col>
-          <!-- 金额列 -->
           <el-col :span="2"><div>300元</div></el-col>
-          <!-- 操作列 -->
           <el-col :span="3"><div><button class="cart-remove">删除</button></div></el-col>
         </el-row>
-        
+        <!-- 订单列表框 -->
         <el-row class="cart-tbody">
-          <!-- 商品列 -->
           <el-col :span="11"><div>
             <el-row class="cart-tbody_first">
               <el-col :span="3"><input type="checkbox"></el-col>
@@ -95,35 +129,34 @@
               <!-- <el-col :span="7"><div>红色</div></el-col> -->
             </el-row>
           </div></el-col>
-          <!-- 规格列 -->
           <el-col :span="3"><div class="cart-tbody_second">
             <p>5米</p>
           </div></el-col>
-          <!-- 数量列 -->
           <el-col :span="3"><div class="cart-tbody_third">
             <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" size="small"></el-input-number>
           </div></el-col>
-          <!-- 单价列 -->
           <el-col :span="2"><div>20元</div></el-col>
-          <!-- 金额列 -->
           <el-col :span="2"><div>300元</div></el-col>
-          <!-- 操作列 -->
           <el-col :span="3"><div><button class="cart-remove">删除</button></div></el-col>
         </el-row>
-        
-        <!-- 底部 -->
-        <el-row class="cart-tfoot">
-          <el-col :span="4"><div>
-            <el-row>
-              <el-col :span="12"><input type="checkbox">&nbsp;&nbsp;全选</el-col>
-              <el-col :span="6"><button>删除</button></el-col>
-            </el-row>
-          </div></el-col>
-          <el-col :span="4" :offset="9"><div>已勾选<span class="important">12</span>件</div></el-col>
-          <el-col :span="4"><div>共计：<span class="important">1000</span>元</div></el-col>
-          <el-col :span="3"><div><button class="btn-red">结算</button></div></el-col>
-        </el-row>
 
+        <!-- 留言框 -->
+        <el-row>
+        留言：<el-input size="small" placeholder="例如：要求哪家快递公司配送" v-model="liuyan"></el-input>
+        </el-row>
+        <!-- 详细信息 -->
+        <el-row class="detail">
+          <ul>
+            <li>总金额：<span class="important">66666</span>元</li>
+            <li>寄送至：福建省 福州市 闽侯县 上街镇 乌龙江大道</li>
+            <li>高新区27号楼2单元101室</li>
+            <li>收货人：团小图 12345678901</li>
+          </ul>
+        </el-row>
+        <!-- 提交按钮 -->
+        <el-row class="order-tj">
+          <button class="btn btn-red">提交订单</button>
+        </el-row>
       </el-col>
     </el-row>
   </main>
@@ -136,6 +169,7 @@ export default {
     return {
       listItems: ['buy food', 'play games', 'sleep'],
       num1: 1,
+      liuyan: ''
     }
   },
   methods: {
@@ -150,8 +184,8 @@ export default {
   main{
     width: 1200px;
     margin: 0 auto;
-    font-size: 14px;
     color: #555;
+    font-size: 14px;
   }
   img{
     width: 100%;
@@ -160,7 +194,26 @@ export default {
     cursor: pointer;
   }
 
+  /*收货地址选择*/
+  .address-title{
+    color: #de1100;
+    font-weight: 700;
+  }
+  .address-title i{
+    margin-right: 10px;
+  }
+  .address li{
+    display: inline-block;
+    margin-left: 10px;
+    color: #666;
+  }
+  .address li:nth-of-type(5),
+  .address li:nth-of-type(6){
+    color: #aaa;
+  }
 
+
+  /*确认订单*/
   /*标题*/
   .cart-title{
     font-size: 18px;
@@ -168,13 +221,11 @@ export default {
     margin-top: 40px;
   }
   .cart-title > i{
-    font-size: 24px;
+    font-size: 22px;
     color: #2eb4e9;
     margin-right: 10px;
   }
-
-
-  /*头部*/
+  /*订单头部*/
   .cart-thead div{
     background-color: #e6eaeb;
     text-align: center;
@@ -183,14 +234,7 @@ export default {
     border-right: 1px solid #d7dadb;
   }
 
-
-  /*全选*/
-  #checkbox-all{
-    margin-left: 26px;
-  }
-
-
-  /*列表框*/
+  /*订单列表框*/
   .cart-tbody{
     border: 2px solid #e6eaeb;
     text-align: center;
@@ -198,7 +242,7 @@ export default {
     align-items: center;
     padding: 20px 0;
   }
-  /*商品列*/
+
   .cart-tbody_first{
     margin: 0 !important;
     padding: 20px 0;
@@ -212,7 +256,7 @@ export default {
   .cart-tbody_first .el-col:nth-of-type(4){
     color: #aaa;
   }
-  /*规格列 数量列*/
+  
   .cart-tbody_second > p{
     height: 30px;
     line-height: 30px;
@@ -227,11 +271,12 @@ export default {
   .cart-tbody_third > .el-input-number:last-of-type{
     margin-bottom: 0;
   }
-  /*单价列 总价列*/
+
   .cart-tbody > .el-col:nth-of-type(4),
   .cart-tbody > .el-col:nth-of-type(5){
     color: #ff0000;
   }
+
   /*删除按钮*/
   .cart-remove{
     background-color: #e6eaeb;
@@ -241,41 +286,49 @@ export default {
     border-radius: 4px;
   }
 
+  /*留言框*/
+  .el-input{
+    width: 500px;
+  }
 
-  /*底部*/
-  .cart-tfoot{
-    background-color: #e6eaeb;
-    text-align: center;
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
+  /*详细信息*/
+  .detail{
+    font-size: 16px;
   }
-  .cart-tfoot .el-row{
-    margin: 0 !important;
-  }
-  .cart-tfoot .el-row button{
-    border: none;
-    border-bottom: 1px solid #e6eaeb;
-    background-color: #e6eaeb;
-    color: #555;
-  }
-  .cart-tfoot .el-row button:hover{
-    border-bottom: 1px solid #555;
-  }
-  /*红色按钮*/
-  .btn-red{
-    background-color: #de1100;
-    border: none;
-    color: #535353;
-    padding: 4px 20px;
-    color: #fff;
+  .detail ul{
+    float: right;
+    text-align: right;
+    width: 500px;
+    border: 1px solid #de1100;
+    padding: 14px 20px;
     border-radius: 4px;
   }
-  /*着重变红*/
+  .detail li{
+    margin-bottom: 10px;
+  }
+  .detail li:last-of-type{
+    margin-bottom: 0;
+  }
   .important{
     color: #ff0000;
     padding: 0 10px;
+    font-size: 18px;
   }
+  /*提交订单按钮*/
+  .order-tj{
+    float: right;
+  }
+  .btn{
+    border: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+  }
+  .btn-red{
+    background-color: #de1100;
+    color: #fff;
+    font-size: 14px;
+  }
+
 
   .el-row {
     margin-bottom: 20px;

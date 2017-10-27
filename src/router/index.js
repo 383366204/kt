@@ -4,7 +4,9 @@ import Index from '@/views/Index'
 import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
 import LoginRegister from '@/views/login-register'
-
+import Address from '@/views/Address'
+import OrderList from '@/views/orderList'
+import Order from '@/views/order'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +29,21 @@ export default new Router({
             path: '/Login',
             name: 'LoginRegister',
             component: LoginRegister
+        },
+        {
+            path: '/Address',
+            name: 'Address',
+            component: Address
+        },
+        {
+            path: '/orderList',
+            name: 'orderList',
+            component: OrderList
+        },
+        {
+            path: '/order',
+            name: 'order',
+            component: Order
         }
     ]
 })

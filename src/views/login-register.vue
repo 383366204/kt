@@ -2,19 +2,19 @@
     <main class="main">
         <el-row type="flex" justify="center" align="middle">
             <el-col :span="8">
-                <el-form :model="loginForm" status-icon :rules="rules2" ref="ruleForm2">
-                    <el-form-item label-width="0" prop="pass">
-                        <el-input v-model="loginForm.pass" auto-complete="off" placeholder="手机号/邮箱"></el-input>
+                <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
+                    <el-form-item label-width="0" prop="userId">
+                        <el-input v-model="loginForm.userId" auto-complete="off" placeholder="手机号/邮箱"></el-input>
                     </el-form-item>
-                    <el-form-item label-width="0" prop="checkPass">
-                        <el-input type="password" v-model="loginForm.checkPass" auto-complete="off" placeholder="密码"></el-input>
-                    </el-form-item>
-                    <el-form-item label-width="0">
-                      <el-button type="text">文字按钮</el-button>
-                      <el-button type="text">文字按钮</el-button>
+                    <el-form-item label-width="0" prop="password">
+                        <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
                     </el-form-item>
                     <el-form-item label-width="0">
-                        <el-button class="submitBtn" @click="submitForm('ruleForm2')">登录</el-button>
+                      <el-button type="text">忘记密码</el-button>
+                      <el-button type="text">立即注册</el-button>
+                    </el-form-item>
+                    <el-form-item label-width="0">
+                        <el-button class="submitBtn" @click="submitForm('loginForm')">登录</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -26,56 +26,31 @@
 
 
 export default {
-  name: 'Login',
   data() {
-      var checkAge = (rule, value, callback) => {
+     let phoneOrEmail = (rule, value, callback) => {
+       let phoneRex = /^1\d{10}$/;
+       let emailRex = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         if (!value) {
-          return callback(new Error('年龄不能为空'));
+          return callback(new Error('请输入手机号或邮箱'));
         }
-        if (!Number.isInteger(value)) {
-          callback(new Error('请输入数字值'));
-        } else {
-          if (value < 18) {
-            callback(new Error('必须年满18岁'));
-          } else {
-            callback();
-          }
-        }
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入手机号或邮箱'));
-        } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('checkPass');
-          }
+        else if (phoneRex.test(value)||emailRex.test(value)) {
           callback();
         }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm2.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
+        else{
+          callback(new Error('请输入正确的手机号或邮箱'));
         }
       };
       return {
         loginForm: {
-          pass: '',
-          checkPass: '',
-          age: ''
+          userId: '',
+          password: ''
         },
-        rules2: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
+        loginRules: {
+          userId: [
+            { validator: phoneOrEmail, trigger: 'blur' }
           ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' }
           ]
         }
       };
@@ -90,9 +65,6 @@ export default {
             return false;
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
       }
     }
   }
@@ -125,6 +97,23 @@ export default {
     .main .el-form-item .el-input{
       border-color: #c1c1c1;
     }
+    /* 输入密码的下外边距 */
+   .main .el-form .el-form-item:nth-child(2){
+     margin-bottom:8px;
+   }
+   /* 忘记密码和立即注册的下外边距 */
+   .main .el-form .el-form-item:nth-child(3){
+     margin-bottom:2px;
+   }
+   /* 忘记密码按钮样式 */
+   .main .el-form .el-form-item:nth-child(3) .el-button:nth-child(1){
+     color: #c0c0c0;
+   }
+   /* 立即注册按钮样式 */
+   .main .el-form .el-form-item:nth-child(3) .el-button:nth-child(2){
+     float: right;
+     color: #2eb4e9;
+   }
     /* 提交按钮样式 */
     .main .submitBtn{
       width: 100%;

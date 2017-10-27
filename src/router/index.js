@@ -4,7 +4,7 @@ import Index from '@/views/Index'
 import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
 import LoginRegister from '@/views/login-register'
-import Address from '@/views/Address'
+import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
 Vue.use(Router)

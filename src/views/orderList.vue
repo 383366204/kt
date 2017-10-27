@@ -2,10 +2,11 @@
   <main>
     <el-row>
       <el-col :span="22" :offset="1">
-
+        <!-- 导航栏 -->
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部订单" name="first">
-
+            
+            <!-- 头部 -->
             <el-row class="cart-thead">
               <el-col :span="11"><div>商品</div></el-col>
               <el-col :span="3"><div>规格</div></el-col>
@@ -15,6 +16,7 @@
               <el-col :span="3"><div>操作</div></el-col>
             </el-row>
 
+            <!-- 列表框 -->
             <el-row class="cart-tbody">
               <el-col :span="11"><div>
                 <el-row class="cart-tbody_first">
@@ -46,6 +48,7 @@
               </el-col>
             </el-row>
 
+            <!-- 列表框 -->
             <el-row class="cart-tbody">
               <el-col :span="11"><div>
                 <el-row class="cart-tbody_first">
@@ -68,7 +71,8 @@
                 <div><button class="btn btn-gray">提醒制作</button></div>
               </el-col>
             </el-row>
-            
+
+            <!-- 列表框 -->
             <el-row class="cart-tbody">
               <el-col :span="11"><div>
                 <el-row class="cart-tbody_first">
@@ -91,6 +95,7 @@
               </el-col>
             </el-row>
 
+            <!-- 列表框 -->
             <el-row class="cart-tbody">
               <el-col :span="11"><div>
                 <el-row class="cart-tbody_first">
@@ -112,7 +117,8 @@
                 <div><button class="btn btn-blue">查看物流</button></div>
               </el-col>
             </el-row>
-            
+
+            <!-- 列表框 -->
             <el-row class="cart-tbody">
               <el-col :span="11"><div>
                 <el-row class="cart-tbody_first">
@@ -134,7 +140,7 @@
                 <div></div>
               </el-col>
             </el-row>
-
+            分页
             <el-pagination
               layout="prev, pager, next"
               :total="1000">
@@ -235,6 +241,9 @@ export default {
   button{
     cursor: pointer;
   }
+
+
+  /*标题*/
   .cart-title{
     font-size: 20px;
     color: #555;
@@ -245,6 +254,9 @@ export default {
     color: #2eb4e9;
     margin-right: 10px;
   }
+
+
+  /*头部*/
   .cart-thead div{
     background-color: #e6eaeb;
     text-align: center;
@@ -252,11 +264,9 @@ export default {
     padding: 4px 0;
     border-right: 1px solid #d7dadb;
   }
+  
 
-  #checkbox-all{
-    margin-left: 26px;
-  }
-
+  /*列表框*/
   .cart-tbody{
     border: 2px solid #e6eaeb;
     text-align: center;
@@ -264,7 +274,6 @@ export default {
     align-items: center;
     padding: 20px 0;
   }
-
 
   .cart-tbody_first{
     margin: 0 !important;
@@ -305,6 +314,7 @@ export default {
     color: #aaa;
   }
   
+  /*按钮*/
   .btn{
     border: none;
     color: #535353;

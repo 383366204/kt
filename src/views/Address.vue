@@ -206,6 +206,7 @@ export default {
     width: 1200px;
     margin: 0 auto;
     color: #555;
+    font-size: 14px;
   }
   img{
     width: 100%;
@@ -213,22 +214,24 @@ export default {
   button{
     cursor: pointer;
   }
+  /*标题*/
   .add-title,
   .add-title_bj{
-    font-size: 20px;
+    font-size: 18px;
     color: #555;
     margin-top: 40px;
   }
   .add-title > i{
-    font-size: 22px;
+    font-size: 20px;
     color: #2eb4e9;
     margin-right: 10px;
   }
   .add-title_bj > i{
-    font-size: 28px;
+    font-size: 24px;
     color: #2eb4e9;
     margin-right: 10px;
   }
+  /*新增收货地址*/
   .el-form-item{
     margin-bottom: 20px;
   }
@@ -236,14 +239,13 @@ export default {
     margin-bottom: 0;
     margin-right: 10px;
   }
-
+  /*编辑收货地址*/
   .add-thead,
   .add-tbody{
     text-align: center;
     display: flex;
     align-items: center;
     color: #555555;
-    font-size: 14px;
     padding: 8px 0;
     margin-bottom: 0 !important;
   }
@@ -259,6 +261,7 @@ export default {
   .add-tbody .el-col div{
     padding: 0 8px;
   }
+  /*编辑、删除按钮*/
   .add-btn{
     background-color: #fff;
     border: none;
@@ -268,9 +271,11 @@ export default {
   .add-btn:hover{
     color: #2eb4e9;
   }
+  /*默认地址*/
   .important{
     color: #ff4949;
   }
+  
   .el-row {
     margin-bottom: 20px;
     &:last-child {

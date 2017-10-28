@@ -1,23 +1,37 @@
 <template>
     <main class="main">
-        <el-row type="flex" justify="center" align="middle">
+        <el-row type="flex" justify="center">
             <el-col :span="8">
-                <!-- <img src="../assets/img/loginLogo.png" width="68"> -->
-                <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
-                    <el-form-item label-width="0" prop="userId">
-                        <el-input v-model="loginForm.userId" auto-complete="off" placeholder="手机号/邮箱"></el-input>
-                    </el-form-item>
-                    <el-form-item label-width="0" prop="password">
-                        <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
-                    </el-form-item>
-                    <el-form-item label-width="0">
-                      <el-button type="text">忘记密码</el-button>
-                      <el-button type="text">立即注册</el-button>
-                    </el-form-item>
-                    <el-form-item label-width="0">
-                        <el-button class="submitBtn" @click="submitForm('loginForm')">登录</el-button>
-                    </el-form-item>
-                </el-form>
+              <el-row type="flex" justify="center" class="formZone">
+                <el-col :span="3">
+                  <img src="../assets/img/loginLogo.png" width="68">  
+                </el-col>
+                <el-col :span="15">
+                    <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
+                      <el-form-item label-width="0" prop="userId">
+                          <el-input v-model="loginForm.userId" auto-complete="off" placeholder="手机号/邮箱"></el-input>
+                      </el-form-item>
+                      <el-form-item label-width="0" prop="password">
+                          <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
+                      </el-form-item>
+                      <el-form-item label-width="0">
+                        <el-button type="text">忘记密码</el-button>
+                        <el-button type="text">立即注册</el-button>
+                      </el-form-item>
+                      <el-form-item label-width="0">
+                          <el-button class="submitBtn" @click="submitForm('loginForm')">登录</el-button>
+                      </el-form-item>
+                    </el-form>
+                  </el-col>
+                  <el-col :span="15">
+                    <h1 class="text-center">使用第三方帐号登录</h1>
+                  </el-col>
+                  <el-col :span="15">
+                    <el-button><i class="iconfont icon-qq" style="color:#09a3dc"></i></el-button>
+                    <el-button><i class="iconfont icon-weixin" style="color:#2dce8f"></i></el-button>
+                    <el-button><i class="iconfont icon-weibo" style="color:#ea0c11"></i></el-button>
+                  </el-col>
+              </el-row>
             </el-col>
         </el-row>
     </main>    
@@ -83,17 +97,45 @@ export default {
     .main .el-row{
         flex-basis: 100%;
     }
-
-    .main .el-row .el-col:first-child{
-        display: flex;
+    /* 外阴影 */
+    .main  >.el-row > .el-col:first-child{
         height: 500px;;
         width: 640px;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
     }
-    .main .el-form{
-      width: 384px;
+    /* 表单+logo区域的布局 */
+    .main .el-row.formZone{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      height: 100%;
+    }
+    /* 第三方登录区域布局 */
+    .main .el-row.formZone .el-col:last-child{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    /* 第三方登录字体 */
+    .main .el-row.formZone .el-col:nth-last-child(2) h1{
+      font-size: 14px;
+      color: #c0c0c0;
+    }
+    /* 第三方登录按钮样式 */
+    .main .el-row.formZone .el-col:last-child .el-button{
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      padding: 0;
+    }
+    /* 第三方登录hover样式 */
+    .main .el-row.formZone .el-col:last-child .el-button:hover,:focus{
+       border-color: #C4C4C4;
+    }
+    /* 第三方登录icon */
+    .main .el-row.formZone .el-col:last-child .el-button i{
+      font-size: 46px;
     }
     /* 输入框样式 */
     .main .el-form-item .el-input{

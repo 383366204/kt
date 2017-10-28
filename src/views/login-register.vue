@@ -2,6 +2,7 @@
     <main class="main">
         <el-row type="flex" justify="center" align="middle">
             <el-col :span="8">
+                <!-- <img src="../assets/img/loginLogo.png" width="68"> -->
                 <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
                     <el-form-item label-width="0" prop="userId">
                         <el-input v-model="loginForm.userId" auto-complete="off" placeholder="手机号/邮箱"></el-input>
@@ -89,6 +90,7 @@ export default {
         width: 640px;
         justify-content: center;
         align-items: center;
+        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
     }
     .main .el-form{
       width: 384px;

@@ -16,130 +16,8 @@
               <el-col :span="3"><div>操作</div></el-col>
             </el-row>
 
-            <!-- 列表框 -->
-            <el-row class="cart-tbody">
-              <el-col :span="11"><div>
-                <el-row class="cart-tbody_first">
-                  <el-col :span="3"></el-col>
-                  <el-col :span="5"><div><img src="../assets/img/clothes2.png" alt=""></div></el-col>
-                  <el-col :span="9"><div>冬季男款卫衣</div></el-col>
-                  <el-col :span="7"><div>红色</div></el-col>
-                </el-row>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_second">
-                <p>S</p>
-                <p>M</p>
-                <p>L</p>
-                <p>XL</p>
-                <p>XXL</p>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_third">
-                <p>10</p>
-                <p>5</p>
-                <p>5</p>
-                <p>5</p>
-                <p>5</p>
-              </div></el-col>
-              <el-col :span="2"><div>200元</div></el-col>
-              <el-col :span="2"><div>待付款</div></el-col>
-              <el-col :span="3">
-                <div><button class="btn btn-blue">付款</button></div>
-                <div><button class="btn btn-gray">删除</button></div>
-              </el-col>
-            </el-row>
+            <order-list-floor v-for="(good,index) in goods" :key="index" :good="good"></order-list-floor>
 
-            <!-- 列表框 -->
-            <el-row class="cart-tbody">
-              <el-col :span="11"><div>
-                <el-row class="cart-tbody_first">
-                  <el-col :span="3"></el-col>
-                  <el-col :span="5"><div><img src="../assets/img/poster2.png" alt=""></div></el-col>
-                  <el-col :span="9"><div>记忆协会海报</div></el-col>
-                  <!-- <el-col :span="7"><div>红色</div></el-col> -->
-                </el-row>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_second">
-                <p>65*100cm</p>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_third">
-                <p>10</p>
-              </div></el-col>
-              <el-col :span="2"><div>50元</div></el-col>
-              <el-col :span="2"><div>待制作</div></el-col>
-              <el-col :span="3">
-                <div><button class="btn btn-blue">退换货</button></div>
-                <div><button class="btn btn-gray">提醒制作</button></div>
-              </el-col>
-            </el-row>
-
-            <!-- 列表框 -->
-            <el-row class="cart-tbody">
-              <el-col :span="11"><div>
-                <el-row class="cart-tbody_first">
-                  <el-col :span="3"></el-col>
-                  <el-col :span="5"><div><img src="../assets/img/banner2.jpg" alt=""></div></el-col>
-                  <el-col :span="9"><div>横幅</div></el-col>
-                  <!-- <el-col :span="7"><div>红色</div></el-col> -->
-                </el-row>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_second">
-                <p>5米</p>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_third">
-                <p>10</p>
-              </div></el-col>
-              <el-col :span="2"><div>50元</div></el-col>
-              <el-col :span="2"><div>待发货</div></el-col>
-              <el-col :span="3">
-                <div><button class="btn btn-blue">提醒发货</button></div>
-              </el-col>
-            </el-row>
-
-            <!-- 列表框 -->
-            <el-row class="cart-tbody">
-              <el-col :span="11"><div>
-                <el-row class="cart-tbody_first">
-                  <el-col :span="3"></el-col>
-                  <el-col :span="5"><div><img src="../assets/img/banner2.jpg" alt=""></div></el-col>
-                  <el-col :span="9"><div>横幅</div></el-col>
-                  <!-- <el-col :span="7"><div>红色</div></el-col> -->
-                </el-row>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_second">
-                <p>5米</p>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_third">
-                <p>10</p>
-              </div></el-col>
-              <el-col :span="2"><div>50元</div></el-col>
-              <el-col :span="2"><div>待收货</div></el-col>
-              <el-col :span="3">
-                <div><button class="btn btn-blue">查看物流</button></div>
-              </el-col>
-            </el-row>
-
-            <!-- 列表框 -->
-            <el-row class="cart-tbody">
-              <el-col :span="11"><div>
-                <el-row class="cart-tbody_first">
-                  <el-col :span="3"></el-col>
-                  <el-col :span="5"><div><img src="../assets/img/banner2.jpg" alt=""></div></el-col>
-                  <el-col :span="9"><div>横幅</div></el-col>
-                  <!-- <el-col :span="7"><div>红色</div></el-col> -->
-                </el-row>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_second">
-                <p>5米</p>
-              </div></el-col>
-              <el-col :span="3"><div class="cart-tbody_third">
-                <p>10</p>
-              </div></el-col>
-              <el-col :span="2"><div>50元</div></el-col>
-              <el-col :span="2"><div>已完成</div></el-col>
-              <el-col :span="3">
-                <div></div>
-              </el-col>
-            </el-row>
             <!-- 分页 -->
             <el-pagination
               layout="prev, pager, next"
@@ -163,13 +41,60 @@
 </template>
 
 <script>
+import OrderListFloor from '@/components/orderListFloor';
 export default {
   name: 'cart',
   data () {
     return {
       listItems: ['buy food', 'play games', 'sleep'],
       num1: 1,
-      activeName: 'first'
+      activeName: 'first',
+      goods:[{
+        type:1,
+        status:1,
+        name:'冬季男款卫衣',
+        description:'红色',
+        src:'../../static/clothes2.png',
+        size:['S','M','L','XL','XXl'],
+        num:[10,5,5,5,5],
+        price:200
+      },{
+        type:2,
+        status:2,
+        name:'记忆协会海报',
+        description:'',
+        src:'../../static/poster2.png',
+        size:['65*100cm'],
+        num:[10],
+        price:50
+      },{
+        type:3,
+        status:3,
+        name:'横幅',
+        description:'',
+        src:'../../static/banner2.jpg',
+        size:['5m'],
+        num:[10],
+        price:50
+      },{
+        type:3,
+        status:4,
+        name:'横幅',
+        description:'',
+        src:'../../static/banner2.jpg',
+        size:['5m'],
+        num:[10],
+        price:50
+      },{
+        type:3,
+        status:5,
+        name:'横幅',
+        description:'',
+        src:'../../static/banner2.jpg',
+        size:['5m'],
+        num:[10],
+        price:50
+      }]
     }
   },
   methods: {
@@ -179,7 +104,8 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     }
-  }
+  },
+  components:{OrderListFloor}
 }
 </script>
 <style>
@@ -242,7 +168,6 @@ export default {
     cursor: pointer;
   }
 
-
   /*标题*/
   .cart-title{
     font-size: 20px;
@@ -255,7 +180,6 @@ export default {
     margin-right: 10px;
   }
 
-
   /*头部*/
   .cart-thead div{
     background-color: #e6eaeb;
@@ -264,77 +188,7 @@ export default {
     padding: 4px 0;
     border-right: 1px solid #d7dadb;
   }
-  
-
-  /*列表框*/
-  .cart-tbody{
-    border: 2px solid #e6eaeb;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    padding: 20px 0;
-  }
-
-  .cart-tbody_first{
-    margin: 0 !important;
-    padding: 20px 0;
-    display: flex;
-    align-items: center;
-  }
-  .cart-tbody_first .el-col:nth-of-type(2){
-    border: 1px dotted #c2c2c2;
-    padding: 4px;
-  }
-  .cart-tbody_first .el-col:nth-of-type(4){
-    color: #aaa;
-  }
-  
-  .cart-tbody_second > p,
-  .cart-tbody_third > p{
-    height: 30px;
-    line-height: 30px;
-    margin-bottom: 8px;
-  }
-  .cart-tbody_second > p:last-of-type,
-  .cart-tbody_third > p:last-of-type{
-    margin-bottom: 0;
-  }
-
-  .cart-tbody_third > .el-input-number{
-    margin-bottom: 8px;
-  }
-  .cart-tbody_third > .el-input-number:last-of-type{
-    margin-bottom: 0;
-  }
-
-  .cart-tbody > .el-col:nth-of-type(4){
-    color: #ff0000;
-  }
-  .cart-tbody > .el-col:nth-of-type(5){
-    color: #aaa;
-  }
-  
-  /*按钮*/
-  .btn{
-    border: none;
-    color: #535353;
-    padding: 4px 0;
-    width: 70px;
-    border-radius: 2px;
-  }
-  .btn-blue{
-    background-color: #00b7ff;
-    color: #fff;
-  }
-  .btn-gray{
-    background-color: #e6eaeb;
-    margin-top: 10px;
-  }
-
   .el-row {
     margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 </style>

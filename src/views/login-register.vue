@@ -37,7 +37,7 @@
                     <el-col :span="15">
                       <el-form :model="registerForm" :rules="registerRules" ref="registerForm">
                         <el-form-item label-width="0" prop="userId">
-                            <el-input v-model="loginForm.userId" autofocus="autofocus" auto-complete="off" placeholder="手机号/邮箱"></el-input>
+                            <el-input v-model="registerForm.userId" autofocus="autofocus" auto-complete="off" placeholder="手机号/邮箱"></el-input>
                         </el-form-item>
                         <el-form-item label-width="0" prop="password">
                             <el-input type="password" v-model="registerForm.password" auto-complete="off" placeholder="密码"></el-input>
@@ -99,7 +99,8 @@ export default {
             { validator: phoneOrEmail, trigger: 'blur' }
           ],
           password: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           ]
         },
         registerForm: {
@@ -114,7 +115,11 @@ export default {
             { validator: phoneOrEmail, trigger: 'blur' }
           ],
           password: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          ],
+          verification:[
+            { required: true,len: 6 ,message: '请输入6位数字的验证码', trigger: 'blur' },
           ]
         },
         gettingVerification:false

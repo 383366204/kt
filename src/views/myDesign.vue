@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="center">
       <el-col :span="3" class="nav">
-      <el-menu default-active="0" @open="handleOpen" @close="handleClose">
+        <el-menu default-active="0" @open="handleOpen" @close="handleClose">
           <el-submenu index="Folder">
             <template slot="title"><i class="el-icon-document"></i>文件夹</template>
             <el-menu-item-group>
@@ -158,11 +158,11 @@
       padding-top: 50px;
     }
      /* 左边宽度 */
-    .nav .el-row .el-col:first-child{
+    .nav.el-col{
         flex-basis: 222px;
     }
     /* 右边宽度 */
-   .el-row .el-col:nth-child(2){
+   .el-row > .el-col:nth-child(2){
         flex-basis: 980px;
     }
 

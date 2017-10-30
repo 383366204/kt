@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 const state = {
-    isIndex: false, //判断是否在首页
+    isIndex: true, //判断是否在首页
     isLogin: false //判断是否有登录
 }
 
@@ -21,11 +21,17 @@ const actions = {
 }
 
 const mutations = {
-    setIsIndex(state) {
-        state.index = true;
+    setIndexTrue(state) {
+        state.isIndex = true;
     },
-    setIsLogin(state) {
-        state.login = true;
+    setIndexFalse(state) {
+        state.isIndex = false;
+    },
+    login(state) {
+        state.isLogin = true;
+    },
+    logout(state) {
+        state.isLogin = false;
     }
 }
 

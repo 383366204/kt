@@ -256,10 +256,6 @@ export default {
       color: #FFF;
       border: none;
    }
-    /* 提交按钮hover样式 */
-    .main .submitBtn:hover{
-      border:1px solid #c1c1c1;
-    }
     /* 注册区域布局 */
     .register{
       width: 100%;

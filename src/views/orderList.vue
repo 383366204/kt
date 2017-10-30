@@ -16,7 +16,7 @@
               <el-col :span="3"><div>操作</div></el-col>
             </el-row>
 
-            <order-list-floor v-for="(good,index) in goods" :key="index" :good="good"></order-list-floor>
+            <good-floor v-for="(good,index) in goods" :key="index" :good="good"></good-floor>
 
             <!-- 分页 -->
             <el-pagination
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import OrderListFloor from '@/components/orderListFloor';
+import goodFloor from '@/components/goodFloor';
 export default {
   name: 'cart',
   data () {
@@ -50,6 +50,7 @@ export default {
       num1: 1,
       activeName: 'first',
       goods:[{
+        page:3,
         type:1,
         status:1,
         name:'冬季男款卫衣',
@@ -59,6 +60,7 @@ export default {
         num:[10,5,5,5,5],
         price:200
       },{
+        page:3,
         type:2,
         status:2,
         name:'记忆协会海报',
@@ -68,6 +70,7 @@ export default {
         num:[10],
         price:50
       },{
+        page:3,
         type:3,
         status:3,
         name:'横幅',
@@ -77,6 +80,7 @@ export default {
         num:[10],
         price:50
       },{
+        page:3,
         type:3,
         status:4,
         name:'横幅',
@@ -86,6 +90,7 @@ export default {
         num:[10],
         price:50
       },{
+        page:3,
         type:3,
         status:5,
         name:'横幅',
@@ -105,7 +110,7 @@ export default {
       console.log(tab, event);
     }
   },
-  components:{OrderListFloor}
+  components:{goodFloor}
 }
 </script>
 <style>

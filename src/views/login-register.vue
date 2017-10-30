@@ -37,7 +37,7 @@
                     <el-col :span="15">
                       <el-form :model="registerForm" :rules="registerRules" ref="registerForm">
                         <el-form-item label-width="0" prop="userId">
-                            <el-input v-model="registerForm.userId" autofocus="autofocus" auto-complete="off" placeholder="手机号/邮箱"></el-input>
+                            <el-input v-model="registerForm.userId" auto-complete="off" placeholder="手机号/邮箱"></el-input>
                         </el-form-item>
                         <el-form-item label-width="0" prop="password">
                             <el-input type="password" v-model="registerForm.password" auto-complete="off" placeholder="密码"></el-input>
@@ -55,7 +55,7 @@
                           </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label-width="0">
-                          <el-button class="submitBtn" @click="submitForm('registerForm')">登录</el-button>
+                          <el-button class="submitBtn" @click="submitForm('registerForm')">注册</el-button>
                       </el-form-item>
                       <el-col>
                         <el-button type="text" @click="changeForm()">已有帐号，点此登录</el-button>

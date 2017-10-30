@@ -1,10 +1,12 @@
 <template>
     <!-- 列表框 -->
     <el-row class="cart-tbody">
-
         <el-col :span="11">
             <el-row class="cart-tbody_first">
-                <el-col :span="3"></el-col>
+                 <!-- 購物車或者訂單列表會出現checkbox -->
+                <el-col :span="3" v-if="good.page==1"><input type="checkbox"></el-col>
+                <!-- 訂單消息頁沒有checkbox -->
+                <el-col :span="3" v-else-if="good.page==2||good.page==3"></el-col>
                 <el-col :span="5"><div><img :src="good.src"></div></el-col>
                 <el-col :span="9"><div>{{good.name}}</div></el-col>
                 <el-col :span="7" v-if="good.type==1"><div>{{good.description}}</div></el-col>
@@ -23,29 +25,37 @@
             </div>
         </el-col>
 
-        <el-col :span="2"><div>{{good.price}}</div></el-col>
-        <el-col :span="2"><div>{{getStatus(good.status)}}</div></el-col>
 
-        <el-col :span="3" v-if="good.status==1">
+        <!-- page = 2代表是在訂單 -->
+        <el-col :span="2" v-if="good.page==2" class="colorRed"><div>{{good.price}}</div></el-col>
+        <el-col :span="2" v-if="good.page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
+        <el-col :span="3" v-if="good.page==2">
+          <div><button class="cart-remove">删除</button></div>
+        </el-col>
+
+        <!-- page = 3代表是在訂單列表 -->
+        <el-col :span="2" v-if="good.page==3" class="colorRed"><div>{{getSum(good)}}</div></el-col>
+        <el-col :span="2" v-if="good.page==3" class="colorGray"><div>{{getStatus(good.status)}}</div></el-col>
+        <el-col :span="3" v-if="good.page==3 && good.status==1">
             <div><button class="btn btn-blue">付款</button></div>
             <div><button class="btn btn-gray">删除</button></div>
         </el-col>
 
-        <el-col :span="3" v-if="good.status==2">
+        <el-col :span="3" v-else-if="good.page==3 && good.status==2">
             <div><button class="btn btn-blue">退换货</button></div>
             <div><button class="btn btn-gray">提醒制作</button></div>
         </el-col>
 
-        <el-col :span="3" v-if="good.status==3">
+        <el-col :span="3" v-else-if="good.page==3 && good.status==3">
             <div><button class="btn btn-blue">提醒发货</button></div>
         </el-col>
 
-        <el-col :span="3" v-if="good.status==4">
+        <el-col :span="3" v-else-if="good.page==3 && good.status==4">
             <div><button class="btn btn-blue">查看物流</button></div>
         </el-col>
 
-        <el-col :span="3" v-if="good.status==5">
-            <div></div>
+        <el-col :span="3" v-else-if="good.page==3 && good.status==5">
+            <div><button class="btn btn-gray" style="margin-top:0">删除</button></div>
         </el-col>
 
     </el-row>
@@ -56,6 +66,7 @@ export default {
   data () {
     return {
         status:['','待付款','待制作','待发货','待收货','已完成'],
+        // page代表頁面 1：購物車 2：訂單 3：訂單列表
         // type代表商品种类 1：服装 2:海报 3:横幅
         // status代表商品状态 1:待付款 2:待制作 3:待发货 4:待收货 5:已完成
         // name代表商品名称
@@ -71,6 +82,7 @@ export default {
           type:Object,
           default:function(){
               return {
+                page:3,
                 type:1,
                 status:1,
                 name:'冬季男款卫衣',
@@ -83,10 +95,20 @@ export default {
           }
       }
   },
+  computed:{
+    
+  },
   methods: {
-        getStatus: function(status) {
+      getStatus: function(status) {
         return this.status[status];
+      },
+      getSum(good){
+      let numSum=0;
+      for (let i = 0; i < good.num.length; i++) {
+         numSum += good.num[i];
       }
+      return numSum*good.price;
+    }
   }
 }
 </script>
@@ -139,16 +161,20 @@ export default {
     margin-bottom: 8px;
   }
   .cart-tbody_third > .el-input-number:last-of-type{
-    margin-bottom: 0;
+    margin-bottom: 0px;
   }
 
   .cart-tbody > .el-col:nth-of-type(4){
     color: #ff0000;
   }
-  .cart-tbody > .el-col:nth-of-type(5){
+ 
+  .colorGray{
     color: #aaa;
   }
-  
+  .colorRed{
+    color: #ff0000;
+  }
+
   /*按钮*/
   .btn{
     border: none;
@@ -168,5 +194,13 @@ export default {
 
   .el-row {
     margin-bottom: 20px;
+  }
+  /*删除按钮*/
+  .cart-remove{
+    background-color: #e6eaeb;
+    border: none;
+    color: #535353;
+    padding: 4px 20px;
+    border-radius: 4px;
   }
 </style>

@@ -19,17 +19,23 @@
             </div>
         </el-col>
 
-        <el-col :span="3">
+        <el-col :span="3" v-if="good.page==1">
+          <div class="cart-tbody_third">
+            <el-input-number v-for="(num,index) in good.num" :key="index" v-model="good.num[index]" @change="handleChange" :min="1" :max="99" size="small"></el-input-number>
+          </div>
+        </el-col>
+
+        <el-col :span="3" v-else>
             <div class="cart-tbody_third">
                 <p v-for="(num,index) in good.num" :key="num">{{num}}</p>
             </div>
         </el-col>
 
 
-        <!-- page = 2代表是在訂單 -->
-        <el-col :span="2" v-if="good.page==2" class="colorRed"><div>{{good.price}}</div></el-col>
-        <el-col :span="2" v-if="good.page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
-        <el-col :span="3" v-if="good.page==2">
+        <!-- page =1 或 2代表是在購物車或者訂單 -->
+        <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{good.price}}</div></el-col>
+        <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
+        <el-col :span="3" v-if="good.page==1||good.page==2">
           <div><button class="cart-remove">删除</button></div>
         </el-col>
 

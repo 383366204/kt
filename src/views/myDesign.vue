@@ -22,10 +22,12 @@
                   <el-button>编辑</el-button>
                   <el-button @click="delComfirm(design.id)">删除</el-button>
                   <el-button @click="move(design.id)">移动</el-button>
-                </div>      
-                <img :src="design.src" width="192">                
+                </div>
+                <div class="img">
+                  <img :src="design.src"> 
+                </div>                              
                 <div style="padding: 4px; color:#6c6c6c">
-                  <span>{{design.description}}123</span>             
+                  <span>{{design.description}}</span>             
                 </div>  
               </el-card>
             </el-col>
@@ -65,7 +67,7 @@
           {folderId :'3',name:'横幅'}
         ],
         designs:[
-          {id:'1',src:'../../static/poster.png',description:'十佳歌手海报',folder:'0'},
+          {id:'1',src:'../../static/banner2.jpg',description:'英语演讲比赛横幅',folder:'0'},
           {id:'168',src:'../../static/poster.png',description:'十佳歌手海报',folder:'1'},
           {id:'45',src:'../../static/poster.png',description:'十佳歌手海报',folder:'1'},
           {id:'99',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
@@ -210,10 +212,21 @@
     font-size: 16px;
     visibility: hidden;
   }
+    /* img */
+  .content .el-card .img{
+    width: 192px;
+    height: 266px;
+    display: flex;
+    align-items: center;
+  }
+  .content .el-card .img img{
+    width: 100%;
+  }
   /* hover效果 */
   .content .el-card:hover{
     opacity: 0.7;
   }
+  
   /* hover显示按钮 */
   .content .el-card:hover .operation .el-button{
     visibility: visible;

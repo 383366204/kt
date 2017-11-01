@@ -6,6 +6,9 @@ import Cart from '@/views/cart'
 import Address from '@/views/Address'
 import orderList from '@/views/orderList'
 import order from '@/views/order'
+import detailPost from '@/views/detailPost'
+import detailClothes from '@/views/detailClothes'
+
 
 Vue.use(Router)
 
@@ -39,6 +42,16 @@ export default new Router({
             path: '/order',
             name: 'order',
             component: order
+        },
+        {
+            path: '/detailPost',
+            name: 'detailPost',
+            component: detailPost
+        },
+        {
+            path: '/detailClothes',
+            name: 'detailClothes',
+            component: detailClothes
         }
     ]
 })

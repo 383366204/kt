@@ -203,6 +203,7 @@ export default {
     width: 20%;
     padding: 10px;
     margin-bottom: 20px;
+    cursor:pointer;
   }
 
 

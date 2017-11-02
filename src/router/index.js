@@ -8,7 +8,8 @@ import orderList from '@/views/orderList'
 import order from '@/views/order'
 import detailPost from '@/views/detailPost'
 import detailClothes from '@/views/detailClothes'
-
+import searchPost from '@/views/searchPost'
+import searchClothes from '@/views/searchClothes'
 
 Vue.use(Router)
 
@@ -52,6 +53,16 @@ export default new Router({
             path: '/detailClothes',
             name: 'detailClothes',
             component: detailClothes
+        },
+        {
+            path: '/searchPost',
+            name: 'searchPost',
+            component: searchPost
+        },
+        {
+            path: '/searchClothes',
+            name: 'searchClothes',
+            component: searchClothes
         }
     ]
 })

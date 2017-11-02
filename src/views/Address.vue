@@ -76,7 +76,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="phone">
-                  <el-input v-model="ruleForm.phone" size="small"></el-input>
+                  <el-input v-model="ruleForm.phone" size="small" placeholder="请输入您的手机号码"></el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
@@ -174,7 +174,7 @@ export default {
             { max: 25, message: '长度不超过25个字符', trigger: 'blur' }
           ],
           phone_local: [
-            { required: true, trigger: 'change' }
+            { required: true, trigger: 'change',message:'请选择手机地区' }
           ],
           phone: [
             { required: true, message: '请输入您的手机号码', trigger: 'blur' },

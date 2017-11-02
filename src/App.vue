@@ -18,7 +18,7 @@ export default {
   name: 'app',
   data() {
     return{
-      isIndex : true
+
     }
   },
   components: {
@@ -28,18 +28,17 @@ export default {
   },
   methods:{
     judgeIndex(){
-      console.log(this.$route.path);
       if(this.$route.path!="/"){
-        this.isIndex = false;
+        this.$store.commit('setIndexFalse');
       }
       else{
-        this.isIndex = true;
+        this.$store.commit('setIndexTrue');
       }
     }
   },
   computed:{
     getIndex(){
-      return this.isIndex;
+      return this.$store.state.isIndex;
     }
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
     <header class="header">          
          <el-row type="flex" justify="center">
-          <el-col :span="10">
+          <el-col :span="10" :class="{'bottom-border':getIndex}">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
              <router-link to="NewDesign"><el-button type="text">新建设计</el-button></router-link>
              <router-link to="MyDesign"><el-button type="text">我的设计</el-button></router-link>
@@ -9,27 +9,27 @@
              <router-link to="Download"><el-button type="text">APP下载</el-button></router-link>
              <router-link to="CustomDesign"><el-button type="text">定制设计</el-button></router-link>
           </el-col>
-          <el-col :span="4">      
+          <el-col :span="4" :class="{'bottom-border':getIndex}">      
               <router-link to="/Service">             
               <el-button type="text" class="hasIcon">
                <i class="iconfont icon-duihuakuang"></i>
                 在线客服
                 </el-button>
               </router-link>
-              <router-link to="/Message" class="message" v-if="!this.$store.state.isLogin">                 
+              <router-link to="/Message" class="message" v-if="getLogin">                 
                   <el-button type="text" class="hasIcon">
                     <i class="iconfont icon-xinfeng" style="font-size:18px;"></i>
                   你的通知
                   </el-button>
               </router-link>
-              <div class="headPic" v-if="!this.$store.state.isLogin">
+              <div class="headPic" v-if="getLogin">
                 <el-badge :value="100" :max="99">
                    <el-button size="small"><img src="../assets/img/head-pic.png" width="52"></el-button>
                 </el-badge>
                 <h1>团小图</h1>
                 <h2>超级会员</h2>
               </div>        
-              <router-link to="/Login" v-if="this.$store.state.isLogin"><el-button type="text">登录/注册</el-button></router-link>
+              <router-link to="/Login" v-else><el-button type="text">登录/注册</el-button></router-link>
           </el-col>
         </el-row>
     </header>
@@ -41,6 +41,14 @@
       return {
         
       };
+    },
+    computed:{
+      getIndex(){
+        return this.$store.state.isIndex;
+      },
+      getLogin(){
+        return this.$store.state.isLogin;
+      }
     }
   }
 </script>
@@ -54,9 +62,11 @@
       display: flex;
       flex-basis: 850px;
       align-items: center;
+    }
+    .bottom-border{
       border-bottom: 1px solid #aaaaaa;
     }
-    /* 左边Log的布局 */
+    /* 左边Logo的布局 */
     .header .el-row .el-col:first-child img{
       margin-right: 30px;
     }

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/views/Index'
 import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
+<<<<<<< HEAD
 import Address from '@/views/Address'
 import orderList from '@/views/orderList'
 import order from '@/views/order'
@@ -11,6 +12,13 @@ import detailClothes from '@/views/detailClothes'
 import searchPost from '@/views/searchPost'
 import searchClothes from '@/views/searchClothes'
 
+=======
+import LoginRegister from '@/views/login-register'
+import Address from '@/views/address'
+import OrderList from '@/views/orderList'
+import Order from '@/views/order'
+import CustomDesign from '@/views/customDesign'
+>>>>>>> cd66ae6eb881bb2c5dccb2ce5ae1b742e3d7ef81
 Vue.use(Router)
 
 export default new Router({
@@ -30,16 +38,22 @@ export default new Router({
             component: Cart
         },
         {
+            path: '/Login',
+            name: 'LoginRegister',
+            component: LoginRegister
+        },
+        {
             path: '/Address',
             name: 'Address',
             component: Address
         },
         {
-            path: '/orderList',
-            name: 'orderList',
-            component: orderList
+            path: '/OrderList',
+            name: 'OrderList',
+            component: OrderList
         },
         {
+<<<<<<< HEAD
             path: '/order',
             name: 'order',
             component: order
@@ -63,6 +77,15 @@ export default new Router({
             path: '/searchClothes',
             name: 'searchClothes',
             component: searchClothes
+=======
+            path: '/Order',
+            name: 'Order',
+            component: Order
+        }, {
+            path: '/CustomDesign',
+            name: 'CustomDesign',
+            component: CustomDesign
+>>>>>>> cd66ae6eb881bb2c5dccb2ce5ae1b742e3d7ef81
         }
     ]
 })

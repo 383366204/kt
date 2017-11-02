@@ -22,7 +22,7 @@
             </el-col>
             <el-col :span="3">
               <div class="carousel-bottom-content bg-gray">
-                <i class="iconfont icon-chuandan"></i>
+                <i class="iconfont icon-page"></i>
               </div>
               <div class="carousel-bottom-introduce">
                 <h1>横幅制作</h1>

@@ -7,6 +7,7 @@ import LoginRegister from '@/views/login-register'
 import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
+import CustomDesign from '@/views/customDesign'
 Vue.use(Router)
 
 export default new Router({
@@ -44,6 +45,10 @@ export default new Router({
             path: '/Order',
             name: 'Order',
             component: Order
+        }, {
+            path: '/CustomDesign',
+            name: 'CustomDesign',
+            component: CustomDesign
         }
     ]
 })

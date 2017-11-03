@@ -237,7 +237,7 @@
   }
   /* 最后一个添加的样式 */
   .addCard{
-    border: 2px dashed;
+    border: 1px dashed;
     cursor: pointer;
   }
 </style>

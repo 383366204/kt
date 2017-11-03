@@ -3,22 +3,17 @@ import Router from 'vue-router'
 import Index from '@/views/Index'
 import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
-<<<<<<< HEAD
-import Address from '@/views/Address'
-import orderList from '@/views/orderList'
-import order from '@/views/order'
-import detailPost from '@/views/detailPost'
-import detailClothes from '@/views/detailClothes'
-import searchPost from '@/views/searchPost'
-import searchClothes from '@/views/searchClothes'
 
-=======
+import DetailPost from '@/views/detailPost'
+import DetailClothes from '@/views/detailClothes'
+import SearchPost from '@/views/searchPost'
+import SearchClothes from '@/views/searchClothes'
+
 import LoginRegister from '@/views/login-register'
 import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
 import CustomDesign from '@/views/customDesign'
->>>>>>> cd66ae6eb881bb2c5dccb2ce5ae1b742e3d7ef81
 Vue.use(Router)
 
 export default new Router({
@@ -53,39 +48,34 @@ export default new Router({
             component: OrderList
         },
         {
-<<<<<<< HEAD
-            path: '/order',
-            name: 'order',
-            component: order
-        },
-        {
-            path: '/detailPost',
-            name: 'detailPost',
-            component: detailPost
-        },
-        {
-            path: '/detailClothes',
-            name: 'detailClothes',
-            component: detailClothes
-        },
-        {
-            path: '/searchPost',
-            name: 'searchPost',
-            component: searchPost
-        },
-        {
-            path: '/searchClothes',
-            name: 'searchClothes',
-            component: searchClothes
-=======
             path: '/Order',
             name: 'Order',
             component: Order
-        }, {
+        },
+        {
+            path: '/DetailPost',
+            name: 'DetailPost',
+            component: DetailPost
+        },
+        {
+            path: '/DetailClothes',
+            name: 'DetailClothes',
+            component: DetailClothes
+        },
+        {
+            path: '/SearchPost',
+            name: 'SearchPost',
+            component: SearchPost
+        },
+        {
+            path: '/SearchClothes',
+            name: 'SearchClothes',
+            component: SearchClothes
+        },
+        {
             path: '/CustomDesign',
             name: 'CustomDesign',
             component: CustomDesign
->>>>>>> cd66ae6eb881bb2c5dccb2ce5ae1b742e3d7ef81
         }
     ]
 })

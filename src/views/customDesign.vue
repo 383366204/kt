@@ -63,9 +63,6 @@
                     </el-form-item>
                 </el-form>
             </el-col>
-            <!-- <el-col>
-                
-            </el-col> -->
         </el-row>
     </main>
 </template>
@@ -126,7 +123,7 @@
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                alert('submit!');
+                this.$router.push({path:'/CustomDesignSubmit'})
             } else {
                 console.log('error submit!!');
                 return false;
@@ -297,31 +294,34 @@
         background-color: #2eb4e9;
         color:#FFF;
     }
-    /* 联系方式 */
+    
+    /* 备注 */
+    .main .other {
+        display: flex;
+    }
+    .main .other .textarea{
+        width: 762px;        
+    }
     .main .information{
         width: 810px;
     }
-    /* 备注 */
-    .other {
-        display: flex;
-    }
-    .other .textarea{
-        width: 762px;        
-    }
     /* 联系方式 */
-    .information .el-form .el-form-item{
+    .main .information{
+        margin-bottom: 120px;
+    }
+    .main .information .el-form .el-form-item{
         width: 48%;
     }
-    .information .el-form .el-form-item .el-input{
+    .main .information .el-form .el-form-item .el-input{
         width: 308px;
     }
-    .information .el-form .el-form-item:last-child{
+    .main .information .el-form .el-form-item:last-child{
         display: flex;
         justify-content: center;
         width: 100%;
         margin-top: 54px;
     }
-    .information .el-form .el-form-item:last-child .el-button{
+    .main .information .el-form .el-form-item:last-child .el-button{
         width: 238px;
         height: 50px;
         background-color: #2eb4e9;

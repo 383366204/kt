@@ -14,6 +14,8 @@ import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
 import CustomDesign from '@/views/customDesign'
+
+import CustomDesignSubmit from '@/views/customDesignSubmit'
 Vue.use(Router)
 
 export default new Router({
@@ -76,6 +78,11 @@ export default new Router({
             path: '/CustomDesign',
             name: 'CustomDesign',
             component: CustomDesign
+        },
+        {
+            path: '/CustomDesignSubmit',
+            name: 'CustomDesignSubmit',
+            component: CustomDesignSubmit
         }
     ]
 })

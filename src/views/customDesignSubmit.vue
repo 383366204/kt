@@ -25,7 +25,7 @@
 <style scoped>
 /* 主布局 */
    .main{
-       height: 526px;
+       height: 655px;
        background-color: #fff;
        display: flex;
        justify-content: center;

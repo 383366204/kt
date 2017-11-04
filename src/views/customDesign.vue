@@ -289,6 +289,12 @@
         cursor: pointer;
     }
 
+    /* 选项hover后的样式 */
+    .main .circle:hover{
+        background-color: #2eb4e9;
+        color:#FFF;
+    }
+    
     /* 选项激活后的样式 */
     .main .circle.active{
         background-color: #2eb4e9;

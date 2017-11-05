@@ -8,12 +8,14 @@ import DetailPost from '@/views/detailPost'
 import DetailClothes from '@/views/detailClothes'
 import SearchPost from '@/views/searchPost'
 import SearchClothes from '@/views/searchClothes'
+import DesignOverview from '@/views/designOverview'
 
 import LoginRegister from '@/views/login-register'
 import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
 import CustomDesign from '@/views/customDesign'
+
 
 import CustomDesignSubmit from '@/views/customDesignSubmit'
 Vue.use(Router)
@@ -73,6 +75,11 @@ export default new Router({
             path: '/SearchClothes',
             name: 'SearchClothes',
             component: SearchClothes
+        },
+        {
+            path: '/DesignOverview',
+            name: 'DesignOverview',
+            component: DesignOverview
         },
         {
             path: '/CustomDesign',

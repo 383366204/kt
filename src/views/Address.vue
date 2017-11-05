@@ -9,50 +9,50 @@
 
         <el-row>
           <el-col :span="20" :offset="1">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form :model="addressForm" :rules="rules" ref="addressForm" label-width="100px">
             <el-form-item label="所在地址" :gutter="20" required>
               <el-col :span="4">
-                <el-form-item prop="add_1">
-                    <el-select v-model="ruleForm.add_1.add1[0]" placeholder="省份" size="small">
-                      <el-option :label="ruleForm.add_1.add1[0]" value="shanghai"></el-option>
-                      <el-option :label="ruleForm.add_1.add1[0]" value="beijing"></el-option>
+                <el-form-item prop="region.province">
+                    <el-select v-model="addressForm.region.province[0]" placeholder="省份" size="small">
+                      <el-option :label="addressForm.region.province[0]" value="shanghai"></el-option>
+                      <el-option :label="addressForm.region.province[0]" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-form-item prop="add_1">
-                    <el-select v-model="ruleForm.add_1.add2[0]" placeholder="城市" size="small">
-                      <el-option :label="ruleForm.add_1.add2[0]" value="shanghai"></el-option>
-                      <el-option :label="ruleForm.add_1.add2[0]" value="beijing"></el-option>
+                <el-form-item prop="region">
+                    <el-select v-model="addressForm.region.city[0]" placeholder="城市" size="small">
+                      <el-option :label="addressForm.region.city[0]" value="shanghai"></el-option>
+                      <el-option :label="addressForm.region.city[0]" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-form-item prop="add_1">
-                    <el-select v-model="ruleForm.add_1.add3[0]" placeholder="县区" size="small">
-                      <el-option :label="ruleForm.add_1.add3[0]" value="shanghai"></el-option>
-                      <el-option :label="ruleForm.add_1.add3[0]" value="beijing"></el-option>
+                <el-form-item prop="region">
+                    <el-select v-model="addressForm.region.district[0]" placeholder="县区" size="small">
+                      <el-option :label="addressForm.region.district[0]" value="shanghai"></el-option>
+                      <el-option :label="addressForm.region.district[0]" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-form-item prop="add_1">
-                    <el-select v-model="ruleForm.add_1.add4[0]" placeholder="街道" size="small">
-                      <el-option :label="ruleForm.add_1.add4[0]" value="shanghai"></el-option>
-                      <el-option :label="ruleForm.add_1.add4[0]" value="beijing"></el-option>
+                <el-form-item prop="region">
+                    <el-select v-model="addressForm.region.town[0]" placeholder="街道" size="small">
+                      <el-option :label="addressForm.region.town[0]" value="shanghai"></el-option>
+                      <el-option :label="addressForm.region.town[0]" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
             </el-form-item>
 
             <el-form-item label="详细地址" prop="add_2">
-              <el-input v-model="ruleForm.add_2" placeholder="例如：街道名称、门牌号码" size="small"></el-input>
+              <el-input v-model="addressForm.detail" placeholder="例如：街道名称、门牌号码" size="small"></el-input>
             </el-form-item>
 
             <el-form-item label="邮政编码">
               <el-col :span="8">
                 <el-form-item prop="postcode">
-                  <el-input v-model="ruleForm.postcode" placeholder="如果不清楚，可不填。" size="small"></el-input>
+                  <el-input v-model="addressForm.postcode" placeholder="如果不清楚，可不填。" size="small"></el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
@@ -60,32 +60,32 @@
             <el-form-item label="收货人姓名" required>
               <el-col :span="8">
                 <el-form-item prop="name">
-                  <el-input v-model="ruleForm.name" placeholder="长度不超过25个字符" size="small"></el-input>
+                  <el-input v-model="addressForm.name" placeholder="长度不超过25个字符" size="small"></el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
 
             <el-form-item label="手机号码" required>
-              <el-col :span="3">
+              <!-- <el-col :span="3">
                 <el-form-item prop="phone_local">
-                    <el-select v-model="ruleForm.phone_local" placeholder="中国" size="small">
+                    <el-select v-model="addressForm.phone_local" placeholder="中国" size="small">
                       <el-option label="区域一" value="shanghai"></el-option>
                       <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
               <el-col :span="8">
                 <el-form-item prop="phone">
-                  <el-input v-model="ruleForm.phone" size="small" placeholder="请输入您的手机号码"></el-input>
+                  <el-input v-model="addressForm.phone" size="small" placeholder="请输入您的手机号码"></el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
             
             <el-form-item required>
-              <input type="checkbox">设置为默认地址
+              <el-checkbox v-model="setDefault">设置为默认地址</el-checkbox>
             </el-form-item>
             <el-form-item>
-              <el-button type="danger" @click="submitForm('ruleForm')">保存</el-button>
+              <el-button type="danger" @click="submitForm('addressForm')">保存</el-button>
             </el-form-item>
 
           </el-form>
@@ -113,28 +113,17 @@
           </el-col>
 
           <el-col :span="22" :offset="1">
-          <el-row class="add-tbody">
-            <el-col :span="3"><div>团小图</div></el-col>
-            <el-col :span="5"><div>福建省福州市闽侯县上街镇</div></el-col>
-            <el-col :span="6"><div>乌龙江街道高新小区 27号楼2单元101室</div></el-col>
-            <el-col :span="2"><div>351000</div></el-col>
-            <el-col :span="3"><div>15211110000</div></el-col>
+          <el-row class="add-tbody" v-for="(address,index) in addresses" :key="index">
+            <el-col :span="3"><div>{{address.name}}</div></el-col>
+            <el-col :span="5"><div>{{address.region}}</div></el-col>
+            <el-col :span="6"><div>{{address.detail}}</div></el-col>
+            <el-col :span="2"><div>{{address.zipCode}}</div></el-col>
+            <el-col :span="3"><div>{{address.phone}}</div></el-col>
             <el-col :span="3"><div><button class="add-btn">编辑</button>/<button class="add-btn">删除</button></div></el-col>
-            <el-col :span="2"><div class="important">默认地址</div></el-col>
+            <el-col :span="2"><div class="important" v-if="address.isDefault">默认地址</div></el-col>
           </el-row>
           </el-col>
 
-          <el-col :span="22" :offset="1">
-          <el-row class="add-tbody">
-            <el-col :span="3"><div>团小图</div></el-col>
-            <el-col :span="5"><div>福建省福州市闽侯县上街镇</div></el-col>
-            <el-col :span="6"><div>乌龙江街道高新小区 27号楼2单元101室</div></el-col>
-            <el-col :span="2"><div>351000</div></el-col>
-            <el-col :span="3"><div>15211110000</div></el-col>
-            <el-col :span="3"><div><button class="add-btn">编辑</button>/<button class="add-btn">删除</button></div></el-col>
-            <el-col :span="2"><div></div></el-col>
-          </el-row>
-          </el-col>
         </el-row>
       </el-col>
 
@@ -149,38 +138,41 @@ export default {
   name: 'Address',
   data() {
       return {
-        ruleForm: {
-          add_1: {
-            add1:["福建省"],
-            add2:["福州市"],
-            add3:["闽侯县"],
-            add4:["上街镇"]
+        addressForm: {
+          region: {
+            province:["福建省"],
+            city:["福州市"],
+            district:["闽侯县"],
+            town:["上街镇"]
           },
-          add_2: '',
+          detail: '',
           postcode: '',
           name: '',
           phone_local: '',
-          phone: ''          
+          phone: '',
+          setDefault: false
         },
-        rules: {
-          add_1: [
+        addressRules: {
+          region: [
             { required: true, message: '请选择您的地址', trigger: 'change' }
           ],
-          add_2: [
+          detail: [
             { required: true, message: '请输入您的详细地址', trigger: 'blur' }
           ],
           name: [
             { required: true, message: '请输入您的姓名', trigger: 'blur' },
             { max: 25, message: '长度不超过25个字符', trigger: 'blur' }
           ],
-          phone_local: [
-            { required: true, trigger: 'change',message:'请选择手机地区' }
-          ],
           phone: [
             { required: true, message: '请输入您的手机号码', trigger: 'blur' },
             { min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur' }
           ]
-        }
+        },
+        addresses:[
+          {name:'团小图',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'15211110000',isDefault:false},
+          {name:'孙先生',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'18928651029',isDefault:true},
+          {name:'团小图',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'17704623483',isDefault:false}
+        ]
       };
     },
     methods: {

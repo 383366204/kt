@@ -9,6 +9,7 @@ import DetailClothes from '@/views/detailClothes'
 import DetailBanner from '@/views/detailBanner'
 import SearchPost from '@/views/searchPost'
 import SearchClothes from '@/views/searchClothes'
+import SearchBanner from '@/views/searchBanner'
 import DesignOverview from '@/views/designOverview'
 
 import LoginRegister from '@/views/login-register'
@@ -81,6 +82,11 @@ export default new Router({
             path: '/SearchClothes',
             name: 'SearchClothes',
             component: SearchClothes
+        },
+        {
+            path: '/SearchBanner',
+            name: 'SearchBanner',
+            component: SearchBanner
         },
         {
             path: '/DesignOverview',

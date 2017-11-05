@@ -9,37 +9,33 @@
 
         <el-row>
           <el-col :span="20" :offset="1">
-          <el-form :model="addressForm" :rules="rules" ref="addressForm" label-width="100px">
+          <el-form :model="addressForm" :rules="addressRules" ref="addressForm" label-width="100px">
             <el-form-item label="所在地址" :gutter="20" required>
               <el-col :span="4">
                 <el-form-item prop="region.province">
-                    <el-select v-model="addressForm.region.province[0]" placeholder="省份" size="small">
-                      <el-option :label="addressForm.region.province[0]" value="shanghai"></el-option>
-                      <el-option :label="addressForm.region.province[0]" value="beijing"></el-option>
+                    <el-select v-model="addressForm.region.province" placeholder="省份" size="small">
+                      <el-option :label="addressForm.region.province" value="shanghai"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
                 <el-form-item prop="region">
-                    <el-select v-model="addressForm.region.city[0]" placeholder="城市" size="small">
-                      <el-option :label="addressForm.region.city[0]" value="shanghai"></el-option>
-                      <el-option :label="addressForm.region.city[0]" value="beijing"></el-option>
+                    <el-select v-model="addressForm.region.city" placeholder="城市" size="small">
+                      <el-option :label="addressForm.region.city" value="shanghai"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
                 <el-form-item prop="region">
-                    <el-select v-model="addressForm.region.district[0]" placeholder="县区" size="small">
-                      <el-option :label="addressForm.region.district[0]" value="shanghai"></el-option>
-                      <el-option :label="addressForm.region.district[0]" value="beijing"></el-option>
+                    <el-select v-model="addressForm.region.district" placeholder="县区" size="small">
+                      <el-option :label="addressForm.region.district" value="shanghai"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
                 <el-form-item prop="region">
-                    <el-select v-model="addressForm.region.town[0]" placeholder="街道" size="small">
-                      <el-option :label="addressForm.region.town[0]" value="shanghai"></el-option>
-                      <el-option :label="addressForm.region.town[0]" value="beijing"></el-option>
+                    <el-select v-model="addressForm.region.town" placeholder="街道" size="small">
+                      <el-option :label="addressForm.region.town" value="shanghai"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
@@ -82,7 +78,7 @@
             </el-form-item>
             
             <el-form-item required>
-              <el-checkbox v-model="setDefault">设置为默认地址</el-checkbox>
+              <el-checkbox v-model="addressForm.setDefault" checked="checked">设置为默认地址</el-checkbox>
             </el-form-item>
             <el-form-item>
               <el-button type="danger" @click="submitForm('addressForm')">保存</el-button>
@@ -140,10 +136,10 @@ export default {
       return {
         addressForm: {
           region: {
-            province:["福建省"],
-            city:["福州市"],
-            district:["闽侯县"],
-            town:["上街镇"]
+            province:'',
+            city:"福州市",
+            district:"闽侯县",
+            town:"上街镇"
           },
           detail: '',
           postcode: '',
@@ -188,7 +184,23 @@ export default {
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
+      },
+      getRegion(){
+        this.$ajax.get('http://apis.map.qq.com/ws/district/v1/getchildren',{
+          params:{
+            key:'GVVBZ-A4S6F-7TRJU-NA54Z-CFSQ5-BCBUZ'
+          }
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      } 
+    },
+    mounted:function(){
+      this.getRegion();
     }
 }
 </script>

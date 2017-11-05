@@ -6,12 +6,13 @@ import 'element-ui/lib/theme-default/index.css'
 import ElementUI from 'element-ui'
 import App from './App'
 import router from './router'
-
+import axios from 'axios'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+Vue.prototype.$ajax = axios;
 
 /* eslint-disable no-new */
 new Vue({

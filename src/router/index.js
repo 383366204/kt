@@ -6,6 +6,7 @@ import Cart from '@/views/cart'
 
 import DetailPost from '@/views/detailPost'
 import DetailClothes from '@/views/detailClothes'
+import DetailBanner from '@/views/detailBanner'
 import SearchPost from '@/views/searchPost'
 import SearchClothes from '@/views/searchClothes'
 import DesignOverview from '@/views/designOverview'
@@ -65,6 +66,11 @@ export default new Router({
             path: '/DetailClothes',
             name: 'DetailClothes',
             component: DetailClothes
+        },
+        {
+            path: '/DetailBanner',
+            name: 'DetailBanner',
+            component: DetailBanner
         },
         {
             path: '/SearchPost',

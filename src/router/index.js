@@ -6,14 +6,18 @@ import Cart from '@/views/cart'
 
 import DetailPost from '@/views/detailPost'
 import DetailClothes from '@/views/detailClothes'
+import DetailBanner from '@/views/detailBanner'
 import SearchPost from '@/views/searchPost'
 import SearchClothes from '@/views/searchClothes'
+import SearchBanner from '@/views/searchBanner'
+import DesignOverview from '@/views/designOverview'
 
 import LoginRegister from '@/views/login-register'
 import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
 import CustomDesign from '@/views/customDesign'
+
 
 import CustomDesignSubmit from '@/views/customDesignSubmit'
 Vue.use(Router)
@@ -65,6 +69,11 @@ export default new Router({
             component: DetailClothes
         },
         {
+            path: '/DetailBanner',
+            name: 'DetailBanner',
+            component: DetailBanner
+        },
+        {
             path: '/SearchPost',
             name: 'SearchPost',
             component: SearchPost
@@ -73,6 +82,16 @@ export default new Router({
             path: '/SearchClothes',
             name: 'SearchClothes',
             component: SearchClothes
+        },
+        {
+            path: '/SearchBanner',
+            name: 'SearchBanner',
+            component: SearchBanner
+        },
+        {
+            path: '/DesignOverview',
+            name: 'DesignOverview',
+            component: DesignOverview
         },
         {
             path: '/CustomDesign',

@@ -12,30 +12,23 @@
           <el-form :model="addressForm" :rules="addressRules" ref="addressForm" label-width="100px">
             <el-form-item label="所在地址" :gutter="20" required>
               <el-col :span="4">
-                <el-form-item prop="region.province">
-                    <el-select v-model="addressForm.region.province" placeholder="省份" size="small">
-                      <el-option :label="addressForm.region.province" value="shanghai"></el-option>
+                <el-form-item prop="province">
+                    <el-select v-model="addressForm.province" @change="changeProvince($event)" placeholder="省份" size="small">
+                      <el-option v-for="province in allProvinces" :key="province.id" :label="province.provinceName" :value="province.id"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-form-item prop="region">
-                    <el-select v-model="addressForm.region.city" placeholder="城市" size="small">
-                      <el-option :label="addressForm.region.city" value="shanghai"></el-option>
+                <el-form-item prop="city">
+                    <el-select v-model="addressForm.city"  @change="changeCity($event)" placeholder="城市" size="small">
+                      <el-option v-for="city in cities" :key="city.id" :label="city.name" :value="city.id"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-form-item prop="region">
-                    <el-select v-model="addressForm.region.district" placeholder="县区" size="small">
-                      <el-option :label="addressForm.region.district" value="shanghai"></el-option>
-                    </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item prop="region">
-                    <el-select v-model="addressForm.region.town" placeholder="街道" size="small">
-                      <el-option :label="addressForm.region.town" value="shanghai"></el-option>
+                <el-form-item prop="area">
+                    <el-select v-model="addressForm.area" placeholder="县区" size="small">
+                      <el-option v-for="area in areas" :key="area.id" :label="area.areaName" :value="area.id"></el-option>
                     </el-select>
                 </el-form-item>
               </el-col>
@@ -135,12 +128,9 @@ export default {
   data() {
       return {
         addressForm: {
-          region: {
-            province:'',
-            city:"福州市",
-            district:"闽侯县",
-            town:"上街镇"
-          },
+          province:'',
+          city:'',
+          area:'',
           detail: '',
           postcode: '',
           name: '',
@@ -149,8 +139,14 @@ export default {
           setDefault: false
         },
         addressRules: {
-          region: [
-            { required: true, message: '请选择您的地址', trigger: 'change' }
+          province: [
+            { required: true, message: '请选择所在的省份', trigger: 'submit' }
+          ],
+          city: [
+            { required: true, message: '请选择所在的城市', trigger: 'submit' }
+          ],
+          area: [
+            { required: true, message: '请选择您所在的县或区', trigger: 'submit' }
           ],
           detail: [
             { required: true, message: '请输入您的详细地址', trigger: 'blur' }
@@ -168,7 +164,12 @@ export default {
           {name:'团小图',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'15211110000',isDefault:false},
           {name:'孙先生',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'18928651029',isDefault:true},
           {name:'团小图',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'17704623483',isDefault:false}
-        ]
+        ],
+        allProvinces:[],
+        allCities:[],
+        allAreas:[],
+        cities:[],
+        areas:[]
       };
     },
     methods: {
@@ -185,22 +186,64 @@ export default {
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      getRegion(){
-        this.$ajax.get('http://apis.map.qq.com/ws/district/v1/getchildren',{
-          params:{
-            key:'GVVBZ-A4S6F-7TRJU-NA54Z-CFSQ5-BCBUZ'
-          }
+      getProvince(){
+        this.$ajax.get('../../static/json/queryAllProvinces.json',{
+
         })
         .then(function (response) {
-            console.log(response);
-        })
+          this.allProvinces = response.data.provinces;
+        }.bind(this))
         .catch(function (error) {
           console.log(error);
         })
-      } 
+      },
+      getCities(){
+        this.$ajax.get('../../static/json/queryCities.json',{
+        })
+        .then(function (response) {
+          this.allCities = response.data.cities;
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error);
+        })
+      },
+       getAreas(){
+        this.$ajax.get('../../static/json/queryAllAreas.json',{
+        })
+        .then(function (response) {
+          this.allAreas = response.data.areas;
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error);
+        })
+      },
+      changeProvince(provinceId){
+        this.addressForm.city='';
+        this.addressForm.area='';
+        this.cities = [];
+        this.allCities.forEach(function (city) {
+           if (city.provinceId == provinceId) {
+             this.cities.push(city);
+           }
+        },this)
+      },
+      changeCity(cityId){
+        this.addressForm.area='';
+        this.areas = [];
+        this.allAreas.forEach(function (area) {
+           if (area.cityId == cityId) {
+             this.areas.push(area);
+           }
+        },this)
+      }
     },
     mounted:function(){
-      this.getRegion();
+      this.getProvince();
+      this.getCities();
+      this.getAreas();
+    },
+    computed:{
+      
     }
 }
 </script>
@@ -282,8 +325,5 @@ export default {
   
   .el-row {
     margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 </style>

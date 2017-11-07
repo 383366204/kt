@@ -4,7 +4,7 @@
       <!-- 新增收货地址 -->
       <el-col :span="22" :offset="1">
         <el-row>
-          <el-col :span="24"><div class="add-title"><i class="iconfont icon-add"></i>新增收货地址</div></el-col>
+          <el-col :span="24"><div class="add-title"><i class="iconfont icon-add"></i><span v-if="addMode">新增</span><span v-else>修改</span>收货地址</div></el-col>
         </el-row>
 
         <el-row>
@@ -34,7 +34,7 @@
               </el-col>
             </el-form-item>
 
-            <el-form-item label="详细地址" prop="add_2">
+            <el-form-item label="详细地址" prop="detail">
               <el-input v-model="addressForm.detail" placeholder="例如：街道名称、门牌号码" size="small"></el-input>
             </el-form-item>
 
@@ -55,14 +55,6 @@
             </el-form-item>
 
             <el-form-item label="手机号码" required>
-              <!-- <el-col :span="3">
-                <el-form-item prop="phone_local">
-                    <el-select v-model="addressForm.phone_local" placeholder="中国" size="small">
-                      <el-option label="区域一" value="shanghai"></el-option>
-                      <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-              </el-col> -->
               <el-col :span="8">
                 <el-form-item prop="phone">
                   <el-input v-model="addressForm.phone" size="small" placeholder="请输入您的手机号码"></el-input>
@@ -71,7 +63,7 @@
             </el-form-item>
             
             <el-form-item required>
-              <el-checkbox v-model="addressForm.setDefault" checked="checked">设置为默认地址</el-checkbox>
+              <el-checkbox v-model="addressForm.setDefault">设置为默认地址</el-checkbox>
             </el-form-item>
             <el-form-item>
               <el-button type="danger" @click="submitForm('addressForm')">保存</el-button>
@@ -108,8 +100,13 @@
             <el-col :span="6"><div>{{address.detail}}</div></el-col>
             <el-col :span="2"><div>{{address.zipCode}}</div></el-col>
             <el-col :span="3"><div>{{address.phone}}</div></el-col>
-            <el-col :span="3"><div><button class="add-btn">编辑</button>/<button class="add-btn">删除</button></div></el-col>
-            <el-col :span="2"><div class="important" v-if="address.isDefault">默认地址</div></el-col>
+            <el-col :span="3">
+                <button class="add-btn" @click="editAddress(index)">编辑</button>/<button class="add-btn" @click="delAddress(index)">删除</button>
+            </el-col>
+            <el-col :span="2">
+              <div class="default" v-if="address.isDefault">默认地址</div>
+              <el-button v-else class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</el-button>
+            </el-col>
           </el-row>
           </el-col>
 
@@ -127,6 +124,7 @@ export default {
   name: 'Address',
   data() {
       return {
+        addMode:true,
         addressForm: {
           province:'',
           city:'',
@@ -161,9 +159,9 @@ export default {
           ]
         },
         addresses:[
-          {name:'团小图',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'15211110000',isDefault:false},
-          {name:'孙先生',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'18928651029',isDefault:true},
-          {name:'团小图',region:'福建省福州市闽侯县上街镇',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'17704623483',isDefault:false}
+          {name:'团小图',region:'福建省/福州市/闽侯县',detail:'上街镇乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'15211110000',isDefault:false},
+          {name:'孙先生',region:'福建省/福州市/闽侯县',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'18928651029',isDefault:true},
+          {name:'团小图',region:'福建省/福州市/闽侯县',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'17704623483',isDefault:false}
         ],
         allProvinces:[],
         allCities:[],
@@ -218,23 +216,81 @@ export default {
         })
       },
       changeProvince(provinceId){
-        this.addressForm.city='';
-        this.addressForm.area='';
-        this.cities = [];
-        this.allCities.forEach(function (city) {
-           if (city.provinceId == provinceId) {
-             this.cities.push(city);
-           }
-        },this)
+        if (this.addMode) {
+          this.addressForm.city='';
+          this.addressForm.area='';
+        }
+          this.cities = [];
+          this.allCities.forEach(function (city) {
+            if (city.provinceId == provinceId) {
+              this.cities.push(city);
+            }
+          },this)
       },
       changeCity(cityId){
-        this.addressForm.area='';
+        if (this.addMode) {
+          this.addressForm.area='';
+        }
         this.areas = [];
-        this.allAreas.forEach(function (area) {
-           if (area.cityId == cityId) {
-             this.areas.push(area);
-           }
-        },this)
+          this.allAreas.forEach(function (area) {
+              if (area.cityId == cityId) {
+                this.areas.push(area);
+              }
+          },this)
+      },
+      setDefault(index){
+        for (let i = 0; i < this.addresses.length; i++) {
+          if (i!=index) {
+            this.addresses[i].isDefault =  false;
+          }
+          else{
+            this.addresses[index].isDefault = true;
+          }
+        }
+      },
+      delAddress(index){
+        this.$confirm('将删除该收货地址, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(this.addresses);
+          this.addresses.splice(index,1);
+          this.$notify.success({
+            title: '成功',
+            message: '删除地址成功',
+            offset:100
+          });
+        }).catch(() => {
+            this.$notify.warning({
+            title: '提示',
+            message: '已取消删除',
+            offset:100
+          });           
+        });
+      },
+      editAddress(index){
+        // this.addMode = false;
+        // let region = this.addresses[index].region.split('/');
+        // let province = region[0];//省份
+        // let city = region[1];//城市
+        // let area = region[2];//区县
+        // for (let i = 0; i < this.allProvinces.length; i++) {
+        //   if (this.allProvinces[i].provinceName == province) {//找出省份Id
+        //       console.log(this.allProvinces[i].id);
+        //       this.addressForm.province = province;
+        //       this.changeProvince(this.allProvinces[i].id);
+        //       break;
+        //   }   
+        // }
+        // for (let i = 0; i < this.allCities.length; i++) {//找出城市Id
+        //   if (this.allCities[i].name == city){
+        //     this.changeCity(this.allCities[i].id);
+        //     this.addressForm.city = city;
+        //     this.addressForm.area = area;
+        //   }
+        //   break;
+        // }
       }
     },
     mounted:function(){
@@ -314,15 +370,22 @@ export default {
     border: none;
     color: #555;
     font-size: 16px;
+    outline: none;
   }
   .add-btn:hover{
     color: #2eb4e9;
   }
   /*默认地址*/
-  .important{
+  .add-tbody .default{
     color: #ff4949;
   }
+  .add-tbody .default.setDefault{
+    display: none;
+  }
   
+  .add-tbody:hover .default.setDefault{
+    display: block;
+  }
   .el-row {
     margin-bottom: 20px;
   }

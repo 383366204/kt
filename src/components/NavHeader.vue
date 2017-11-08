@@ -1,7 +1,7 @@
 <template>
     <header class="header">          
          <el-row type="flex" justify="center">
-          <el-col :span="10" :class="{'bottom-border':getIndex}">
+          <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
              <router-link to="NewDesign"><el-button type="text">新建设计</el-button></router-link>
              <router-link to="MyDesign"><el-button type="text">我的设计</el-button></router-link>
@@ -9,7 +9,7 @@
              <router-link to="Download"><el-button type="text">APP下载</el-button></router-link>
              <router-link to="CustomDesign"><el-button type="text">定制设计</el-button></router-link>
           </el-col>
-          <el-col :span="4" :class="{'bottom-border':getIndex}">      
+          <el-col :span="4">      
               <router-link to="/Service">             
               <el-button type="text" class="hasIcon">
                <i class="iconfont icon-duihuakuang"></i>
@@ -22,13 +22,34 @@
                   你的通知
                   </el-button>
               </router-link>
-              <div class="headPic" v-if="getLogin">
-                <el-badge :value="100" :max="99">
-                   <el-button size="small"><img src="../assets/img/head-pic.png" width="52"></el-button>
-                </el-badge>
-                <h1>团小图</h1>
-                <h2>超级会员</h2>
-              </div>        
+              <el-dropdown v-if="getLogin" @command="handleCommand" trigger="click">
+                <div class="headPic">
+                  <el-badge :value="100" :max="99">
+                    <el-button><img src="../assets/img/head-pic.png" width="52"></el-button>
+                  </el-badge>
+                  <h1>团小图</h1>
+                  <h2>超级会员</h2>
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="config">
+                    <span class="icon"><i class="iconfont icon-zhanghao"></i></span>
+                    帐号设置
+                  </el-dropdown-item>
+                  <el-dropdown-item command="center">
+                    <span class="icon"><i class="iconfont icon-tongzhi"></i></span>
+                    信息中心
+                  </el-dropdown-item>
+                  <el-dropdown-item command="order">
+                    <span class="icon"><i class="iconfont icon-page"></i></span>
+                    订单管理
+                  </el-dropdown-item>                 
+                  <el-dropdown-item command="cart">
+                    <span class="icon"><i class="iconfont icon-gouwuche"></i></span>
+                    购物车
+                  </el-dropdown-item>
+                  <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
               <router-link to="/Login" v-else><el-button type="text">登录/注册</el-button></router-link>
           </el-col>
         </el-row>
@@ -39,8 +60,31 @@
   export default {
     data() {
       return {
-        
+
       };
+    },
+    methods:{
+      handleCommand(command){
+        switch (command) {
+          case 'config':
+            
+            break;
+          case 'center':
+            
+            break;
+          case 'order':
+            this.$router.push({path:'/Order'});
+            break;
+          case 'cart':
+            this.$router.push({path:'/Cart'});
+            break;
+          case 'logout':
+            this.$store.commit('logout');
+            break;
+          default:
+            break;
+        }
+      }
     },
     computed:{
       getIndex(){
@@ -146,11 +190,21 @@
     .headPic h1,h2{
       position: absolute;
       color: #FFF;
-      top: 10px;
+      top: 9px;
       right: 16px;
+      font-size: 16px;
     }
     .headPic h2{
-      top:30px;
+      top:32px;
       right:0px;
+    }
+    .el-dropdown-menu{
+      width: 170px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .icon{
+      color:#2eb4e9;
+      padding-right: 6px;
     }
 </style>

@@ -40,8 +40,8 @@
 
             <el-form-item label="邮政编码">
               <el-col :span="8">
-                <el-form-item prop="postcode">
-                  <el-input v-model="addressForm.postcode" placeholder="如果不清楚，可不填。" size="small"></el-input>
+                <el-form-item prop="zipCode">
+                  <el-input v-model="addressForm.zipCode" placeholder="如果不清楚，可不填。" size="small"></el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
@@ -130,9 +130,8 @@ export default {
           city:'',
           area:'',
           detail: '',
-          postcode: '',
+          zipCode: '',
           name: '',
-          phone_local: '',
           phone: '',
           setDefault: false
         },
@@ -170,12 +169,43 @@ export default {
         areas:[]
       };
     },
+    
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-          } else {
+            //新增状态
+            if (this.addMode) {
+              let address={name:'',region:'',detail:'',zipCode:'',phone:'',isDefault:false};
+              address.name = this.addressForm.name;
+              // 找出省市区的Id
+              var self = this;//外面的this
+              let provinceTemp = this.allProvinces.find((province)=>{
+                return province.id == self.addressForm.province;
+              });
+              let cityTemp = this.cities.find((city)=>{
+                return city.id == self.addressForm.city;
+              });
+              let areaTemp = this.areas.find((area)=>{
+                return area.id == self.addressForm.area;
+              });
+
+              address.region = provinceTemp.provinceName  + '/' + cityTemp.name + '/' +areaTemp.areaName;
+              address.detail = this.addressForm.detail;
+              address.zipCode = this.addressForm.zipCode;
+              address.phone= this.addressForm.phone;
+              address.isDefault =  this.addressForm.setDefault;
+              this.addresses.unshift(address);
+              if (address.isDefault) {
+                this.setDefault(0);
+              }
+            }
+            //编辑状态
+            else{
+              this.addMode = true;
+            }
+          }
+          else {
             console.log('error submit!!');
             return false;
           }
@@ -254,8 +284,17 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log(this.addresses);
-          this.addresses.splice(index,1);
+          //如果删除的是默认地址
+          if (this.addresses[index].isDefault) {
+            this.addresses.splice(index,1);
+            //如果还有地址，将第一个设为默认地址
+            if (this.addresses[0]) {
+              this.addresses[0].isDefault = true;
+            }
+          }
+          else{
+            this.addresses.splice(index,1);
+          }         
           this.$notify.success({
             title: '成功',
             message: '删除地址成功',
@@ -270,7 +309,13 @@ export default {
         });
       },
       editAddress(index){
-        // this.addMode = false;
+        this.addMode = false;
+
+        this.addressForm.detail = this.addresses[index].detail;
+        this.addressForm.zipCode = this.addresses[index].zipCode;
+        this.addressForm.name = this.addresses[index].name;
+        this.addressForm.phone = this.addresses[index].phone;
+        this.addressForm.setDefault = this.addresses[index].isDefault;
         // let region = this.addresses[index].region.split('/');
         // let province = region[0];//省份
         // let city = region[1];//城市
@@ -305,88 +350,88 @@ export default {
 </script>
 
 <style scoped>
-  main{
-    width: 1200px;
-    margin: 0 auto;
-    color: #555;
-    font-size: 14px;
-  }
-  img{
-    width: 100%;
-  }
-  button{
-    cursor: pointer;
-  }
-  /*标题*/
-  .add-title,
-  .add-title_bj{
-    font-size: 18px;
-    color: #555;
-    margin-top: 40px;
-  }
-  .add-title > i{
-    font-size: 20px;
-    color: #2eb4e9;
-    margin-right: 10px;
-  }
-  .add-title_bj > i{
-    font-size: 24px;
-    color: #2eb4e9;
-    margin-right: 10px;
-  }
-  /*新增收货地址*/
-  .el-form-item{
-    margin-bottom: 20px;
-  }
-  .el-col > .el-form-item{
-    margin-bottom: 0;
-    margin-right: 10px;
-  }
-  /*编辑收货地址*/
-  .add-thead,
-  .add-tbody{
-    text-align: center;
-    display: flex;
-    align-items: center;
-    color: #555555;
-    padding: 8px 0;
-    margin-bottom: 0 !important;
-  }
-  .add-thead{
-    background-color: #e5e5e5;
-    border: 1px solid #cbcbcb;
-    font-weight: 700;
-  }
-  .add-tbody{
-    border: 1px solid #cbcbcb;
-    border-top: none;
-  }
-  .add-tbody .el-col div{
-    padding: 0 8px;
-  }
-  /*编辑、删除按钮*/
-  .add-btn{
-    background-color: #fff;
-    border: none;
-    color: #555;
-    font-size: 16px;
-    outline: none;
-  }
-  .add-btn:hover{
-    color: #2eb4e9;
-  }
-  /*默认地址*/
-  .add-tbody .default{
-    color: #ff4949;
-  }
-  .add-tbody .default.setDefault{
-    display: none;
-  }
-  
-  .add-tbody:hover .default.setDefault{
-    display: block;
-  }
-  .el-row {
-    margin-bottom: 20px;
-  }
+main {
+  width: 1200px;
+  margin: 0 auto;
+  color: #555;
+  font-size: 14px;
+}
+img {
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}
+/*标题*/
+.add-title,
+.add-title_bj {
+  font-size: 18px;
+  color: #555;
+  margin-top: 40px;
+}
+.add-title > i {
+  font-size: 20px;
+  color: #2eb4e9;
+  margin-right: 10px;
+}
+.add-title_bj > i {
+  font-size: 24px;
+  color: #2eb4e9;
+  margin-right: 10px;
+}
+/*新增收货地址*/
+.el-form-item {
+  margin-bottom: 20px;
+}
+.el-col > .el-form-item {
+  margin-bottom: 0;
+  margin-right: 10px;
+}
+/*编辑收货地址*/
+.add-thead,
+.add-tbody {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  color: #555555;
+  padding: 8px 0;
+  margin-bottom: 0 !important;
+}
+.add-thead {
+  background-color: #e5e5e5;
+  border: 1px solid #cbcbcb;
+  font-weight: 700;
+}
+.add-tbody {
+  border: 1px solid #cbcbcb;
+  border-top: none;
+}
+.add-tbody .el-col div {
+  padding: 0 8px;
+}
+/*编辑、删除按钮*/
+.add-btn {
+  background-color: #fff;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  outline: none;
+}
+.add-btn:hover {
+  color: #2eb4e9;
+}
+/*默认地址*/
+.add-tbody .default {
+  color: #ff4949;
+}
+.add-tbody .default.setDefault {
+  display: none;
+}
+
+.add-tbody:hover .default.setDefault {
+  display: block;
+}
+.el-row {
+  margin-bottom: 20px;
+}
 </style>

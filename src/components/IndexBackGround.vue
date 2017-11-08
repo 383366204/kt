@@ -52,7 +52,7 @@
         background-color: transparent;
         align-self: flex-start;
         margin-top: -100px;
-        margin-left: 40px;
+        margin-left: 84px;
     }
     #startToDesign:hover{
         background-color: #FFF;

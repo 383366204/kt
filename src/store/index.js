@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const state = {
     isIndex: true, //判断是否在首页
-    isLogin: false //判断是否有登录
+    isLogin: true //判断是否有登录
 }
 
 const getters = {

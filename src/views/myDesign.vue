@@ -118,7 +118,7 @@
           type: 'warning'
         }).then(() => {
           // 查找要删除的元素位置
-           let i = this.designs.findIndex((item)=>item.id==id);
+           let i = this.designs.findIndex((item)=>{return item.id==id});
            this.designs.splice(i,1);
            this.$notify.success({
             title: '成功',

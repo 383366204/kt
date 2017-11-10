@@ -4,7 +4,7 @@
         <el-col :span="11">
             <el-row class="cart-tbody_first">
                  <!-- 購物車或者訂單列表會出現checkbox -->
-                <el-col :span="3" v-if="good.page==1"><input type="checkbox"></el-col>
+                <el-col :span="3" v-if="good.page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.id)"></el-col>
                 <!-- 訂單消息頁沒有checkbox -->
                 <el-col :span="3" v-else-if="good.page==2||good.page==3"></el-col>
                 <el-col :span="5"><div><img :src="good.src"></div></el-col>
@@ -21,7 +21,7 @@
 
         <el-col :span="3" v-if="good.page==1">
           <div class="cart-tbody_third">
-            <el-input-number v-for="(num,index) in good.num" :key="index" v-model="good.num[index]" @change="handleChange" :min="1" :max="99" size="small"></el-input-number>
+            <el-input-number v-for="(num,index) in good.num" :key="index" @change="changeNum" v-model="good.num[index]" :min="1" :max="99" size="small"></el-input-number>
           </div>
         </el-col>
 
@@ -32,11 +32,11 @@
         </el-col>
 
 
-        <!-- page =1 或 2代表是在購物車或者訂單 -->
+        <!-- page =1 或 2 代表是在購物車或者訂單 -->
         <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{good.price}}</div></el-col>
         <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
         <el-col :span="3" v-if="good.page==1||good.page==2">
-          <div><button class="cart-remove">删除</button></div>
+          <div><button class="cart-remove" @click="delFloor(good.id)">删除</button></div>
         </el-col>
 
         <!-- page = 3代表是在訂單列表 -->
@@ -44,7 +44,7 @@
         <el-col :span="2" v-if="good.page==3" class="colorGray"><div>{{getStatus(good.status)}}</div></el-col>
         <el-col :span="3" v-if="good.page==3 && good.status==1">
             <div><button class="btn btn-blue">付款</button></div>
-            <div><button class="btn btn-gray">删除</button></div>
+            <div><button class="btn btn-gray" @click="delFloor(good.id)">删除</button></div>
         </el-col>
 
         <el-col :span="3" v-else-if="good.page==3 && good.status==2">
@@ -61,7 +61,7 @@
         </el-col>
 
         <el-col :span="3" v-else-if="good.page==3 && good.status==5">
-            <div><button class="btn btn-gray" style="margin-top:0">删除</button></div>
+          <button class="btn btn-gray" style="margin-top:0" @click="delFloor(good.id)">删除</button>
         </el-col>
 
     </el-row>
@@ -72,6 +72,7 @@ export default {
   data () {
     return {
         status:['','待付款','待制作','待发货','待收货','已完成'],
+        //id代表商品编号
         // page代表頁面 1：購物車 2：訂單 3：訂單列表
         // type代表商品种类 1：服装 2:海报 3:横幅
         // status代表商品状态 1:待付款 2:待制作 3:待发货 4:待收货 5:已完成
@@ -86,35 +87,53 @@ export default {
   props:{
       good:{
           type:Object,
-          default:function(){
-              return {
-                page:3,
-                type:1,
-                status:1,
-                name:'冬季男款卫衣',
-                description:'红色',
-                src:'../../static/clothes2.png',
-                size:['S','M','L','XL','XXl'],
-                num:[10,5,5,5,5],
-                price:200
-              }
-          }
+          // default:function(){
+          //     return {
+          //       id:10001,
+          //       page:3,
+          //       type:1,
+          //       status:1,
+          //       name:'冬季男款卫衣',
+          //       description:'红色',
+          //       src:'../../static/clothes2.png',
+          //       size:['S','M','L','XL','XXl'],
+          //       num:[10,5,5,5,5],
+          //       price:200
+          //     }
+          // }
       }
   },
   computed:{
     
   },
   methods: {
-      getStatus: function(status) {
+      getStatus(status) {
         return this.status[status];
       },
       getSum(good){
-      let numSum=0;
-      for (let i = 0; i < good.num.length; i++) {
-         numSum += good.num[i];
+        let numSum=0;
+        for (let i = 0; i < good.num.length; i++) {
+          numSum += good.num[i];
+        }
+        return numSum*good.price;
+      },
+      check(id){
+        this.$emit('checkGood',id);
+      },
+      delFloor(id){
+        this.$emit('delGood',id);
+      },
+      changeNum(val,oldVal){
+        if (this.good.isCheck) {//如果选中的话，数量减少会影响到外面的总价
+          if (val>oldVal) {//增加
+            this.$emit('changeGoodNum',this.good.price);
+          }
+          else{//减少
+            this.$emit('changeGoodNum',-this.good.price);
+          }
+        }
+        
       }
-      return numSum*good.price;
-    }
   }
 }
 </script>

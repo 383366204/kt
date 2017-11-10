@@ -105,6 +105,7 @@ export default {
       num1: 1,
       liuyan: '',
       goods:[{
+        id:10001,
         page:2,
         type:1,
         status:1,
@@ -115,6 +116,7 @@ export default {
         num:[10,5,5,5,5],
         price:200
       },{
+        id:10002,
         page:2,
         type:2,
         status:2,
@@ -125,6 +127,7 @@ export default {
         num:[10],
         price:50
       },{
+        id:10003,
         page:2,
         type:3,
         status:3,
@@ -135,6 +138,7 @@ export default {
         num:[10],
         price:50
       },{
+        id:10004,
         page:2,
         type:3,
         status:4,
@@ -145,6 +149,7 @@ export default {
         num:[10],
         price:50
       },{
+        id:10005,
         page:2,
         type:3,
         status:5,

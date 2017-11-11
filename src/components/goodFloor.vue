@@ -3,7 +3,7 @@
     <el-row class="cart-tbody">
         <el-col :span="11">
             <el-row class="cart-tbody_first">
-                 <!-- 購物車或者訂單列表會出現checkbox -->
+                 <!-- 购物车或者訂單列表會出現checkbox -->
                 <el-col :span="3" v-if="good.page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.id)"></el-col>
                 <!-- 訂單消息頁沒有checkbox -->
                 <el-col :span="3" v-else-if="good.page==2||good.page==3"></el-col>
@@ -19,7 +19,7 @@
             </div>
         </el-col>
 
-        <el-col :span="3" v-if="good.page==1">
+        <el-col :span="3" v-if="good.page==1||good.page==2">
           <div class="cart-tbody_third">
             <el-input-number v-for="(num,index) in good.num" :key="index" @change="changeNum" v-model="good.num[index]" :min="1" :max="99" size="small"></el-input-number>
           </div>
@@ -32,10 +32,12 @@
         </el-col>
 
 
-        <!-- page =1 或 2 代表是在購物車或者訂單 -->
+        <!-- page = 1 或 2 代表是在购物车或者訂單 -->
         <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{good.price}}</div></el-col>
         <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
-        <el-col :span="3" v-if="good.page==1||good.page==2">
+
+        <!-- page = 1 代表是在购物车 -->
+        <el-col :span="3" v-if="good.page==1">
           <div><button class="cart-remove" @click="delFloor(good.id)">删除</button></div>
         </el-col>
 
@@ -73,7 +75,7 @@ export default {
     return {
         status:['','待付款','待制作','待发货','待收货','已完成'],
         //id代表商品编号
-        // page代表頁面 1：購物車 2：訂單 3：訂單列表
+        // page代表頁面 1：购物车 2：訂單 3：訂單列表
         // type代表商品种类 1：服装 2:海报 3:横幅
         // status代表商品状态 1:待付款 2:待制作 3:待发货 4:待收货 5:已完成
         // name代表商品名称
@@ -167,7 +169,6 @@ export default {
   .cart-tbody_first .el-col:nth-of-type(4){
     color: #aaa;
   }
-  
   .cart-tbody_second > p,
   .cart-tbody_third > p{
     height: 30px;

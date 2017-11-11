@@ -166,7 +166,10 @@ export default {
         allCities:[],
         allAreas:[],
         cities:[],
-        areas:[]
+        areas:[],
+        provinceName:'',
+        cityName:'',
+        areaName:''
       };
     },
     
@@ -246,27 +249,41 @@ export default {
         })
       },
       changeProvince(provinceId){
-        if (this.addMode) {
-          this.addressForm.city='';
-          this.addressForm.area='';
-        }
-          this.cities = [];
-          this.allCities.forEach(function (city) {
-            if (city.provinceId == provinceId) {
-              this.cities.push(city);
+        this.addressForm.city='';
+        this.addressForm.area='';
+        this.cities = [];
+        this.allCities.forEach(function (city) {
+          if (city.provinceId == provinceId) {
+            this.cities.push(city);
+          }
+        },this);
+
+        if (!this.addMode) {//编辑模式下
+          for (let i = 0; i < this.cities.length; i++) {//找出城市Id
+            if (this.cities[i].name == this.cityName){
+              this.addressForm.city = this.cities[i].id;
+              break;
             }
-          },this)
+          }
+        }
       },
       changeCity(cityId){
-        if (this.addMode) {
-          this.addressForm.area='';
-        }
+        this.addressForm.area='';
         this.areas = [];
-          this.allAreas.forEach(function (area) {
-              if (area.cityId == cityId) {
-                this.areas.push(area);
-              }
-          },this)
+        this.allAreas.forEach(function (area) {
+            if (area.cityId == cityId) {
+              this.areas.push(area);
+            }
+        },this);
+
+        if (!this.addMode) {//编辑模式下
+          for (let i = 0; i < this.areas.length; i++) {//找出区Id
+            if (this.areas[i].areaName == this.areaName){
+              this.addressForm.area = this.areas[i].id;
+              break;
+            }
+          }
+        }
       },
       setDefault(index){
         for (let i = 0; i < this.addresses.length; i++) {
@@ -316,26 +333,35 @@ export default {
         this.addressForm.name = this.addresses[index].name;
         this.addressForm.phone = this.addresses[index].phone;
         this.addressForm.setDefault = this.addresses[index].isDefault;
-        // let region = this.addresses[index].region.split('/');
-        // let province = region[0];//省份
-        // let city = region[1];//城市
-        // let area = region[2];//区县
-        // for (let i = 0; i < this.allProvinces.length; i++) {
-        //   if (this.allProvinces[i].provinceName == province) {//找出省份Id
-        //       console.log(this.allProvinces[i].id);
-        //       this.addressForm.province = province;
-        //       this.changeProvince(this.allProvinces[i].id);
-        //       break;
-        //   }   
-        // }
-        // for (let i = 0; i < this.allCities.length; i++) {//找出城市Id
-        //   if (this.allCities[i].name == city){
-        //     this.changeCity(this.allCities[i].id);
-        //     this.addressForm.city = city;
-        //     this.addressForm.area = area;
+
+        let region = this.addresses[index].region.split('/');//省市区
+
+        this.provinceName = region[0];//省份
+        this.cityName = region[1];//城市
+        this.areaName = region[2];//区县
+
+         
+        for (let i = 0; i < this.allProvinces.length; i++) {//找出省份Id
+          if (this.allProvinces[i].provinceName == this.provinceName) {
+            this.addressForm.province = this.allProvinces[i].id;
+            break;
+          }
+        }
+
+        // for (let i = 0; i < this.cities.length; i++) {//找出城市Id
+        //   if (this.cities[i].name == city){
+        //     this.addressForm.city = this.cities[i].id;
+        //     break;
         //   }
-        //   break;
         // }
+
+        // for (let i = 0; i < this.areas.length; i++) {//找出区Id
+        //   if (this.areas[i].name == area){
+        //     this.addressForm.area = this.areas[i].id;
+        //     break;
+        //   }
+        // }
+
       }
     },
     mounted:function(){

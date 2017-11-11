@@ -113,7 +113,7 @@ export default {
         description:'红色',
         src:'../../static/clothes2.png',
         size:['S','M','L','XL','XXl'],
-        num:[10,5,5,5,5],
+        num:[1,1,1,1,1],
         price:200
       },{
         id:10002,
@@ -124,7 +124,7 @@ export default {
         description:'',
         src:'../../static/poster2.png',
         size:['65*100cm'],
-        num:[10],
+        num:[1],
         price:50
       },{
         id:10003,
@@ -135,7 +135,7 @@ export default {
         description:'',
         src:'../../static/banner2.jpg',
         size:['5m'],
-        num:[10],
+        num:[1],
         price:50
       },{
         id:10004,
@@ -146,7 +146,7 @@ export default {
         description:'',
         src:'../../static/banner2.jpg',
         size:['5m'],
-        num:[10],
+        num:[1],
         price:50
       },{
         id:10005,
@@ -157,7 +157,7 @@ export default {
         description:'',
         src:'../../static/banner2.jpg',
         size:['5m'],
-        num:[10],
+        num:[1],
         price:50
       }]
     }
@@ -226,6 +226,10 @@ export default {
     padding: 4px 0;
     border-right: 1px solid #d7dadb;
   }
+  /* 去掉最右边的border */
+  .cart-thead div:last-child{
+    border-right: none;
+  }
 
   /*留言框*/
   .el-input{
@@ -269,7 +273,6 @@ export default {
     color: #fff;
     font-size: 14px;
   }
-
 
   .el-row {
     margin-bottom: 20px;

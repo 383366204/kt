@@ -198,6 +198,10 @@ export default {
     padding: 4px 0;
     border-right: 1px solid #d7dadb;
   }
+  /* 去掉最右边的border */
+  .cart-thead div:last-child{
+    border-right: none;
+  }
   .el-row {
     margin-bottom: 20px;
   }

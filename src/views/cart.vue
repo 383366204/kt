@@ -21,7 +21,8 @@
         <!-- 全选 -->
         <el-row>
           <div id="checkbox-all">
-            <input type="checkbox" v-model="ischeckAll" @click="checkAll()">&nbsp;&nbsp;全选
+            <input type="checkbox" id="selectAllTop" v-model="ischeckAll" @click="checkAll()">&nbsp;&nbsp;
+            <label for="selectAllTop">全选</label> 
           </div>
         </el-row>
 
@@ -31,13 +32,15 @@
         <el-row class="cart-tfoot">
           <el-col :span="4"><div>
             <el-row>
-              <el-col :span="12"><input type="checkbox" v-model="ischeckAll" @click="checkAll()">&nbsp;&nbsp;全选</el-col>
-              <el-col :span="6"><button>删除</button></el-col>
+              <el-col :span="12"><input type="checkbox" id="selectAllBottom" v-model="ischeckAll" @click="checkAll()">&nbsp;&nbsp;
+                <label for="selectAllBottom">全选</label>
+              </el-col>
+              <el-col :span="6"><button @click="delAllCheck()">删除</button></el-col>
             </el-row>
           </div></el-col>
           <el-col :span="4" :offset="9"><div>已勾选<span class="important">{{checkNum}}</span>件</div></el-col>
           <el-col :span="4"><div>共计：<span class="important">{{checkSum}}</span>元</div></el-col>
-          <el-col :span="3"><div><button class="btn-red">结算</button></div></el-col>
+          <el-col :span="3"><div><button class="btn-red" @click="checkOut()">结算</button></div></el-col>
         </el-row>
 
       </el-col>
@@ -61,7 +64,7 @@ export default {
         description:'红色',
         src:'../../static/clothes2.png',
         size:['S','M','L','XL','XXl'],
-        num:[10,5,5,5,5],
+        num:[1,1,1,1,1],
         price:200,
         isCheck:false
       },{
@@ -73,7 +76,7 @@ export default {
         description:'',
         src:'../../static/poster2.png',
         size:['65*100cm'],
-        num:[10],
+        num:[1],
         price:50,
         isCheck:false
       },{
@@ -85,7 +88,7 @@ export default {
         description:'',
         src:'../../static/banner2.jpg',
         size:['5m'],
-        num:[10],
+        num:[1],
         price:50,
         isCheck:false
       },{
@@ -97,7 +100,7 @@ export default {
         description:'',
         src:'../../static/banner2.jpg',
         size:['5m'],
-        num:[10],
+        num:[1],
         price:50,
         isCheck:false
       },{
@@ -109,7 +112,7 @@ export default {
         description:'',
         src:'../../static/banner2.jpg',
         size:['5m'],
-        num:[10],
+        num:[1],
         price:50,
         isCheck:false
       }],
@@ -138,7 +141,7 @@ export default {
       }
     },
     delFloor(id){
-      this.$confirm('此商品将从购物车中删除?', '确认删除', {
+      this.$confirm('删除此商品?', '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -146,7 +149,8 @@ export default {
           // 查找要删除的元素位置
            let index = this.goods.findIndex((item)=>{ return item.id==id});
            if (this.goods[index].isCheck) {//判断是否选中
-             this.checkSum -= this.getSum(this.goods[index]);//总价减少
+              this.checkNum--;//总数减少
+              this.checkSum -= this.getSum(this.goods[index]);//总价减少
            }
            this.goods.splice(index,1);
            this.$notify.success({
@@ -161,6 +165,39 @@ export default {
               offset:100
             });        
         });  
+    },
+    delAllCheck(){
+      if (this.checkNum==0) {//检查是否有选中商品
+        this.$alert('请至少选中一个商品', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        });
+        return;
+      }
+      // this.hasAnyCheck();
+      this.$confirm('删除所选中的商品?', '确认删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            let newGoods = this.goods.filter((item)=>{//找出没有选中的商品
+              return !item.isCheck;
+            });
+            this.goods = newGoods;//替换原来的数组
+            this.checkNum = 0;
+            this.checkSum = 0;
+            this.$notify.success({
+            title: '成功',
+            message: '已从购物车中删除',
+            offset:100
+          });
+        }).catch(() => {
+          this.$notify.warning({
+              title: '提示',
+              message: '已取消删除',
+              offset:100
+            });        
+        });
     },
     checkAll(){
       let self = this;
@@ -191,8 +228,26 @@ export default {
         }
         return numSum*good.price;
     },
-    changeNum(price){
-      this.checkSum+=price;
+    changeNum(price,good){
+      let index = this.goods.findIndex((item)=>{return item.id == good.id});//找出good的index
+      
+      this.goods[index] = good;//替代原来的位置
+
+      if(good.isCheck){//若是选中的话，将影响总价
+        this.checkSum+=price;
+      } 
+    },
+    checkOut(){
+      if (this.checkNum==0) {//检查是否有选中商品
+        this.$alert('请至少选中一个商品', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        });
+        return;
+      }
+      let checkOutGoods =  this.goods.filter((item)=>{return item.isCheck});
+      
+      
     }
   },
   components:{ 
@@ -260,6 +315,7 @@ export default {
     border-bottom: 1px solid #e6eaeb;
     background-color: #e6eaeb;
     color: #555;
+    outline: none;
   }
   .cart-tfoot .el-row button:hover{
     border-bottom: 1px solid #555;
@@ -281,5 +337,8 @@ export default {
 
   .el-row {
     margin-bottom: 20px;
+  }
+  label{
+    cursor: pointer;
   }
 </style>

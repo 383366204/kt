@@ -124,15 +124,12 @@ export default {
         this.$emit('delGood',id);
       },
       changeNum(val,oldVal){
-        if (this.good.isCheck) {//如果选中的话，数量减少会影响到外面的总价
-          if (val>oldVal) {//增加
-            this.$emit('changeGoodNum',this.good.price);
-          }
-          else{//减少
-            this.$emit('changeGoodNum',-this.good.price);
-          }
+        if (val>oldVal) {//增加
+          this.$emit('changeGoodNum',this.good.price,this.good);
         }
-        
+        else{//减少
+          this.$emit('changeGoodNum',-this.good.price,this.good);
+        }
       }
   }
 }

@@ -105,7 +105,7 @@
             </el-col>
             <el-col :span="2">
               <div class="default" v-if="address.isDefault">默认地址</div>
-              <el-button v-else class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</el-button>
+              <el-button  v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</el-button>
             </el-col>
           </el-row>
           </el-col>
@@ -157,11 +157,7 @@ export default {
             { min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur' }
           ]
         },
-        addresses:[
-          {name:'团小图',region:'福建省/福州市/闽侯县',detail:'上街镇乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'15211110000',isDefault:false},
-          {name:'孙先生',region:'福建省/福州市/闽侯县',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'18928651029',isDefault:true},
-          {name:'团小图',region:'福建省/福州市/闽侯县',detail:'乌龙江街道高新小区 27号楼2单元101室',zipCode:'351000',phone:'17704623483',isDefault:false}
-        ],
+        addresses:[],
         allProvinces:[],
         allCities:[],
         allAreas:[],
@@ -169,7 +165,8 @@ export default {
         areas:[],
         provinceName:'',
         cityName:'',
-        areaName:''
+        areaName:'',
+        editIndex:-1//正在编辑地址的index
       };
     },
     
@@ -177,9 +174,7 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            //新增状态
-            if (this.addMode) {
-              let address={name:'',region:'',detail:'',zipCode:'',phone:'',isDefault:false};
+            let address={name:'',region:'',detail:'',zipCode:'',phone:'',isDefault:false};
               address.name = this.addressForm.name;
               // 找出省市区的Id
               var self = this;//外面的this
@@ -198,6 +193,8 @@ export default {
               address.zipCode = this.addressForm.zipCode;
               address.phone= this.addressForm.phone;
               address.isDefault =  this.addressForm.setDefault;
+            //新增状态
+            if (this.addMode) {
               this.addresses.unshift(address);
               if (address.isDefault) {
                 this.setDefault(0);
@@ -205,8 +202,17 @@ export default {
             }
             //编辑状态
             else{
+              this.addresses[this.editIndex] = address;
+              if (address.isDefault) {
+                this.setDefault(this.editIndex);
+              }
               this.addMode = true;
+              if (!this.addresses.some(item=>{return item.isDefault})) {
+                this.setDefault(0);
+              }
             }
+            this.resetForm('addressForm');//清空表单
+            this.addressForm.setDefault = false;//清空设为默认
           }
           else {
             console.log('error submit!!');
@@ -326,7 +332,8 @@ export default {
         });
       },
       editAddress(index){
-        this.addMode = false;
+        this.addMode = false;//设定为编辑模式
+        this.editIndex = index;//正在编辑的地址名单
 
         this.addressForm.detail = this.addresses[index].detail;
         this.addressForm.zipCode = this.addresses[index].zipCode;
@@ -340,7 +347,6 @@ export default {
         this.cityName = region[1];//城市
         this.areaName = region[2];//区县
 
-         
         for (let i = 0; i < this.allProvinces.length; i++) {//找出省份Id
           if (this.allProvinces[i].provinceName == this.provinceName) {
             this.addressForm.province = this.allProvinces[i].id;
@@ -348,29 +354,21 @@ export default {
           }
         }
 
-        // for (let i = 0; i < this.cities.length; i++) {//找出城市Id
-        //   if (this.cities[i].name == city){
-        //     this.addressForm.city = this.cities[i].id;
-        //     break;
-        //   }
-        // }
-
-        // for (let i = 0; i < this.areas.length; i++) {//找出区Id
-        //   if (this.areas[i].name == area){
-        //     this.addressForm.area = this.areas[i].id;
-        //     break;
-        //   }
-        // }
-
       }
     },
     mounted:function(){
+      this.addresses = this.$store.state.addresses;
       this.getProvince();
       this.getCities();
       this.getAreas();
     },
-    computed:{
-      
+    watch:{
+      'addresses':{
+        handler: function(val,OldVal){
+          this.$store.commit('setAddress',this.addresses);
+        },
+        deep:true
+      }
     }
 }
 </script>

@@ -4,7 +4,12 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const state = {
     isIndex: true, //判断是否在首页
-    isLogin: true //判断是否有登录
+    isLogin: true, //判断是否有登录
+    addresses: [ //收货地址
+        { name: '团小图', region: '福建省/福州市/闽侯县', detail: '上街镇乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '15211110000', isDefault: false },
+        { name: '孙先生', region: '福建省/福州市/闽侯县', detail: '乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '18928651029', isDefault: true },
+        { name: '团小图', region: '福建省/福州市/闽侯县', detail: '乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '17704623483', isDefault: false }
+    ]
 }
 
 const getters = {
@@ -32,6 +37,9 @@ const mutations = {
     },
     logout(state) {
         state.isLogin = false;
+    },
+    setAddress(state, address) {
+        state.addresses = address;
     }
 }
 

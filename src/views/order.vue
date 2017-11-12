@@ -1,10 +1,8 @@
 <template>
   <main>
     <el-row>
-
       <!-- 编辑收货地址 -->
       <el-col :span="22" :offset="1">
-
         <el-row>
           <el-col :span="24"><div class="cart-title"><i class="iconfont icon-shouhuo1"></i>收货地址</div></el-col>
         </el-row>

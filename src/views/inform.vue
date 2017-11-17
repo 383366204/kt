@@ -73,9 +73,10 @@
 
 <script>
 export default {
-  name: 'Address',
   data() {
+    return{
 
+    }
   }
 }
 </script>

@@ -31,15 +31,15 @@
                   <h2>超级会员</h2>
                 </div>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="config">
+                  <el-dropdown-item command="accountSettings">
                     <span class="icon"><i class="iconfont icon-zhanghao"></i></span>
                     帐号设置
                   </el-dropdown-item>
-                  <el-dropdown-item command="center">
+                  <el-dropdown-item command="inform">
                     <span class="icon"><i class="iconfont icon-tongzhi"></i></span>
                     信息中心
                   </el-dropdown-item>
-                  <el-dropdown-item command="order">
+                  <el-dropdown-item command="orderList">
                     <span class="icon"><i class="iconfont icon-page"></i></span>
                     订单管理
                   </el-dropdown-item>                 
@@ -66,14 +66,14 @@
     methods:{
       handleCommand(command){
         switch (command) {
-          case 'config':
-            
+          case 'accountSettings':
+            this.$router.push({path:'AccountSettings'});
             break;
-          case 'center':
-            
+          case 'inform':
+            this.$router.push({path:'Inform'});
             break;
-          case 'order':
-            this.$router.push({path:'/Order'});
+          case 'orderList':
+            this.$router.push({path:'/OrderList'});
             break;
           case 'cart':
             this.$router.push({path:'/Cart'});

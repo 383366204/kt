@@ -18,6 +18,8 @@ import OrderList from '@/views/orderList'
 import Order from '@/views/order'
 import CustomDesign from '@/views/customDesign'
 
+import AccountSettings from '@/views/accountSettings'
+import Inform from '@/views/inform'
 
 import CustomDesignSubmit from '@/views/customDesignSubmit'
 Vue.use(Router)
@@ -97,6 +99,16 @@ export default new Router({
             path: '/CustomDesign',
             name: 'CustomDesign',
             component: CustomDesign
+        },
+        {
+            path: '/AccountSettings',
+            name: 'AccountSettings',
+            component: AccountSettings
+        },
+        {
+            path: '/Inform',
+            name: 'Inform',
+            component: Inform
         },
         {
             path: '/CustomDesignSubmit',

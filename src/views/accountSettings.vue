@@ -1,0 +1,265 @@
+<template>
+  <main>
+    <div class="nav">
+      <div class="nav-head">
+        <div class="nav-head_img">
+          <img src="../assets/img/head-pic.png" alt="">
+        </div>
+        <div class="nav-head_msg">
+          <p class="name">团小图</p>
+          <p class="vip">超级会员<i class="iconfont icon-huiyuan1"></i></p>
+        </div>
+      </div>
+
+      <ul>
+        <li class="active"><a href=""><i class="iconfont icon-zhanghao"></i>账号设置</a></li>
+        <li><a href=""><i class="iconfont icon-yanjing"></i>当前权限</a></li>
+        <li><a href=""><i class="iconfont icon-shengji"></i>升级VIP会员</a></li>
+      </ul>
+    </div>
+    <!-- 账号设置 -->
+    <div class="view">
+      <div class="view-title">
+        <p>账号设置</p>
+      </div>
+      <div class="view-content">
+        <ul>
+          <li><i class="iconfont icon-youxiang"></i>邮箱：<span>123456789@qq.com</span><a href="">更改</a></li>
+          <li><i class="iconfont icon-shouji"></i>手机号：<span>15200001111</span><a href="">更改</a></li>
+          <li><i class="iconfont icon-mima"></i>密码：<a href="">修改</a></li>
+          <li><i class="iconfont icon-lianjie"></i>分享给好友</li>
+        </ul>
+      </div>
+    </div>
+    <!-- 账号设置END -->
+    <!-- 当前权限 -->
+    <div class="view" style="display:none;">
+      <div class="view-banner">
+        <img src="../assets/img/yellowBg.jpg" alt="">
+      </div>
+      <div class="view-title">
+        <p>当前权限</p>
+      </div>
+      <div class="view-content">
+        <ul class="parallelogram">
+          <li><p>海量原创海报模板</p></li>
+          <li><p>海量原创衣服模板</p></li>
+          <li><p>海量原创横幅模板</p></li>
+          <li><p>无限下载海量素材</p></li>
+          <li><p>专属个性定制</p></li>
+        </ul>
+      </div>
+    </div>
+    <!-- 当前权限END -->
+  </main>
+</template>
+
+<script>
+export default {
+  name: 'Address',
+  data() {
+  }
+}
+
+</script>
+<style>
+body{
+  background-color: #f4f8fb !important;
+}
+</style>
+<style scoped>
+body{
+  background-color: #f4f8fb !important;
+}
+main {
+  width: 1040px;
+  margin: 80px auto;
+  color: #555;
+  font-size: 14px;
+}
+main:after {
+  content:"";
+  height:0;
+  line-height:0;
+  display:block;
+  visibility:hidden;
+  clear: both;
+}
+img {
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}
+a{
+  text-decoration:none;
+}
+.iconfont{
+  margin-right: 10px;
+  color: #41b9ea;
+}
+/*左边灰色框*/
+.nav{
+  width: 240px;
+  background-color: #ebf0f4;
+  height: 600px;
+  float: left;
+}
+/*左边灰色框头像及信息*/
+.nav-head{
+  border-bottom: 1px solid #fff;
+  margin: 0 20px;
+  padding: 30px 0 15px;
+}
+.nav-head:after {
+  content:"";
+  height:0;
+  line-height:0;
+  display:block;
+  visibility:hidden;
+  clear: both;
+}
+.nav-head_img{
+  float: left;
+  width: 69px;
+  height: 69px;
+  margin-left: 20px;
+  border-radius: 50%;
+}
+.nav-head_msg{
+  float: left;
+  height: 69px;
+  margin-left: 14px;
+}
+.nav-head_msg .name{
+  margin-top: 14px;
+}
+.nav-head_msg .vip{
+  margin-top: 6px;
+  color: #f2a018;
+}
+.icon-huiyuan1{
+  font-size: 18px;
+  color: #f2a018;
+}
+/*左边灰色框跳转按钮*/
+.nav ul{
+  margin: 15px 0;
+}
+.nav ul li{
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  cursor:pointer;
+  margin-bottom: 8px;
+}
+.nav ul li.active a{
+  background-color: #fff;
+  color: #2eb4e9;
+}
+.nav ul li a{
+  padding-left: 40px;
+  display: block;/*给a标签设置成块级元素*/
+  width: 100%;
+  height: 100%;
+}
+.nav ul li .iconfont{
+  font-size: 18px;
+}
+
+/*右边视图框*/
+.view{
+  position: relative;
+  width: 800px;
+  background-color: #fff;
+  height: 586px;
+  float: left;
+  margin-top: 14px;
+}
+.view:before{
+  content:" ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  top: -14px;
+  border-bottom: 14px solid #cfd4d8;
+  border-right: 14px solid transparent;
+}
+/*视图框标题*/
+.view-title{
+  margin: 30px;
+  border-bottom: 2px solid #ebf0f4;
+}
+.view-title p{
+  width: 70px;
+  font-size: 16px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  position: relative;
+}
+.view-title p:after{
+  content:"";
+  width: 70px;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  border-bottom: 2px solid #2eb4e9;
+}
+/*视图框内容*/
+.view-content{
+  margin: 40px 30px;
+  padding-left: 70px;
+}
+.view-content ul li{
+  margin-bottom: 30px;
+}
+.view-content ul li a{
+  margin-left: 40px;
+  color: #2eb4e9;
+}
+/*视图框banner*/
+.view-banner{
+  padding: 20px;
+  padding-bottom: 0;
+}
+.view-banner img{
+  width: 760;
+  height: 260px;
+}
+/*视图框平行四边形权限*/
+.parallelogram li{
+  width: 160px;
+  text-align: center;
+  transform: skew(-30deg);
+  padding: 6px 10px;
+  margin-bottom: 20px !important;
+  display: inline-block;
+  color: #fff;
+}
+.parallelogram li p{
+  transform: skew(30deg);
+}
+.parallelogram li:nth-of-type(odd){
+  margin-left: 20px;
+}
+.parallelogram li:nth-of-type(even){
+  margin-left: 100px;
+}
+.parallelogram li:nth-of-type(1){
+  background-color: #8fc320;
+}
+.parallelogram li:nth-of-type(2){
+  background-color: #6d9bcf;
+}
+.parallelogram li:nth-of-type(3){
+  background-color: #e65399;
+}
+.parallelogram li:nth-of-type(4){
+  background-color: #f39801;
+}
+.parallelogram li:nth-of-type(5){
+  background-color: #2eb4e9;
+}
+</style>

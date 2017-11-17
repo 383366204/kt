@@ -4,48 +4,26 @@
       <!-- 编辑收货地址 -->
       <el-col :span="22" :offset="1">
         <el-row>
-          <el-col :span="24"><div class="cart-title"><i class="iconfont icon-shouhuo1"></i>收货地址</div></el-col>
+          <el-col :span="21"><div class="cart-title"><i class="iconfont icon-shouhuo1"></i>收货地址</div></el-col>
+          <el-col :span="3"><router-link to="Address"><div class="cart-title addressManager">收货地址管理</div></router-link></el-col>
         </el-row>
         <el-row>
           <el-col :span="22" :offset="1">
-            <el-row>
+            <el-row v-for="(address,index) in addresses":key="index">
               <el-col :span="2">
-                <div class="address-title"><i class="iconfont icon-dingwei"></i>寄送至</div>
+                <div class="address-title" v-if="index==addressIndex"><i class="iconfont icon-dingwei"></i>寄送至</div>
+                <div class="address-title" v-else>&nbsp;</div>
               </el-col>
               <el-col :span="22">
                 <ul class="address">
-                  <li><input type="checkbox"></li>
-                  <li>福建省福州市闽侯县上街镇</li>
-                  <li>乌龙江大道高新区27号楼2单元101室</li>
-                  <li>（<span>团小图</span> 收）</li>
-                  <li>12345678901</li>
-                  <li>默认地址</li>
-                </ul>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="2"><div>&nbsp;</div></el-col>
-              <el-col :span="22">
-                <ul class="address">
-                  <li><input type="checkbox"></li>
-                  <li>福建省福州市闽侯县上街镇</li>
-                  <li>乌龙江大道高新区27号楼2单元101室</li>
-                  <li>（<span>团小图</span> 收）</li>
-                  <li>12345678901</li>
-                  <li></li>
-                </ul>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="2"><div>&nbsp;</div></el-col>
-              <el-col :span="22">
-                <ul class="address">
-                  <li><input type="checkbox"></li>
-                  <li>福建省福州市闽侯县上街镇</li>
-                  <li>乌龙江大道高新区27号楼2单元101室</li>
-                  <li>（<span>团小图</span> 收）</li>
-                  <li>12345678901</li>
-                  <li></li>
+                  <li><input type="radio" :id="index" v-model="addressIndex" :value="index" :checked="address.isDefault"></li>
+                  <label :for="index">
+                    <li>{{address.region}}</li>
+                    <li>{{address.detail}}</li>
+                    <li>（<span>{{address.name}}</span> 收）</li>
+                    <li>{{address.phone}}</li>
+                    <li v-if="address.isDefault"><b>默认地址</b></li>
+                  </label> 
                 </ul>
               </el-col>
             </el-row>
@@ -157,7 +135,8 @@ export default {
         size:['5m'],
         num:[1],
         price:50
-      }]
+      }],
+      addressIndex:''
     }
   },
   methods: {
@@ -167,6 +146,16 @@ export default {
   },
   components:{
     goodFloor
+  },
+  computed:{
+    addresses(){
+      return this.$store.state.addresses;
+    }
+  },
+  mounted:function(){
+    this.addressIndex=this.$store.state.addresses.findIndex((item)=>{
+      return item.isDefault;
+    });
   }
 }
 </script>
@@ -274,5 +263,15 @@ export default {
 
   .el-row {
     margin-bottom: 20px;
+  }
+  label{
+    cursor: pointer;
+  }
+  .addressManager{
+    color:#de1100;
+    text-align: center;
+  }
+  a{
+    text-decoration: none;
   }
 </style>

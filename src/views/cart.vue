@@ -55,67 +55,7 @@ export default {
     return {
       listItems: ['buy food', 'play games', 'sleep'],
       num1: 1,
-      goods:[{
-        id:10001,
-        page:1,
-        type:1,
-        status:1,
-        name:'冬季男款卫衣',
-        description:'红色',
-        src:'../../static/clothes2.png',
-        size:['S','M','L','XL','XXl'],
-        num:[1,1,1,1,1],
-        price:200,
-        isCheck:false
-      },{
-        id:10002,
-        page:1,
-        type:2,
-        status:2,
-        name:'记忆协会海报',
-        description:'',
-        src:'../../static/poster2.png',
-        size:['65*100cm'],
-        num:[1],
-        price:50,
-        isCheck:false
-      },{
-        id:10003,
-        page:1,
-        type:3,
-        status:3,
-        name:'横幅',
-        description:'',
-        src:'../../static/banner2.jpg',
-        size:['5m'],
-        num:[1],
-        price:50,
-        isCheck:false
-      },{
-        id:10004,
-        page:1,
-        type:3,
-        status:4,
-        name:'横幅',
-        description:'',
-        src:'../../static/banner2.jpg',
-        size:['5m'],
-        num:[1],
-        price:50,
-        isCheck:false
-      },{
-        id:10005,
-        page:1,
-        type:3,
-        status:5,
-        name:'横幅',
-        description:'',
-        src:'../../static/banner2.jpg',
-        size:['5m'],
-        num:[1],
-        price:50,
-        isCheck:false
-      }],
+      goods:[],
       ischeckAll:false,//是否全选
       checkNum:0,//已选中的商品的总数
       checkSum:0//已选中商品的总价
@@ -246,12 +186,19 @@ export default {
         return;
       }
       let checkOutGoods =  this.goods.filter((item)=>{return item.isCheck});
-      
-      
+      this.$store.commit('setCheckOutGoods',checkOutGoods);
+      this.$router.push({path:'/Order'});
     }
   },
   components:{ 
     goodFloor
+  },
+  mounted:function(){
+    this.goods = this.$store.state.goods;
+    let self = this;
+    this.goods.forEach((item)=>{
+      self.$set(item,'isCheck',false);
+    });
   }
 }
 </script>

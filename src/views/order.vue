@@ -80,62 +80,7 @@ export default {
       listItems: ['buy food', 'play games', 'sleep'],
       num1: 1,
       liuyan: '',
-      goods:[{
-        id:10001,
-        page:2,
-        type:1,
-        status:1,
-        name:'冬季男款卫衣',
-        description:'红色',
-        src:'../../static/clothes2.png',
-        size:['S','M','L','XL','XXl'],
-        num:[1,1,1,1,1],
-        price:200
-      },{
-        id:10002,
-        page:2,
-        type:2,
-        status:2,
-        name:'记忆协会海报',
-        description:'',
-        src:'../../static/poster2.png',
-        size:['65*100cm'],
-        num:[1],
-        price:50
-      },{
-        id:10003,
-        page:2,
-        type:3,
-        status:3,
-        name:'横幅',
-        description:'',
-        src:'../../static/banner2.jpg',
-        size:['5m'],
-        num:[1],
-        price:50
-      },{
-        id:10004,
-        page:2,
-        type:3,
-        status:4,
-        name:'横幅',
-        description:'',
-        src:'../../static/banner2.jpg',
-        size:['5m'],
-        num:[1],
-        price:50
-      },{
-        id:10005,
-        page:2,
-        type:3,
-        status:5,
-        name:'横幅',
-        description:'',
-        src:'../../static/banner2.jpg',
-        size:['5m'],
-        num:[1],
-        price:50
-      }],
+      goods:[],
       addressIndex:''
     }
   },
@@ -156,6 +101,7 @@ export default {
     this.addressIndex=this.$store.state.addresses.findIndex((item)=>{
       return item.isDefault;
     });
+    this.goods = this.$store.state.checkOutGoods;
   }
 }
 </script>

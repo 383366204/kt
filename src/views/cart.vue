@@ -175,7 +175,7 @@ export default {
 
       if(good.isCheck){//若是选中的话，将影响总价
         this.checkSum+=price;
-      } 
+      }
     },
     checkOut(){
       if (this.checkNum==0) {//检查是否有选中商品

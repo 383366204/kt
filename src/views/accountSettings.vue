@@ -3,22 +3,21 @@
     <div class="nav">
       <div class="nav-head">
         <div class="nav-head_img">
-          <img src="../assets/img/head-pic.png" alt="">
+          <img src="../assets/img/head-pic.png">
         </div>
         <div class="nav-head_msg">
           <p class="name">团小图</p>
           <p class="vip">超级会员<i class="iconfont icon-huiyuan1"></i></p>
         </div>
       </div>
-
       <ul>
-        <li class="active"><a href=""><i class="iconfont icon-zhanghao"></i>账号设置</a></li>
-        <li><a href=""><i class="iconfont icon-yanjing"></i>当前权限</a></li>
-        <li><a href=""><i class="iconfont icon-shengji"></i>升级VIP会员</a></li>
+        <li :class="{active:activeNum==1}" @click="activeTab(1)"><a><i class="iconfont icon-zhanghao"></i>账号设置</a></li>
+        <li :class="{active:activeNum==2}" @click="activeTab(2)"><a><i class="iconfont icon-yanjing"></i>当前权限</a></li>
+        <li :class="{active:activeNum==3}" @click="activeTab(3)"><a><i class="iconfont icon-shengji"></i>升级VIP会员</a></li>
       </ul>
     </div>
     <!-- 账号设置 -->
-    <div class="view">
+    <div class="view" v-if="activeNum==1">
       <div class="view-title">
         <p>账号设置</p>
       </div>
@@ -33,9 +32,9 @@
     </div>
     <!-- 账号设置END -->
     <!-- 当前权限 -->
-    <div class="view" style="display:none;">
+    <div class="view" v-else-if="activeNum==2">
       <div class="view-banner">
-        <img src="../assets/img/yellowBg.jpg" alt="">
+        <img src="../assets/img/yellowBg.jpg">
       </div>
       <div class="view-title">
         <p>当前权限</p>
@@ -58,7 +57,12 @@
 export default {
   data() {
     return{
-      
+      activeNum:1
+    }
+  },
+  methods:{
+    activeTab(activeNum){
+      this.activeNum = activeNum;
     }
   }
 }

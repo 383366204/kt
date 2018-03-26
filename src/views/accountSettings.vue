@@ -23,9 +23,9 @@
       </div>
       <div class="view-content">
         <ul>
-          <li><i class="iconfont icon-youxiang"></i>邮箱：<span>123456789@qq.com</span><a href="">更改</a></li>
-          <li><i class="iconfont icon-shouji"></i>手机号：<span>15200001111</span><a href="">更改</a></li>
-          <li><i class="iconfont icon-mima"></i>密码：<a href="">修改</a></li>
+          <li><i class="iconfont icon-youxiang"></i>邮箱：<span>{{userInfo.email}}</span><a @click="changeEmail()">更改</a></li>
+          <li><i class="iconfont icon-shouji"></i>手机：<span>{{userInfo.phone}}</span><a @click="changePhone()">更改</a></li>
+          <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>
           <li><i class="iconfont icon-lianjie"></i>分享给好友</li>
         </ul>
       </div>
@@ -57,12 +57,76 @@
 export default {
   data() {
     return{
-      activeNum:1
+      activeNum:1,
+      userInfo:{
+        email:'383366204@qq.com',
+        phone:'18928651029'
+      }
     }
   },
   methods:{
     activeTab(activeNum){
       this.activeNum = activeNum;
+    },
+    changeEmail(){
+      this.$prompt('请输入新邮箱', '注意', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '邮箱格式不正确'
+        }).then(({ value }) => {
+          this.$notify.success({
+            title: '成功',
+            message: '邮箱修改成功',
+            offset:100
+          });
+        }).catch(() => {
+          this.$notify.error({
+            title: '失败',
+            message: '邮箱修改失败',
+            offset:100
+          });       
+        });
+    },
+    changePhone(){
+      this.$prompt('请输入新手机', '注意', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^1\d{10}$/,
+          inputErrorMessage: '手机格式不正确'
+        }).then(({ value }) => {
+          this.$notify.success({
+            title: '成功',
+            message: '手机修改成功',
+            offset:100
+          });
+        }).catch(() => {
+          this.$notify.error({
+            title: '失败',
+            message: '手机修改失败',
+            offset:100
+          });       
+        });
+    },
+    changePassword(){
+      this.$prompt('请输入密码', '注意', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/,
+          inputErrorMessage: '密码是长度在 6 到 18 个数字W或字母组成的字符串'
+        }).then(({ value }) => {
+          this.$notify.success({
+            title: '成功',
+            message: '密码修改成功',
+            offset:100
+          });
+        }).catch(() => {
+          this.$notify.error({
+            title: '失败',
+            message: '密码修改失败',
+            offset:100
+          });       
+        });
     }
   }
 }
@@ -224,6 +288,7 @@ a{
 .view-content ul li a{
   margin-left: 40px;
   color: #2eb4e9;
+  cursor: pointer;
 }
 /*视图框banner*/
 .view-banner{

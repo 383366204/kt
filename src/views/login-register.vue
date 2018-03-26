@@ -74,7 +74,7 @@ export default {
   data() {
     let phoneOrEmail = (rule, value, callback) => {
       let phoneRex = /^1\d{10}$/;
-      let emailRex = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+      let emailRex = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
       if (!value) {
         return callback(new Error("请输入手机号或邮箱"));
       } else if (phoneRex.test(value) || emailRex.test(value)) {

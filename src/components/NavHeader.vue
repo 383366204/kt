@@ -79,7 +79,7 @@
             this.$router.push({path:'/Cart'});
             break;
           case 'logout':
-            this.$store.commit('logout');
+            this.$store.commit('logout',this.$router);
             break;
           default:
             break;

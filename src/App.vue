@@ -3,8 +3,10 @@
     <div class="indexTopBgColor" :class="{'topHeight':getIndex}">
       <nav-header></nav-header>
       <index-back-ground v-if="getIndex"></index-back-ground>
-    </div>   
-    <router-view class="flex-bottom"/>
+    </div>
+    <transition>
+      <router-view class="flex-bottom"/>
+    </transition>
     <nav-footer></nav-footer>
   </div>
 </template>

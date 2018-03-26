@@ -14,6 +14,23 @@ Vue.use(ElementUI)
 
 Vue.prototype.$ajax = axios;
 
+router.beforeEach((to,from,next) => {
+    window.scrollTo(0, 0);
+    if (to.meta.requireAuth) {
+        if (store.state.token) {
+            next();
+        } else {
+            next({
+                path:'/login',
+                query:{
+                    redirect: to.fullPath
+                }
+            })
+        }
+    } else {
+        next();
+    }
+})
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

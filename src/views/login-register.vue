@@ -13,7 +13,7 @@
                           <el-input v-model="loginForm.userId" autofocus="autofocus" auto-complete="off" placeholder="手机号/邮箱"></el-input>
                       </el-form-item>
                       <el-form-item label-width="0" prop="password">
-                          <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
+                          <el-input type="password" v-model="loginForm.password" @keyup.enter.native="submitForm('loginForm')" auto-complete="off" placeholder="密码"></el-input>
                       </el-form-item>
                       <el-form-item label-width="0">
                         <el-button type="text">忘记密码</el-button>
@@ -46,7 +46,7 @@
                             <el-input v-model="registerForm.nickName" auto-complete="off" placeholder="昵称"></el-input>
                         </el-form-item>
                         <el-form-item label-width="0" prop="verification">
-                            <el-input v-model="registerForm.verification" auto-complete="off" placeholder="验证码"></el-input>
+                            <el-input v-model="registerForm.verification" @keyup.enter.native="submitForm('registerForm')" auto-complete="off" placeholder="验证码"></el-input>
                             <el-button type="primary" :class="{'verify':gettingVerification}" @click="getVerification()">获取验证码<span v-if="gettingVerification">({{timing}})</span></el-button>
                         </el-form-item>
                         <el-form-item label-width="0" prop="agree">
@@ -70,230 +70,258 @@
 </template>
 
 <script>
-
-
 export default {
   data() {
-     let phoneOrEmail = (rule, value, callback) => {
-       let phoneRex = /^1\d{10}$/;
-       let emailRex = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if (!value) {
-          return callback(new Error('请输入手机号或邮箱'));
-        }
-        else if (phoneRex.test(value)||emailRex.test(value)) {
-          callback();
-        }
-        else{
-          callback(new Error('请输入正确的手机号或邮箱'));
-        }
-      };
-      return {
-        login:true,
-        timing:60,
-        loginForm: {
-          userId: '',
-          password: ''
-        },
-        loginRules: {
-          userId: [
-            { validator: phoneOrEmail, trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-          ]
-        },
-        registerForm: {
-          userId: '',
-          password: '',
-          nickName:'',
-          verification:'',
-          agree:true
-        },
-        registerRules: {
-          userId: [
-            { validator: phoneOrEmail, trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-          ],
-          verification:[
-            { required: true,len: 6 ,message: '请输入6位数字的验证码', trigger: 'blur' },
-          ]
-        },
-        gettingVerification:false
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      changeForm(){
-        this.login= !this.login;
-        this.$refs['loginForm'].resetFields();
-        this.$refs['registerForm'].resetFields();
-      },
-      // 获取验证码
-      getVerification(){
-        if(this.gettingVerification==true){
-          return;
-        }
-        this.gettingVerification = true;
-        let intervalId =  setInterval(()=>{
-          if(this.timing==0){
-            clearInterval(intervalId);
-            this.gettingVerification = false;
-            this.timing = 60;
-          }
-          else{
-            this.timing--;
-          }         
-        },1000);
+    let phoneOrEmail = (rule, value, callback) => {
+      let phoneRex = /^1\d{10}$/;
+      let emailRex = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+      if (!value) {
+        return callback(new Error("请输入手机号或邮箱"));
+      } else if (phoneRex.test(value) || emailRex.test(value)) {
+        callback();
+      } else {
+        callback(new Error("请输入正确的手机号或邮箱"));
       }
+    };
+    return {
+      login: true,
+      timing: 60,
+      loginForm: {
+        userId: "",
+        password: ""
+      },
+      loginRules: {
+        userId: [{ validator: phoneOrEmail, trigger: "blur" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "blur" }
+        ]
+      },
+      registerForm: {
+        userId: "",
+        password: "",
+        nickName: "",
+        verification: "",
+        agree: true
+      },
+      registerRules: {
+        userId: [{ validator: phoneOrEmail, trigger: "blur" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "blur" }
+        ],
+        verification: [
+          {
+            required: true,
+            len: 6,
+            message: "请输入6位数字的验证码",
+            trigger: "blur"
+          }
+        ]
+      },
+      gettingVerification: false
+    };
+  },
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if(formName == 'loginForm'){
+            this.checkUser(this.loginForm.userId, this.loginForm.password);
+          }
+          else if(formName == 'registerForm'){
+            
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    changeForm() {
+      this.login = !this.login;
+      this.$refs["loginForm"].resetFields();
+      this.$refs["registerForm"].resetFields();
+    },
+    // 获取验证码
+    getVerification() {
+      if (this.gettingVerification == true) {
+        return;
+      }
+      this.gettingVerification = true;
+      let intervalId = setInterval(() => {
+        if (this.timing == 0) {
+          clearInterval(intervalId);
+          this.gettingVerification = false;
+          this.timing = 60;
+        } else {
+          this.timing--;
+        }
+      }, 1000);
+    },
+    checkUser() {
+      this.$ajax
+        .post("http://127.0.0.1:3000/login",{
+          userId:this.loginForm.userId,
+          password:this.loginForm.password
+        })
+        .then(response => {
+          this.$store.commit("login", response.data);
+          //登录后跳转
+          let redirect = decodeURIComponent(this.$route.query.redirect || "/");
+          this.$router.push({
+            path: redirect
+          });
+          this.$notify.success({
+            title: '成功',
+            message: '登录成功',
+            offset:100
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          // this.$notify.error({
+          //   title: '失败',
+          //   message: '密码错误',
+          //   offset:100
+          // });
+        });
     }
   }
+};
 </script>
 
 <style scoped>
-    /* 主体的布局和长宽 */
-    .main{
-        width: 100%;
-        height: 655px;
-        display: flex;
-        align-items: center;
-    }
-    /* 设定宽度 */
-    .main .el-row{
-        flex-basis: 100%;
-    }
-    /* 外阴影 */
-    .main  >.el-row > .el-col:first-child{
-        height: 500px;;
-        width: 640px;
-        box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
-    }
-    /* 表单+logo区域的布局 */
-    .main .el-row.formZone{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-    /* logo居中 */
-    .logoCol{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    /* login窗口 */
-    .login{
-      width: 100%;
-      height: 68%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-    }
-    /* 第三方登录区域布局 */
-    .main .el-row.formZone .login .el-col:last-child{
-      display: flex;
-      justify-content: space-between;
-    }   
-    /* 第三方登录字体 */
-    .main .el-row.formZone .login .el-col:nth-last-child(2) h1{
-      font-size: 14px;
-      color: #c0c0c0;
-    }
-    /* 第三方登录按钮样式 */
-    .main .el-row.formZone .login .el-col:last-child .el-button{
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      padding: 0;
-    }
-    /* 第三方登录hover样式 */
-    .main .el-row.formZone .login .el-col:last-child .el-button:hover,:focus{
-       border-color: #C4C4C4;
-    }
-    /* 第三方登录icon */
-    .main .el-row.formZone .login .el-col:last-child .el-button i{
-      font-size: 46px;
-    }
-    /* 输入框样式 */
-    .main .login .el-form-item .el-input{
-      border-color: #c1c1c1;
-    }
-    /* 输入密码的下外边距 */
-   .main .login .el-form .el-form-item:nth-child(2){
-     margin-bottom:8px;
-   }
-   /* 忘记密码和立即注册的下外边距 */
-   .main .login .el-form .el-form-item:nth-child(3){
-     margin-bottom:2px;
-   }
-   /* 忘记密码按钮样式 */
-   .main .login .el-form .el-form-item:nth-child(3) .el-button:nth-child(1){
-     color: #c0c0c0;
-   }
-   /* 立即注册按钮样式 */
-   .main .login .el-form .el-form-item:nth-child(3) .el-button:nth-child(2){
-     float: right;
-     color: #2eb4e9;
-   }
-    /* 提交按钮样式 */
-   .main .submitBtn{
-      width: 100%;
-      background-color: #2eb4e9;
-      color: #FFF;
-      border: none;
-   }
-    /* 注册区域布局 */
-    .register{
-      width: 100%;
-      height: 75%;
-      display:flex;
-      justify-content: center;
-      padding-top:20px;
-    }
-    /* 第四个输入框的下边距 */
-    .register .el-form .el-form-item:nth-child(4){
-      margin-bottom: 14px;
-      
-    }
-    /* 第四个输入框的宽度 */
-    .register .el-form-item:nth-child(4) .el-input{
-      width: 70%;
-    }
-    /* 第四个输入框旁边的按钮 */
-    .register .el-form-item:nth-child(4) .el-button{
-      width: 29%;
-      background-color: #2eb4e9;
-      color:#FFF;
-    }
+/* 主体的布局和长宽 */
+.main {
+  width: 100%;
+  height: 655px;
+  display: flex;
+  align-items: center;
+}
+/* 设定宽度 */
+.main .el-row {
+  flex-basis: 100%;
+}
+/* 外阴影 */
+.main > .el-row > .el-col:first-child {
+  height: 500px;
+  width: 640px;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+}
+/* 表单+logo区域的布局 */
+.main .el-row.formZone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+/* logo居中 */
+.logoCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* login窗口 */
+.login {
+  width: 100%;
+  height: 68%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+/* 第三方登录区域布局 */
+.main .el-row.formZone .login .el-col:last-child {
+  display: flex;
+  justify-content: space-between;
+}
+/* 第三方登录字体 */
+.main .el-row.formZone .login .el-col:nth-last-child(2) h1 {
+  font-size: 14px;
+  color: #c0c0c0;
+}
+/* 第三方登录按钮样式 */
+.main .el-row.formZone .login .el-col:last-child .el-button {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+}
+/* 第三方登录hover样式 */
+.main .el-row.formZone .login .el-col:last-child .el-button:hover,
+:focus {
+  border-color: #c4c4c4;
+}
+/* 第三方登录icon */
+.main .el-row.formZone .login .el-col:last-child .el-button i {
+  font-size: 46px;
+}
+/* 输入框样式 */
+.main .login .el-form-item .el-input {
+  border-color: #c1c1c1;
+}
+/* 输入密码的下外边距 */
+.main .login .el-form .el-form-item:nth-child(2) {
+  margin-bottom: 8px;
+}
+/* 忘记密码和立即注册的下外边距 */
+.main .login .el-form .el-form-item:nth-child(3) {
+  margin-bottom: 2px;
+}
+/* 忘记密码按钮样式 */
+.main .login .el-form .el-form-item:nth-child(3) .el-button:nth-child(1) {
+  color: #c0c0c0;
+}
+/* 立即注册按钮样式 */
+.main .login .el-form .el-form-item:nth-child(3) .el-button:nth-child(2) {
+  float: right;
+  color: #2eb4e9;
+}
+/* 提交按钮样式 */
+.main .submitBtn {
+  width: 100%;
+  background-color: #2eb4e9;
+  color: #fff;
+  border: none;
+}
+/* 注册区域布局 */
+.register {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+/* 第四个输入框的下边距 */
+.register .el-form .el-form-item:nth-child(4) {
+  margin-bottom: 14px;
+}
+/* 第四个输入框的宽度 */
+.register .el-form-item:nth-child(4) .el-input {
+  width: 70%;
+}
+/* 第四个输入框旁边的按钮 */
+.register .el-form-item:nth-child(4) .el-button {
+  width: 29%;
+  background-color: #2eb4e9;
+  color: #fff;
+}
 
-    /* 最后的按钮居中 */
-    .register .el-form .el-col:last-child{
-      display: flex;
-      justify-content: center;
-    }
-    
-    /* 最后的按钮样式 */
-    .register .el-form .el-col:last-child .el-button{
-      color: #c1c1c1;
-    }
-    .verify{
-      background-color: #c1c1c1 !important;
-      cursor: not-allowed;
-      border-color:#c1c1c1;
-    }
-    
+/* 最后的按钮居中 */
+.register .el-form .el-col:last-child {
+  display: flex;
+  justify-content: center;
+}
+
+/* 最后的按钮样式 */
+.register .el-form .el-col:last-child .el-button {
+  color: #c1c1c1;
+}
+.verify {
+  background-color: #c1c1c1 !important;
+  cursor: not-allowed;
+  border-color: #c1c1c1;
+}
 </style>

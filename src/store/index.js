@@ -66,7 +66,8 @@ const state = {
         num: [1],
         price: 50
     }],
-    checkOutGoods: []
+    checkOutGoods: [],
+    token:null
 }
 
 const getters = {
@@ -84,11 +85,16 @@ const mutations = {
     setIndexFalse(state) {
         state.isIndex = false;
     },
-    login(state) {
+    login(state,token) {
         state.isLogin = true;
+        state.token = token;
     },
-    logout(state) {
+    logout(state,router) {
         state.isLogin = false;
+        state.token = null;
+        router.push({
+            path: '/'
+        });
     },
     setAddress(state, address) {
         state.addresses = address;

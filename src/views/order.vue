@@ -9,7 +9,7 @@
         </el-row>
         <el-row>
           <el-col :span="22" :offset="1">
-            <el-row v-for="(address,index) in addresses":key="index">
+            <el-row v-for="(address,index) in addresses" :key="index">
               <el-col :span="2">
                 <div class="address-title" v-if="index==addressIndex"><i class="iconfont icon-dingwei"></i>寄送至</div>
                 <div class="address-title" v-else>&nbsp;</div>

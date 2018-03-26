@@ -224,9 +224,7 @@ export default {
         this.$refs[formName].resetFields();
       },
       getProvince(){
-        this.$ajax.get('../../static/json/queryAllProvinces.json',{
-
-        })
+        this.$ajax.get('../../static/json/queryAllProvinces.json')
         .then(function (response) {
           this.allProvinces = response.data.provinces;
         }.bind(this))
@@ -235,8 +233,7 @@ export default {
         })
       },
       getCities(){
-        this.$ajax.get('../../static/json/queryCities.json',{
-        })
+        this.$ajax.get('../../static/json/queryCities.json')
         .then(function (response) {
           this.allCities = response.data.cities;
         }.bind(this))
@@ -245,8 +242,7 @@ export default {
         })
       },
        getAreas(){
-        this.$ajax.get('../../static/json/queryAllAreas.json',{
-        })
+        this.$ajax.get('../../static/json/queryAllAreas.json')
         .then(function (response) {
           this.allAreas = response.data.areas;
         }.bind(this))

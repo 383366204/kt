@@ -180,11 +180,11 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: '失败',
-          //   message: '密码错误',
-          //   offset:100
-          // });
+          this.$notify.error({
+            title: '登录失败',
+            message: '密码错误或用户名不存在',
+            offset:100
+          });
         });
     }
   }

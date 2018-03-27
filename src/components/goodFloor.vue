@@ -4,9 +4,9 @@
         <el-col :span="11">
             <el-row class="cart-tbody_first">
                  <!-- 购物车或者訂單列表會出現checkbox -->
-                <el-col :span="3" v-if="good.page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.id)"></el-col>
+                <el-col :span="3" v-if="page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.id)"></el-col>
                 <!-- 訂單消息頁沒有checkbox -->
-                <el-col :span="3" v-else-if="good.page==2||good.page==3"></el-col>
+                <el-col :span="3" v-else-if="page==2||page==3"></el-col>
                 <el-col :span="5"><div><img :src="good.src"></div></el-col>
                 <el-col :span="9"><div>{{good.name}}</div></el-col>
                 <el-col :span="7" v-if="good.type==1"><div>{{good.description}}</div></el-col>
@@ -18,8 +18,8 @@
                 <p v-for="(size,index) in good.size" :key="index">{{size}}</p>
             </div>
         </el-col>
-
-        <el-col :span="3" v-if="good.page==1||good.page==2">
+        <!-- page = 1 代表是在购物车 -->
+        <el-col :span="3" v-if="page==1">
           <div class="cart-tbody_third">
             <el-input-number v-for="(num,index) in good.num" :key="index" @change="changeNum" v-model="good.num[index]" :min="1" :max="99" size="small"></el-input-number>
           </div>
@@ -27,42 +27,40 @@
 
         <el-col :span="3" v-else>
             <div class="cart-tbody_third">
-                <p v-for="(num,index) in good.num" :key="num">{{num}}</p>
+                <p v-for="(num,index) in good.num" :key="index">{{num}}</p>
             </div>
         </el-col>
 
 
         <!-- page = 1 或 2 代表是在购物车或者訂單 -->
-        <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{good.price}}</div></el-col>
-        <el-col :span="2" v-if="good.page==1||good.page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
-
-        <!-- page = 1 代表是在购物车 -->
-        <el-col :span="3" v-if="good.page==1">
+        <el-col :span="2" v-if="page==1||page==2" class="colorRed"><div>{{good.price}}</div></el-col>
+        <el-col :span="2" v-if="page==1||page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
+        <el-col :span="3" v-if="page==1||page==2">
           <div><button class="cart-remove" @click="delFloor(good.id)">删除</button></div>
         </el-col>
 
         <!-- page = 3代表是在訂單列表 -->
-        <el-col :span="2" v-if="good.page==3" class="colorRed"><div>{{getSum(good)}}</div></el-col>
-        <el-col :span="2" v-if="good.page==3" class="colorGray"><div>{{getStatus(good.status)}}</div></el-col>
-        <el-col :span="3" v-if="good.page==3 && good.status==1">
+        <el-col :span="2" v-if="page==3" class="colorRed"><div>{{getSum(good)}}</div></el-col>
+        <el-col :span="2" v-if="page==3" class="colorGray"><div>{{getStatus(good.status)}}</div></el-col>
+        <el-col :span="3" v-if="page==3 && good.status==1">
             <div><button class="btn btn-blue">付款</button></div>
             <div><button class="btn btn-gray" @click="delFloor(good.id)">删除</button></div>
         </el-col>
 
-        <el-col :span="3" v-else-if="good.page==3 && good.status==2">
+        <el-col :span="3" v-else-if="page==3 && good.status==2">
             <div><button class="btn btn-blue">退换货</button></div>
             <div><button class="btn btn-gray">提醒制作</button></div>
         </el-col>
 
-        <el-col :span="3" v-else-if="good.page==3 && good.status==3">
+        <el-col :span="3" v-else-if="page==3 && good.status==3">
             <div><button class="btn btn-blue">提醒发货</button></div>
         </el-col>
 
-        <el-col :span="3" v-else-if="good.page==3 && good.status==4">
+        <el-col :span="3" v-else-if="page==3 && good.status==4">
             <div><button class="btn btn-blue">查看物流</button></div>
         </el-col>
 
-        <el-col :span="3" v-else-if="good.page==3 && good.status==5">
+        <el-col :span="3" v-else-if="page==3 && good.status==5">
           <button class="btn btn-gray" style="margin-top:0" @click="delFloor(good.id)">删除</button>
         </el-col>
 
@@ -75,7 +73,6 @@ export default {
     return {
         status:['','待付款','待制作','待发货','待收货','已完成'],
         //id代表商品编号
-        // page代表頁面 1：购物车 2：訂單 3：訂單列表
         // type代表商品种类 1：服装 2:海报 3:横幅
         // status代表商品状态 1:待付款 2:待制作 3:待发货 4:待收货 5:已完成
         // name代表商品名称
@@ -92,7 +89,6 @@ export default {
           // default:function(){
           //     return {
           //       id:10001,
-          //       page:3,
           //       type:1,
           //       status:1,
           //       name:'冬季男款卫衣',
@@ -103,6 +99,10 @@ export default {
           //       price:200
           //     }
           // }
+      },
+      // page代表頁面 1：购物车 2：訂單 3：訂單列表
+      page:{
+        type:Number
       }
   },
   computed:{

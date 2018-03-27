@@ -23,7 +23,7 @@
                     <li>（<span>{{address.name}}</span> 收）</li>
                     <li>{{address.phone}}</li>
                     <li v-if="address.isDefault"><b>默认地址</b></li>
-                  </label> 
+                  </label>
                 </ul>
               </el-col>
             </el-row>
@@ -47,7 +47,7 @@
           <el-col :span="3"><div>操作</div></el-col>
         </el-row>
       
-        <good-floor v-for="(good,index) in goods" :key="index" :good="good"></good-floor>
+        <good-floor v-for="(good,index) in goods" :key="index" :good="good" :page="2" @delGood="delFloor"></good-floor>
 
         <!-- 留言框 -->
         <el-row>
@@ -56,10 +56,10 @@
         <!-- 详细信息 -->
         <el-row class="detail">
           <ul>
-            <li>总金额：<span class="important">66666</span>元</li>
-            <li>寄送至：福建省 福州市 闽侯县 上街镇 乌龙江大道</li>
-            <li>高新区27号楼2单元101室</li>
-            <li>收货人：团小图 12345678901</li>
+            <li>总金额：<span class="important">{{checkSum}}</span>元</li>
+            <li>寄送至：{{selectAddress.region}}</li>
+            <li>{{selectAddress.detail}}</li>
+            <li>收货人：{{selectAddress.name}} {{selectAddress.phone}}</li>
           </ul>
         </el-row>
         <!-- 提交按钮 -->
@@ -78,15 +78,44 @@ export default {
   data () {
     return {
       listItems: ['buy food', 'play games', 'sleep'],
-      num1: 1,
       liuyan: '',
       goods:[],
-      addressIndex:''
+      addressIndex:'',
+      checkSum:0,//已选中商品的总价
+      selectAddress :[]
     }
   },
   methods: {
-    handleChange(value) {
-      console.log(value);
+    delFloor(id){
+      this.$confirm('删除此商品?', '确认删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 查找要删除的元素位置
+           let index = this.goods.findIndex((item)=>{ return item.id==id});
+           this.checkSum -= this.getSum(this.goods[index]);//总价减少
+           this.goods.splice(index,1);
+           this.$notify.success({
+            title: '成功',
+            message: '已从订单中删除',
+            offset:100
+          });
+        }).catch((err) => {
+          console.log(err);
+          this.$notify.warning({
+              title: '提示',
+              message: '已取消删除',
+              offset:100
+            });        
+        });  
+    },
+    getSum(good){
+      let numSum=0;
+        for (let i = 0; i < good.num.length; i++) {
+          numSum += good.num[i];
+        }
+        return numSum*good.price;
     }
   },
   components:{
@@ -95,13 +124,28 @@ export default {
   computed:{
     addresses(){
       return this.$store.state.addresses;
-    }
+    },
   },
   mounted:function(){
+    //选择默认地址
     this.addressIndex=this.$store.state.addresses.findIndex((item)=>{
       return item.isDefault;
     });
     this.goods = this.$store.state.checkOutGoods;
+    //计算总金额
+    for (let i = 0; i < this.goods.length; i++) {
+      this.checkSum += this.getSum(this.goods[i]);
+    }
+  },
+  watch: {
+    addressIndex: {
+      handler: function(val, OldVal) {
+        //获取当前选中的地址
+        this.selectAddress = this.$store.state.addresses[this.addressIndex];
+        //处理地址中的省市区
+        this.selectAddress.region = this.selectAddress.region.split('/').join(' ');
+      }
+    }
   }
 }
 </script>

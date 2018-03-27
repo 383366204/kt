@@ -87,27 +87,34 @@
             <el-col :span="3"><div>收货人</div></el-col>
             <el-col :span="5"><div>所在地区</div></el-col>
             <el-col :span="6"><div>详细地址</div></el-col>
-            <el-col :span="2"><div>邮编</div></el-col>
+            <el-col :span="2"><div>邮政编码</div></el-col>
             <el-col :span="3"><div>电话号码/手机</div></el-col>
             <el-col :span="3"><div>操作</div></el-col>
           </el-row>
           </el-col>
 
           <el-col :span="22" :offset="1">
-          <el-row class="add-tbody" v-for="(address,index) in addresses" :key="index">
-            <el-col :span="3"><div>{{address.name}}</div></el-col>
-            <el-col :span="5"><div>{{address.region}}</div></el-col>
-            <el-col :span="6"><div>{{address.detail}}</div></el-col>
-            <el-col :span="2"><div>{{address.zipCode}}</div></el-col>
-            <el-col :span="3"><div>{{address.phone}}</div></el-col>
-            <el-col :span="3">
-                <button class="add-btn" @click="editAddress(index)">编辑</button>/<button class="add-btn" @click="delAddress(index)">删除</button>
-            </el-col>
-            <el-col :span="2">
-              <div class="default" v-if="address.isDefault">默认地址</div>
-              <el-button  v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</el-button>
-            </el-col>
-          </el-row>
+            <el-row class="add-tbody" v-for="(address,index) in addresses" :key="index">
+              <el-col :span="3"><div>{{address.name}}</div></el-col>
+              <el-col :span="5"><div>{{address.region}}</div></el-col>
+              <el-col :span="6"><div>{{address.detail}}</div></el-col>
+              <el-col :span="2"><div>{{address.zipCode}}</div></el-col>
+              <el-col :span="3"><div>{{address.phone}}</div></el-col>
+              <el-col :span="3">
+                  <button class="add-btn" @click="editAddress(index)">编辑</button>/<button class="add-btn" @click="delAddress(index)">删除</button>
+              </el-col>
+              <el-col :span="2">
+                <div class="default" v-if="address.isDefault">默认地址</div>
+                <el-button  v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</el-button>
+              </el-col>
+            </el-row>
+            <el-row class="add-tbody" v-if="isAddressEmpty">
+              <el-col :span="24">
+                <div class="noAddress">
+                  您现在暂时没有收货地址哦，请在上方新增一个吧
+                </div>
+              </el-col>
+            </el-row>
           </el-col>
 
         </el-row>
@@ -121,252 +128,286 @@
 
 <script>
 export default {
-  name: 'Address',
+  name: "Address",
   data() {
-      return {
-        addMode:true,
-        addressForm: {
-          province:'',
-          city:'',
-          area:'',
-          detail: '',
-          zipCode: '',
-          name: '',
-          phone: '',
-          setDefault: false
-        },
-        addressRules: {
-          province: [
-            { required: true, message: '请选择所在的省份', trigger: 'submit' }
-          ],
-          city: [
-            { required: true, message: '请选择所在的城市', trigger: 'submit' }
-          ],
-          area: [
-            { required: true, message: '请选择您所在的县或区', trigger: 'submit' }
-          ],
-          detail: [
-            { required: true, message: '请输入您的详细地址', trigger: 'blur' }
-          ],
-          name: [
-            { required: true, message: '请输入您的姓名', trigger: 'blur' },
-            { max: 25, message: '长度不超过25个字符', trigger: 'blur' }
-          ],
-          phone: [
-            { required: true, message: '请输入您的手机号码', trigger: 'blur' },
-            { min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur' }
-          ]
-        },
-        addresses:[],
-        allProvinces:[],
-        allCities:[],
-        allAreas:[],
-        cities:[],
-        areas:[],
-        provinceName:'',
-        cityName:'',
-        areaName:'',
-        editIndex:-1//正在编辑地址的index
-      };
-    },
-    
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let address={name:'',region:'',detail:'',zipCode:'',phone:'',isDefault:false};
-              address.name = this.addressForm.name;
-              // 找出省市区的Id
-              var self = this;//外面的this
-              let provinceTemp = this.allProvinces.find((province)=>{
-                return province.id == self.addressForm.province;
-              });
-              let cityTemp = this.cities.find((city)=>{
-                return city.id == self.addressForm.city;
-              });
-              let areaTemp = this.areas.find((area)=>{
-                return area.id == self.addressForm.area;
-              });
+    return {
+      addMode: true,
+      addressForm: {
+        province: "",
+        city: "",
+        area: "",
+        detail: "",
+        zipCode: "",
+        name: "",
+        phone: "",
+        setDefault: false
+      },
+      addressRules: {
+        province: [
+          { required: true, message: "请选择所在的省份", trigger: "submit" }
+        ],
+        city: [
+          { required: true, message: "请选择所在的城市", trigger: "submit" }
+        ],
+        area: [
+          { required: true, message: "请选择您所在的县或区", trigger: "submit" }
+        ],
+        detail: [
+          { required: true, message: "请输入您的详细地址", trigger: "blur" }
+        ],
+        zipCode:[
+          {pattern:/^\d{6}$/,message:'请输入正确的邮政编码',trigger :'blur'}
+        ],
+        name: [
+          { required: true, message: "请输入您的姓名", trigger: "blur" },
+          { max: 25, message: "长度不超过25个字符", trigger: "blur" }
+        ],
+        phone: [
+          { required: true, message: "请输入您的手机号码", trigger: "blur" },
+          { min: 11, max: 11, message: "请输入正确的手机号码", trigger: "blur" }
+        ]
+      },
+      addresses: [],
+      allProvinces: [],
+      allCities: [],
+      allAreas: [],
+      cities: [],
+      areas: [],
+      provinceName: "",
+      cityName: "",
+      areaName: "",
+      editIndex: -1 //正在编辑地址的index
+    };
+  },
+  computed: {
+    isAddressEmpty: function () {
+      return this.addresses == false;
+    }
+  },
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let address = {
+            name: "",
+            region: "",
+            detail: "",
+            zipCode: "",
+            phone: "",
+            isDefault: !this.addresses
+          };
+          address.name = this.addressForm.name;
+          // 找出省市区的Id
+          var self = this; //外面的this
+          let provinceTemp = this.allProvinces.find(province => {
+            return province.id == self.addressForm.province;
+          });
+          let cityTemp = this.cities.find(city => {
+            return city.id == self.addressForm.city;
+          });
+          let areaTemp = this.areas.find(area => {
+            return area.id == self.addressForm.area;
+          });
 
-              address.region = provinceTemp.provinceName  + '/' + cityTemp.name + '/' +areaTemp.areaName;
-              address.detail = this.addressForm.detail;
-              address.zipCode = this.addressForm.zipCode;
-              address.phone= this.addressForm.phone;
-              address.isDefault =  this.addressForm.setDefault;
-            //新增状态
-            if (this.addMode) {
-              this.addresses.unshift(address);
-              if (address.isDefault) {
-                this.setDefault(0);
-              }
+          address.region =
+            provinceTemp.provinceName +
+            "/" +
+            cityTemp.name +
+            "/" +
+            areaTemp.areaName;
+          address.detail = this.addressForm.detail;
+          address.zipCode = this.addressForm.zipCode;
+          address.phone = this.addressForm.phone;
+          address.isDefault = this.addressForm.setDefault;
+          //新增状态
+          if (this.addMode) {
+            this.addresses.unshift(address);
+            if (address.isDefault) {
+              this.setDefault(0);
             }
+          } else {
             //编辑状态
-            else{
-              this.addresses[this.editIndex] = address;
-              if (address.isDefault) {
-                this.setDefault(this.editIndex);
-              }
-              this.addMode = true;
-              if (!this.addresses.some(item=>{return item.isDefault})) {
-                this.setDefault(0);
-              }
+            this.addresses[this.editIndex] = address;
+            if (address.isDefault) {
+              this.setDefault(this.editIndex);
             }
-            this.resetForm('addressForm');//清空表单
-            this.addressForm.setDefault = false;//清空设为默认
+            this.addMode = true;
+            if (
+              !this.addresses.some(item => {
+                return item.isDefault;
+              })
+            ) {
+              this.setDefault(0);
+            }
           }
-          else {
-            console.log('error submit!!');
-            return false;
-          }
+          this.resetForm("addressForm"); //清空表单
+          this.addressForm.setDefault = false; //清空设为默认
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    getProvince() {
+      this.$ajax
+        .get("../../static/json/queryAllProvinces.json")
+        .then(
+          function(response) {
+            this.allProvinces = response.data.provinces;
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log(error);
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      getProvince(){
-        this.$ajax.get('../../static/json/queryAllProvinces.json')
-        .then(function (response) {
-          this.allProvinces = response.data.provinces;
-        }.bind(this))
-        .catch(function (error) {
+    },
+    getCities() {
+      this.$ajax
+        .get("../../static/json/queryCities.json")
+        .then(
+          function(response) {
+            this.allCities = response.data.cities;
+          }.bind(this)
+        )
+        .catch(function(error) {
           console.log(error);
-        })
-      },
-      getCities(){
-        this.$ajax.get('../../static/json/queryCities.json')
-        .then(function (response) {
-          this.allCities = response.data.cities;
-        }.bind(this))
-        .catch(function (error) {
+        });
+    },
+    getAreas() {
+      this.$ajax
+        .get("../../static/json/queryAllAreas.json")
+        .then(
+          function(response) {
+            this.allAreas = response.data.areas;
+          }.bind(this)
+        )
+        .catch(function(error) {
           console.log(error);
-        })
-      },
-       getAreas(){
-        this.$ajax.get('../../static/json/queryAllAreas.json')
-        .then(function (response) {
-          this.allAreas = response.data.areas;
-        }.bind(this))
-        .catch(function (error) {
-          console.log(error);
-        })
-      },
-      changeProvince(provinceId){
-        this.addressForm.city='';
-        this.addressForm.area='';
-        this.cities = [];
-        this.allCities.forEach(function (city) {
-          if (city.provinceId == provinceId) {
-            this.cities.push(city);
-          }
-        },this);
+        });
+    },
+    changeProvince(provinceId) {
+      this.addressForm.city = "";
+      this.addressForm.area = "";
+      this.cities = [];
+      this.allCities.forEach(function(city) {
+        if (city.provinceId == provinceId) {
+          this.cities.push(city);
+        }
+      }, this);
 
-        if (!this.addMode) {//编辑模式下
-          for (let i = 0; i < this.cities.length; i++) {//找出城市Id
-            if (this.cities[i].name == this.cityName){
-              this.addressForm.city = this.cities[i].id;
-              break;
-            }
+      if (!this.addMode) {
+        //编辑模式下
+        for (let i = 0; i < this.cities.length; i++) {
+          //找出城市Id
+          if (this.cities[i].name == this.cityName) {
+            this.addressForm.city = this.cities[i].id;
+            break;
           }
         }
-      },
-      changeCity(cityId){
-        this.addressForm.area='';
-        this.areas = [];
-        this.allAreas.forEach(function (area) {
-            if (area.cityId == cityId) {
-              this.areas.push(area);
-            }
-        },this);
+      }
+    },
+    changeCity(cityId) {
+      this.addressForm.area = "";
+      this.areas = [];
+      this.allAreas.forEach(function(area) {
+        if (area.cityId == cityId) {
+          this.areas.push(area);
+        }
+      }, this);
 
-        if (!this.addMode) {//编辑模式下
-          for (let i = 0; i < this.areas.length; i++) {//找出区Id
-            if (this.areas[i].areaName == this.areaName){
-              this.addressForm.area = this.areas[i].id;
-              break;
-            }
+      if (!this.addMode) {
+        //编辑模式下
+        for (let i = 0; i < this.areas.length; i++) {
+          //找出区Id
+          if (this.areas[i].areaName == this.areaName) {
+            this.addressForm.area = this.areas[i].id;
+            break;
           }
         }
-      },
-      setDefault(index){
-        for (let i = 0; i < this.addresses.length; i++) {
-          if (i!=index) {
-            this.addresses[i].isDefault =  false;
-          }
-          else{
-            this.addresses[index].isDefault = true;
-          }
+      }
+    },
+    setDefault(index) {
+      for (let i = 0; i < this.addresses.length; i++) {
+        if (i != index) {
+          this.addresses[i].isDefault = false;
+        } else {
+          this.addresses[index].isDefault = true;
         }
-      },
-      delAddress(index){
-        this.$confirm('将删除该收货地址, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      }
+    },
+    delAddress(index) {
+      this.$confirm("将删除该收货地址, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           //如果删除的是默认地址
           if (this.addresses[index].isDefault) {
-            this.addresses.splice(index,1);
+            this.addresses.splice(index, 1);
             //如果还有地址，将第一个设为默认地址
             if (this.addresses[0]) {
               this.addresses[0].isDefault = true;
             }
+          } else {
+            this.addresses.splice(index, 1);
           }
-          else{
-            this.addresses.splice(index,1);
-          }         
           this.$notify.success({
-            title: '成功',
-            message: '删除地址成功',
-            offset:100
+            title: "成功",
+            message: "删除地址成功",
+            offset: 100
           });
-        }).catch(() => {
-            this.$notify.warning({
-            title: '提示',
-            message: '已取消删除',
-            offset:100
-          });           
+        })
+        .catch(() => {
+          this.$notify.warning({
+            title: "提示",
+            message: "已取消删除",
+            offset: 100
+          });
         });
-      },
-      editAddress(index){
-        this.addMode = false;//设定为编辑模式
-        this.editIndex = index;//正在编辑的地址名单
+    },
+    editAddress(index) {
+      this.addMode = false; //设定为编辑模式
+      this.editIndex = index; //正在编辑的地址名单
 
-        this.addressForm.detail = this.addresses[index].detail;
-        this.addressForm.zipCode = this.addresses[index].zipCode;
-        this.addressForm.name = this.addresses[index].name;
-        this.addressForm.phone = this.addresses[index].phone;
-        this.addressForm.setDefault = this.addresses[index].isDefault;
+      this.addressForm.detail = this.addresses[index].detail;
+      this.addressForm.zipCode = this.addresses[index].zipCode;
+      this.addressForm.name = this.addresses[index].name;
+      this.addressForm.phone = this.addresses[index].phone;
+      this.addressForm.setDefault = this.addresses[index].isDefault;
 
-        let region = this.addresses[index].region.split('/');//省市区
+      let region = this.addresses[index].region.split("/"); //省市区
 
-        this.provinceName = region[0];//省份
-        this.cityName = region[1];//城市
-        this.areaName = region[2];//区县
+      this.provinceName = region[0]; //省份
+      this.cityName = region[1]; //城市
+      this.areaName = region[2]; //区县
 
-        for (let i = 0; i < this.allProvinces.length; i++) {//找出省份Id
-          if (this.allProvinces[i].provinceName == this.provinceName) {
-            this.addressForm.province = this.allProvinces[i].id;
-            break;
-          }
+      for (let i = 0; i < this.allProvinces.length; i++) {
+        //找出省份Id
+        if (this.allProvinces[i].provinceName == this.provinceName) {
+          this.addressForm.province = this.allProvinces[i].id;
+          break;
         }
-
-      }
-    },
-    mounted:function(){
-      this.addresses = this.$store.state.addresses;
-      this.getProvince();
-      this.getCities();
-      this.getAreas();
-    },
-    watch:{
-      'addresses':{
-        handler: function(val,OldVal){
-          this.$store.commit('setAddress',this.addresses);
-        },
-        deep:true
       }
     }
-}
+  },
+  mounted: function() {
+    this.addresses = this.$store.state.addresses;
+    this.getProvince();
+    this.getCities();
+    this.getAreas();
+  },
+  watch: {
+    addresses: {
+      handler: function(val, OldVal) {
+        this.$store.commit("setAddress", this.addresses);
+      },
+      deep: true
+    }
+  }
+};
 </script>
 
 <style scoped>

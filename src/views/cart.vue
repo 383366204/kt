@@ -26,7 +26,7 @@
           </div>
         </el-row>
 
-        <good-floor v-for="(good,index) in goods" :key="index" :good="good" @checkGood="checkFloor" @delGood="delFloor" @changeGoodNum="changeNum"></good-floor>
+        <good-floor v-for="(good,index) in goods" :key="index" :good="good" :page="1" @checkGood="checkFloor" @delGood="delFloor" @changeGoodNum="changeNum"></good-floor>
 
         <!-- 底部 -->
         <el-row class="cart-tfoot">
@@ -185,9 +185,25 @@ export default {
         });
         return;
       }
-      let checkOutGoods =  this.goods.filter((item)=>{return item.isCheck});
-      this.$store.commit('setCheckOutGoods',checkOutGoods);
-      this.$router.push({path:'/Order'});
+      if(this.$store.state.addresses==false){
+        this.$alert('您还没有收货地址', '提示', {
+          confirmButtonText: '新增收货地址',
+          type: 'warning'
+        }).then(()=>{
+          this.$router.push({path:'/Address'});
+        }).catch(()=>{
+          this.$notify.warning({
+            title: "提示",
+            message: "需要新增收货地址才能结算",
+            offset: 100
+          });
+        });
+      }
+      else{
+        let checkOutGoods =  this.goods.filter((item)=>{return item.isCheck});
+        this.$store.commit('setCheckOutGoods',checkOutGoods);
+        this.$router.push({path:'/Order'});
+      } 
     }
   },
   components:{ 

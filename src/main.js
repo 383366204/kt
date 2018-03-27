@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import store from './store'
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 import App from './App'
 import router from './router'
@@ -15,7 +15,14 @@ Vue.use(ElementUI)
 Vue.prototype.$ajax = axios;
 
 router.beforeEach((to,from,next) => {
+    //网页跳转到最顶
     window.scrollTo(0, 0);
+    //不是从购物车转到订单页的都转到购物车
+    if(to.name=='Order'&&from.name!='Cart'){
+        next({
+            path:'/Cart'
+        })
+    }
     if (to.meta.requireAuth) {
         if (store.state.token) {
             next();

@@ -50,7 +50,7 @@
       </div>
     </div>
     <!-- 当前权限END -->
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" size="tiny" top="30%" @close="cancelMoPassword('modifyForm')">
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="30%" top="15%" @close="cancelMoPassword('modifyForm')">
       <el-form :model="modifyForm" :rules="modifyRules" ref="modifyForm" label-width="100px">
         <el-form-item label="旧密码" prop="oldPassword">
           <el-input type="password" v-model="modifyForm.oldPassword" auto-complete="off"></el-input>

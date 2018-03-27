@@ -39,7 +39,7 @@
           </el-row>
         </div>
       </el-col>
-      <el-dialog title="移入文件夹" :visible.sync="moveFormVisible" size="tiny" top="40%" @close="cancelMove()">
+      <el-dialog title="移入文件夹" :visible.sync="moveFormVisible" width="30%" top="15%" @close="cancelMove()">
         <el-form>
           <el-form-item label="移动至" :label-width="formLabelWidth">
             <el-select v-model="moveSelect" placeholder="请选择文件夹">

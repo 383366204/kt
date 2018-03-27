@@ -16,7 +16,7 @@
               <el-col :span="3"><div>操作</div></el-col>
             </el-row>
 
-            <good-floor v-for="(good,index) in goods" :key="index" :good="good"></good-floor>
+            <good-floor v-for="(good,index) in goods" :key="index" :good="good" :page="3"></good-floor>
 
             <!-- 分页 -->
             <el-pagination
@@ -51,7 +51,6 @@ export default {
       activeName: 'first',
       goods:[{
         id:10001,
-        page:3,
         type:1,
         status:1,
         name:'冬季男款卫衣',
@@ -62,7 +61,6 @@ export default {
         price:200
       },{
         id:10002,
-        page:3,
         type:2,
         status:2,
         name:'记忆协会海报',
@@ -73,7 +71,6 @@ export default {
         price:50
       },{
         id:10003,
-        page:3,
         type:3,
         status:3,
         name:'横幅',
@@ -84,7 +81,6 @@ export default {
         price:50
       },{
         id:10004,
-        page:3,
         type:3,
         status:4,
         name:'横幅',
@@ -95,7 +91,6 @@ export default {
         price:50
       },{
         id:10005,
-        page:3,
         type:3,
         status:5,
         name:'横幅',

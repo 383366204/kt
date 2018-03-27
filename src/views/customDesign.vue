@@ -89,7 +89,7 @@
           ],
           phone:[
               {required:true,message: '请输入您的手机号码',trigger :'blur'},
-              {pattern:'/^1\d{10}$/',message:'请输入正确的手机号码',trigger :'blur'}
+              {pattern:/^1\d{10}$/,message:'请输入正确的手机号码',trigger :'blur'}
           ],
           email:[
               {required:true,message: '请输入您的邮箱',trigger :'blur'},

@@ -50,95 +50,138 @@
       </div>
     </div>
     <!-- 当前权限END -->
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" size="tiny" top="30%" @close="cancelMoPassword('modifyForm')">
+      <el-form :model="modifyForm" :rules="modifyRules" ref="modifyForm" label-width="100px">
+        <el-form-item label="旧密码" prop="oldPassword">
+          <el-input type="password" v-model="modifyForm.oldPassword" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input type="password" v-model="modifyForm.newPassword" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPassword">
+          <el-input type="password" v-model="modifyForm.confirmPassword" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('modifyForm')">提交</el-button>
+          <el-button @click="cancelMoPassword('modifyForm')">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
   </main>
 </template>
 
 <script>
 export default {
   data() {
-    return{
-      activeNum:1,
-      userInfo:{
-        email:'383366204@qq.com',
-        phone:'18928651029'
+    var confirmPassword = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入新密码"));
+      } else if (value !== this.modifyForm.newPassword) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
       }
-    }
+    };
+    return {
+      activeNum: 1,
+      userInfo: {
+        email: "383366204@qq.com",
+        phone: "18928651029"
+      },
+      dialogFormVisible: false,
+      modifyForm: {
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: ""
+      },
+      modifyRules: {
+        oldPassword: [
+          { required: true, message: "请输入您的旧密码", trigger: "blur" }
+        ],
+        newPassword: [
+          { required: true, message: "请输入您的新密码", trigger: "blur" },
+          {
+            min: 6,
+            max: 18,
+            message: "密码长度在 6 到 18 个字符",
+            trigger: "blur"
+          }
+        ],
+        confirmPassword: [{ validator: confirmPassword, trigger: "blur" }]
+      }
+    };
   },
-  methods:{
-    activeTab(activeNum){
+  methods: {
+    activeTab(activeNum) {
       this.activeNum = activeNum;
     },
-    changeEmail(){
-      this.$prompt('请输入新邮箱', '注意', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: '邮箱格式不正确'
-        }).then(({ value }) => {
+    changeEmail() {
+      this.$prompt("请输入新邮箱", "修改邮箱", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        inputErrorMessage: "邮箱格式不正确"
+      })
+        .then(({ value }) => {
           this.$notify.success({
-            title: '成功',
-            message: '邮箱修改成功',
-            offset:100
+            title: "成功",
+            message: "邮箱修改成功",
+            offset: 100
           });
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$notify.error({
-            title: '失败',
-            message: '邮箱修改失败',
-            offset:100
-          });       
+            title: "失败",
+            message: "邮箱修改失败",
+            offset: 100
+          });
         });
     },
-    changePhone(){
-      this.$prompt('请输入新手机', '注意', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^1\d{10}$/,
-          inputErrorMessage: '手机格式不正确'
-        }).then(({ value }) => {
+    changePhone() {
+      this.$prompt("请输入新手机", "修改手机", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^1\d{10}$/,
+        inputErrorMessage: "手机格式不正确"
+      })
+        .then(({ value }) => {
           this.$notify.success({
-            title: '成功',
-            message: '手机修改成功',
-            offset:100
+            title: "成功",
+            message: "手机修改成功",
+            offset: 100
           });
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$notify.error({
-            title: '失败',
-            message: '手机修改失败',
-            offset:100
-          });       
+            title: "失败",
+            message: "手机修改失败",
+            offset: 100
+          });
         });
     },
-    changePassword(){
-      this.$prompt('请输入密码', '注意', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/,
-          inputErrorMessage: '密码是长度在 6 到 18 个数字W或字母组成的字符串'
-        }).then(({ value }) => {
-          this.$notify.success({
-            title: '成功',
-            message: '密码修改成功',
-            offset:100
-          });
-        }).catch(() => {
-          this.$notify.error({
-            title: '失败',
-            message: '密码修改失败',
-            offset:100
-          });       
-        });
+    changePassword() {
+      this.dialogFormVisible = true;
+    },
+    cancelMoPassword(formName) {
+      this.dialogFormVisible = false;
+      this.$refs[formName].resetFields();
+      this.$notify.error({
+        title: "失败",
+        message: "密码修改失败",
+        offset: 100
+      });
     }
   }
-}
-
+};
 </script>
 <style>
-body{
+body {
   background-color: #f4f8fb !important;
 }
 </style>
 <style scoped>
-body{
+body {
   background-color: #f4f8fb !important;
 }
 main {
@@ -148,11 +191,11 @@ main {
   font-size: 14px;
 }
 main:after {
-  content:"";
-  height:0;
-  line-height:0;
-  display:block;
-  visibility:hidden;
+  content: "";
+  height: 0;
+  line-height: 0;
+  display: block;
+  visibility: hidden;
   clear: both;
 }
 img {
@@ -161,84 +204,84 @@ img {
 button {
   cursor: pointer;
 }
-a{
-  text-decoration:none;
+a {
+  text-decoration: none;
 }
-.iconfont{
+.iconfont {
   margin-right: 10px;
   color: #41b9ea;
 }
 /*左边灰色框*/
-.nav{
+.nav {
   width: 240px;
   background-color: #ebf0f4;
   height: 600px;
   float: left;
 }
 /*左边灰色框头像及信息*/
-.nav-head{
+.nav-head {
   border-bottom: 1px solid #fff;
   margin: 0 20px;
   padding: 30px 0 15px;
 }
 .nav-head:after {
-  content:"";
-  height:0;
-  line-height:0;
-  display:block;
-  visibility:hidden;
+  content: "";
+  height: 0;
+  line-height: 0;
+  display: block;
+  visibility: hidden;
   clear: both;
 }
-.nav-head_img{
+.nav-head_img {
   float: left;
   width: 69px;
   height: 69px;
   margin-left: 20px;
   border-radius: 50%;
 }
-.nav-head_msg{
+.nav-head_msg {
   float: left;
   height: 69px;
   margin-left: 14px;
 }
-.nav-head_msg .name{
+.nav-head_msg .name {
   margin-top: 14px;
 }
-.nav-head_msg .vip{
+.nav-head_msg .vip {
   margin-top: 6px;
   color: #f2a018;
 }
-.icon-huiyuan1{
+.icon-huiyuan1 {
   font-size: 18px;
   color: #f2a018;
 }
 /*左边灰色框跳转按钮*/
-.nav ul{
+.nav ul {
   margin: 15px 0;
 }
-.nav ul li{
+.nav ul li {
   height: 50px;
   line-height: 50px;
   font-size: 16px;
-  cursor:pointer;
+  cursor: pointer;
   margin-bottom: 8px;
 }
-.nav ul li.active a{
+.nav ul li.active a {
   background-color: #fff;
   color: #2eb4e9;
 }
-.nav ul li a{
+.nav ul li a {
   padding-left: 40px;
-  display: block;/*给a标签设置成块级元素*/
+  display: block; /*给a标签设置成块级元素*/
   width: 100%;
   height: 100%;
 }
-.nav ul li .iconfont{
+.nav ul li .iconfont {
   font-size: 18px;
 }
 
 /*右边视图框*/
-.view{
+.view {
   position: relative;
   width: 800px;
   background-color: #fff;
@@ -246,8 +289,8 @@ a{
   float: left;
   margin-top: 14px;
 }
-.view:before{
-  content:" ";
+.view:before {
+  content: " ";
   height: 0;
   width: 0;
   position: absolute;
@@ -256,11 +299,11 @@ a{
   border-right: 14px solid transparent;
 }
 /*视图框标题*/
-.view-title{
+.view-title {
   margin: 30px;
   border-bottom: 2px solid #ebf0f4;
 }
-.view-title p{
+.view-title p {
   width: 70px;
   font-size: 16px;
   height: 24px;
@@ -268,8 +311,8 @@ a{
   text-align: center;
   position: relative;
 }
-.view-title p:after{
-  content:"";
+.view-title p:after {
+  content: "";
   width: 70px;
   height: 2px;
   position: absolute;
@@ -278,29 +321,29 @@ a{
   border-bottom: 2px solid #2eb4e9;
 }
 /*视图框内容*/
-.view-content{
+.view-content {
   margin: 40px 30px;
   padding-left: 70px;
 }
-.view-content ul li{
+.view-content ul li {
   margin-bottom: 30px;
 }
-.view-content ul li a{
+.view-content ul li a {
   margin-left: 40px;
   color: #2eb4e9;
   cursor: pointer;
 }
 /*视图框banner*/
-.view-banner{
+.view-banner {
   padding: 20px;
   padding-bottom: 0;
 }
-.view-banner img{
+.view-banner img {
   width: 760;
   height: 260px;
 }
 /*视图框平行四边形权限*/
-.parallelogram li{
+.parallelogram li {
   width: 160px;
   text-align: center;
   transform: skew(-30deg);
@@ -309,28 +352,31 @@ a{
   display: inline-block;
   color: #fff;
 }
-.parallelogram li p{
+.parallelogram li p {
   transform: skew(30deg);
 }
-.parallelogram li:nth-of-type(odd){
+.parallelogram li:nth-of-type(odd) {
   margin-left: 20px;
 }
-.parallelogram li:nth-of-type(even){
+.parallelogram li:nth-of-type(even) {
   margin-left: 100px;
 }
-.parallelogram li:nth-of-type(1){
+.parallelogram li:nth-of-type(1) {
   background-color: #8fc320;
 }
-.parallelogram li:nth-of-type(2){
+.parallelogram li:nth-of-type(2) {
   background-color: #6d9bcf;
 }
-.parallelogram li:nth-of-type(3){
+.parallelogram li:nth-of-type(3) {
   background-color: #e65399;
 }
-.parallelogram li:nth-of-type(4){
+.parallelogram li:nth-of-type(4) {
   background-color: #f39801;
 }
-.parallelogram li:nth-of-type(5){
+.parallelogram li:nth-of-type(5) {
   background-color: #2eb4e9;
+}
+.el-dialog{
+  width:30%;
 }
 </style>

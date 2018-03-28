@@ -380,7 +380,7 @@ export default {
 
       let region = this.addresses[index].region.split("/"); //省市区
 
-      this.provinceName = region[0]; //省份
+      this.provinceName = region[0]; //省份     
       this.cityName = region[1]; //城市
       this.areaName = region[2]; //区县
 
@@ -388,6 +388,22 @@ export default {
         //找出省份Id
         if (this.allProvinces[i].provinceName == this.provinceName) {
           this.addressForm.province = this.allProvinces[i].id;
+          this.changeProvince(this.addressForm.province);
+          break;
+        }
+      }
+      for (let i = 0; i < this.cities.length; i++) {
+        //找出城市Id
+        if (this.cities[i].name == this.cityName) {
+          this.addressForm.city = this.cities[i].id;
+          this.changeCity(this.addressForm.city);
+          break;
+        }
+      }
+      for (let i = 0; i < this.areas.length; i++) {
+        //找出区县Id
+        if (this.areas[i].areaName == this.areaName) {
+          this.addressForm.area = this.areas[i].id;
           break;
         }
       }

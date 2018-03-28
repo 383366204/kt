@@ -13,7 +13,7 @@
       <ul>
         <li :class="{active:activeNum==1}" @click="activeTab(1)"><a><i class="iconfont icon-zhanghao"></i>账号设置</a></li>
         <li :class="{active:activeNum==2}" @click="activeTab(2)"><a><i class="iconfont icon-yanjing"></i>当前权限</a></li>
-        <li :class="{active:activeNum==3}" @click="activeTab(3)"><a><i class="iconfont icon-shengji"></i>升级VIP会员</a></li>
+        <li :class="{active:activeNum==3}" @click="activeTab(3)"><a><i class="iconfont icon-shengji"></i>会员升级</a></li>
       </ul>
     </div>
     <!-- 账号设置 -->
@@ -50,6 +50,49 @@
       </div>
     </div>
     <!-- 当前权限END -->
+
+    <!-- 升级VIP会员 -->
+    <div class="view" v-if="activeNum==3">
+      <div class="view-title">
+        <p>会员升级</p>
+      </div>
+      <div class="view-content" style="padding-left:0">
+        <el-row type="flex" justify="space-around">
+          <el-col :span="6" v-for="(prices,index) in vipPrices" :key="index" @click.native="selectVIP(index)">
+            <el-card :class="{'select':selectVIPType==index}" :body-style="[{ 'padding':'4px 8px 16px 8px'},{'text-align':'center'}]">                    
+              <div style="font-size:24px; padding: 4px; color:#2eb4e9">
+                ¥{{prices.price}}
+              </div>
+              <div style="font-size:18px;padding: 2px; color:#aaaaaa">
+                {{prices.time}}个月（{{prices.price/prices.time}}元/月）
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="24">
+              <h1 class="payOption">支付方式</h1>
+              <div class="payOptionIcon">
+                <div @click="payOption=0" :class="{'select':payOption==0}"><i class="iconfont icon-WePayLogo"></i></div>
+                <div @click="payOption=1" :class="{'select':payOption==1}"><i class="iconfont icon-weixinzhifu"></i></div>              
+              </div>             
+          </el-col>      
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="24" class="checkOut">
+            <div><h1>共计：</h1><span>{{vipPrices[selectVIPType].price}}</span><h1>元</h1></div>       
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-button class="payButton" type="primary" @click="pay()">支付</el-button>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+    <!-- 升级VIP会员END -->
+
+    <!-- 修改密码的模式窗 -->
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="30%" top="15%" @close="cancelMoPassword('modifyForm')">
       <el-form :model="modifyForm" :rules="modifyRules" ref="modifyForm" label-width="100px">
         <el-form-item label="旧密码" prop="oldPassword">
@@ -84,7 +127,7 @@ export default {
       }
     };
     return {
-      activeNum: 1,
+      activeNum: 3,
       userInfo: {
         email: "383366204@qq.com",
         phone: "18928651029"
@@ -109,7 +152,11 @@ export default {
           }
         ],
         confirmPassword: [{ validator: confirmPassword, trigger: "blur" }]
-      }
+      },
+      vipPrices:[{'price':20,'time':1},{'price':90,'time':6},{'price':120,'time':12}],
+      //0代表第一种vip方案
+      selectVIPType:0,
+      payOption:0
     };
   },
   methods: {
@@ -171,6 +218,12 @@ export default {
         message: "密码修改失败",
         offset: 100
       });
+    },
+    selectVIP(index){
+      this.selectVIPType=index;
+    },
+    pay(){
+      console.log('pay');
     }
   }
 };
@@ -323,7 +376,7 @@ a {
 /*视图框内容*/
 .view-content {
   margin: 40px 30px;
-  padding-left: 70px;
+  padding-left: 50px;
 }
 .view-content ul li {
   margin-bottom: 30px;
@@ -378,5 +431,69 @@ a {
 }
 .el-dialog{
   width:30%;
+}
+.el-card{
+  cursor: pointer;
+}
+.el-card:hover,.el-card.select{
+  box-shadow:none;
+  border:2px solid rgba(46, 180, 233,0.8);
+}
+.payOption{
+  font-size:16px;
+  color:#555;
+  margin-top:32px;
+  margin-left:30px;
+}
+.payOptionIcon div{
+  position: relative;
+  overflow: hidden;
+  width:170px;
+  height: 66px;
+  display: inline-block;
+  border-radius:3px;
+  margin-left:30px;
+  margin-top:20px;
+}
+.payOptionIcon div:hover,.payOptionIcon div.select{
+  box-shadow:none;
+  border:2px solid rgba(46, 180, 233,0.8);
+}
+.payOptionIcon div:first-child i{
+  position: absolute;
+  top: -7px;
+  left:-16px;
+  font-size:80px;
+  color:#00a7ef;
+  cursor: pointer;
+}
+.payOptionIcon div:last-child i{
+  position: absolute;
+  top:-50px;
+  left:6px;
+  font-size:160px;
+  color:#14b83b;
+  cursor: pointer;
+}
+.checkOut{
+  font-size:16px;
+  color:#555;
+  margin-top:50px;
+  margin-left:30px;
+}
+.checkOut h1{
+  display: inline-block;
+}
+.checkOut div span{
+  color:#2eb4e9;
+  font-size:24px;
+  display: inline-block;
+  padding:0px 10px 0px 0px;
+}
+.payButton{
+  width:120px;
+  margin-left:30px;
+  margin-top:40px;
+  background-color: rgba(46, 180, 233,1);
 }
 </style>

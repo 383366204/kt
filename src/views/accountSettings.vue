@@ -3,7 +3,17 @@
     <div class="nav">
       <div class="nav-head">
         <div class="nav-head_img">
-          <img src="../assets/img/head-pic.png">
+          <!-- <img src="../assets/img/head-pic.png"> -->
+          <el-tooltip effect="dark" content="点击更换头像" placement="left">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload">          
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            </el-upload>
+          </el-tooltip>
         </div>
         <div class="nav-head_msg">
           <p class="name">团小图</p>
@@ -26,6 +36,7 @@
           <li><i class="iconfont icon-youxiang"></i>邮箱：<span>{{userInfo.email}}</span><a @click="changeEmail()">更改</a></li>
           <li><i class="iconfont icon-shouji"></i>手机：<span>{{userInfo.phone}}</span><a @click="changePhone()">更改</a></li>
           <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>
+          <li><i class="iconfont icon-dingwei"></i>收货地址<router-link to="/Address">管理</router-link></li>
           <li><i class="iconfont icon-lianjie"></i>分享给好友</li>
         </ul>
       </div>
@@ -106,7 +117,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('modifyForm')">提交</el-button>
-          <el-button @click="cancelMoPassword('modifyForm')">取消</el-button>
+          <el-button @click="dialogFormVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -127,7 +138,7 @@ export default {
       }
     };
     return {
-      activeNum: 3,
+      activeNum: 1,
       userInfo: {
         email: "383366204@qq.com",
         phone: "18928651029"
@@ -156,7 +167,9 @@ export default {
       vipPrices:[{'price':20,'time':1},{'price':90,'time':6},{'price':120,'time':12}],
       //0代表第一种vip方案
       selectVIPType:0,
-      payOption:0
+      payOption:0,
+      //头像的路径
+      imageUrl: '../static/head-pic.png'
     };
   },
   methods: {
@@ -224,6 +237,30 @@ export default {
     },
     pay(){
       console.log('pay');
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log(valid);
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
     }
   }
 };
@@ -291,9 +328,10 @@ a {
   height: 69px;
   margin-left: 20px;
   border-radius: 50%;
+  overflow: hidden;
 }
 .nav-head_msg {
-  float: left;
+  float: right;
   height: 69px;
   margin-left: 14px;
 }
@@ -332,6 +370,22 @@ a {
 .nav ul li .iconfont {
   font-size: 18px;
 }
+/* 上传头像按钮样式 */
+  .avatar-uploader{
+    width: 69px;
+    height: 69px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    float: left;
+  }
+
+  /* 头像相片样式 */
+  .avatar {
+    width: 69px;
+    height: 69px;
+    display: block;
+  }
 
 /*右边视图框*/
 .view {
@@ -496,4 +550,5 @@ a {
   margin-top:40px;
   background-color: rgba(46, 180, 233,1);
 }
+
 </style>

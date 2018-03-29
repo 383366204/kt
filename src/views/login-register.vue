@@ -16,7 +16,7 @@
                           <el-input type="password" v-model="loginForm.password" @keyup.enter.native="submitForm('loginForm')" auto-complete="off" placeholder="密码"></el-input>
                       </el-form-item>
                       <el-form-item label-width="0">
-                        <el-button type="text">忘记密码</el-button>
+                        <el-button type="text" @click="forgetPassword()">忘记密码</el-button>
                         <el-button type="text" @click="changeForm()">立即注册</el-button>
                       </el-form-item>
                       <el-form-item label-width="0">
@@ -47,7 +47,7 @@
                         </el-form-item>
                         <el-form-item label-width="0" prop="verification">
                             <el-input v-model="registerForm.verification" @keyup.enter.native="submitForm('registerForm')" auto-complete="off" placeholder="验证码"></el-input>
-                            <el-button type="primary" :class="{'verify':gettingVerification}" @click="getVerification()">获取验证码<span v-if="gettingVerification">({{timing}})</span></el-button>
+                            <el-button type="primary" :class="{'verify':registerVerification}" @click="getVerification('registerForm')"><span v-if="registerVerification">重发({{registerTiming}})</span><span v-else>获取验证码</span></el-button>
                         </el-form-item>
                         <el-form-item label-width="0" prop="agree">
                           <el-checkbox-group v-model="registerForm.agree">
@@ -66,12 +66,35 @@
               </el-row>             
             </el-col>
         </el-row>
+        <!-- 忘记密码的模式窗 -->
+        <el-dialog title="忘记密码" :visible.sync="forgetPasswordShow" width="30%" top="10%" @close="cancelForgetPassword('forgetPasswordForm')">
+          <el-form :model="forgetPasswordForm" :rules="forgetPasswordRules" ref="forgetPasswordForm" label-width="100px">
+            <el-form-item label="手机或邮箱" prop="userId">
+              <el-input type="password" v-model="forgetPasswordForm.userId" auto-complete="off"></el-input>
+            </el-form-item>           
+            <el-form-item label="新密码" prop="newPassword">
+              <el-input type="password" v-model="forgetPasswordForm.newPassword" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="confirmPassword">
+              <el-input type="password" v-model="forgetPasswordForm.confirmPassword" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="验证码" prop="verification">
+                <el-input class="forgetVerification" v-model="forgetPasswordForm.verification" @keyup.enter.native="submitForm('forgetPasswordForm')" auto-complete="off" placeholder="验证码"></el-input>
+                <el-button class="forgetVerification" type="primary" :class="{'verify':forgetPasswordVerification}" @click="getVerification('forgetPasswordForm')"><span v-if="forgetPasswordVerification">重发({{forgetPasswordTiming}})</span><span v-else>获取验证码</span></el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('forgetPasswordForm')">提交</el-button>
+              <el-button @click="forgetPasswordShow = false">取消</el-button>
+            </el-form-item>           
+          </el-form>
+        </el-dialog>
     </main>    
 </template>
 
 <script>
 export default {
   data() {
+    //验证手机或邮箱
     let phoneOrEmail = (rule, value, callback) => {
       let phoneRex = /^1\d{10}$/;
       let emailRex = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
@@ -83,9 +106,18 @@ export default {
         callback(new Error("请输入正确的手机号或邮箱"));
       }
     };
+    //验证确认密码
+    var confirmPassword = (rule, value, callback) => {
+      if (value !== this.forgetPasswordForm.newPassword) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
       login: true,
-      timing: 60,
+      registerTiming: 60,
+      forgetPasswordTiming:60,
       loginForm: {
         userId: "",
         password: ""
@@ -119,7 +151,42 @@ export default {
           }
         ]
       },
-      gettingVerification: false
+      registerVerification: false,
+      forgetPasswordShow:false,
+      forgetPasswordForm: {
+        userId: "",
+        newPassword: "",
+        confirmPassword: "",
+        verification:""
+      },
+      forgetPasswordRules: {
+        userId: [
+          { required: true, message: "请输入您的手机或邮箱", trigger: "blur" },
+          { validator: phoneOrEmail, trigger: "blur" }
+        ],
+        newPassword: [
+          { required: true, message: "请输入您的新密码", trigger: "blur" },
+          {
+            min: 6,
+            max: 18,
+            message: "密码长度在 6 到 18 个字符",
+            trigger: "blur"
+          }
+        ],
+        confirmPassword: [
+          { required: true, message: "请再次输入新密码", trigger: "blur" },
+          { validator: confirmPassword, trigger: "blur" }
+        ],
+        verification:[
+          {
+            required: true,
+            len: 6,
+            message: "请输入6位数字的验证码",
+            trigger: "blur"
+          }
+        ]
+      },
+      forgetPasswordVerification: false
     };
   },
   methods: {
@@ -131,6 +198,9 @@ export default {
           }
           else if(formName == 'registerForm'){
             
+          }
+          else if(formName == 'forgetPasswordForm'){
+            console.log('forgetPassword');
           }
         } else {
           console.log("error submit!!");
@@ -144,20 +214,37 @@ export default {
       this.$refs["registerForm"].resetFields();
     },
     // 获取验证码
-    getVerification() {
-      if (this.gettingVerification == true) {
-        return;
-      }
-      this.gettingVerification = true;
-      let intervalId = setInterval(() => {
-        if (this.timing == 0) {
-          clearInterval(intervalId);
-          this.gettingVerification = false;
-          this.timing = 60;
-        } else {
-          this.timing--;
+    getVerification(verifiForm) {
+      if (verifiForm=='registerForm') {
+        if (this.registerVerification == true) {
+          return;
         }
-      }, 1000);
+        this.registerVerification = true;
+        let intervalId = setInterval(() => {
+          if (this.registerTiming == 0) {
+            clearInterval(intervalId);
+            this.registerVerification = false;
+            this.registerTiming = 60;
+          } else {
+            this.registerTiming--;
+          }
+        }, 1000);
+      }
+      else if(verifiForm=='forgetPasswordForm'){
+        if (this.forgetPasswordVerification == true) {
+          return;
+        }
+        this.forgetPasswordVerification = true;
+        let intervalId = setInterval(() => {
+          if (this.forgetPasswordTime == 0) {
+            clearInterval(intervalId);
+            this.forgetPasswordVerification = false;
+            this.forgetPasswordTime = 60;
+          } else {
+            this.forgetPasswordTime--;
+          }
+        }, 1000);
+      }
     },
     checkUser() {
       this.$ajax
@@ -186,6 +273,13 @@ export default {
             offset:100
           });
         });
+    },
+    forgetPassword(){
+      this.forgetPasswordShow=true;
+    },
+    cancelForgetPassword(formName){
+      this.forgetPasswordShow = false;
+      this.$refs[formName].resetFields();
     }
   }
 };
@@ -273,11 +367,13 @@ export default {
 /* 忘记密码按钮样式 */
 .main .login .el-form .el-form-item:nth-child(3) .el-button:nth-child(1) {
   color: #c0c0c0;
+  border: none;
 }
 /* 立即注册按钮样式 */
 .main .login .el-form .el-form-item:nth-child(3) .el-button:nth-child(2) {
   float: right;
   color: #2eb4e9;
+  border: none;
 }
 /* 提交按钮样式 */
 .main .submitBtn {
@@ -308,20 +404,31 @@ export default {
   background-color: #2eb4e9;
   color: #fff;
 }
-
-/* 最后的按钮居中 */
+.register .el-checkbox-group{
+  height: 30px;
+}
+/* 最后的已有帐号按钮居中 */
 .register .el-form .el-col:last-child {
   display: flex;
   justify-content: center;
 }
 
-/* 最后的按钮样式 */
+/* 最后的已有帐号按钮样式 */
 .register .el-form .el-col:last-child .el-button {
   color: #c1c1c1;
+  border: none;
 }
 .verify {
   background-color: #c1c1c1 !important;
   cursor: not-allowed;
   border-color: #c1c1c1;
+}
+/* 忘记密码模式窗口的验证码输入框的样式 */
+.forgetVerification.el-input{
+  width: 70%;
+}
+/* 忘记密码模式窗口的验证码按钮的样式 */
+.forgetVerification.el-button{
+  width: 29%;
 }
 </style>

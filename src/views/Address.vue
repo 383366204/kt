@@ -488,7 +488,7 @@ button {
 }
 /*编辑、删除按钮*/
 .add-btn {
-  background-color: #fff;
+  background-color: transparent;
   border: none;
   color: #555;
   font-size: 16px;

@@ -3,11 +3,11 @@
          <el-row type="flex" justify="center">
           <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
-             <router-link to="NewDesign"><el-button type="text">新建设计</el-button></router-link>
              <router-link to="MyDesign"><el-button type="text">我的设计</el-button></router-link>
-             <router-link to="Document"><el-button type="text">帮助文档</el-button></router-link>
-             <router-link to="Download"><el-button type="text">APP下载</el-button></router-link>
              <router-link to="CustomDesign"><el-button type="text">定制设计</el-button></router-link>
+             <el-input class="searchBox" placeholder="搜索" v-model="searchContent">
+              <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
           </el-col>
           <el-col :span="4">      
               <router-link to="/Service">             
@@ -60,7 +60,7 @@
   export default {
     data() {
       return {
-
+        searchContent:''
       };
     },
     methods:{
@@ -120,20 +120,20 @@
       flex-basis: 360px;
     }
     /* 按钮样式 */
-    .header .el-row .el-button{
+    .header .el-row a .el-button{
       width: 90px;
       height: 31px;
-      line-height: 12px;
+      line-height: 8px;
       font-size: 18px;
       color: #FFF;
     }
     /* 有icon的按钮 */
-    .header .el-row .el-button.hasIcon{
+    .header .el-row a .el-button.hasIcon{
       width: 110px;
       height: 32px;
     }
     /* 按钮hover样式 */
-    .header .el-row .el-button:hover{
+    .header .el-row a .el-button:hover{
        color: #2eb4e9;
        background-color: #FFF;
     }
@@ -206,5 +206,37 @@
     .icon{
       color:#2eb4e9;
       padding-right: 6px;
+    }
+    /* 搜索框的样式 */
+    .searchBox{
+      margin-left: 10px;
+      width: 530px;
+    }
+    /* 搜索框左边输入框的样式 */
+    .searchBox >>> .el-input__inner{
+      border-color:#45c1ee;
+      border-right: none;
+      outline:none;
+      width: 450px;
+    }
+    /* 搜索框右边按钮的样式 */
+    .searchBox .el-button{
+      width: 80px;
+      background-color: inherit;
+      color: #45c1ee;
+    }
+    .searchBox >>> .el-input-group__append{
+       border-color: #45c1ee;
+       border-left: 1px solid #dcdfe6;
+       background-color: #fff;
+    }
+    .searchBox >>> .el-input__inner::-webkit-input-placeholder{
+       font-size:16px;
+    }
+    .searchBox >>> .el-icon-search{
+       position: absolute;
+       top: 10px;
+       left: 30px;
+       font-size: 20px;
     }
 </style>

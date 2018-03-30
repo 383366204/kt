@@ -142,6 +142,9 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "blur" }
         ],
+        nickName:[
+          {pattern:/^[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}$/, message: "昵称为 2 到 10 个中英文字符组成", trigger: "blur"}
+        ],
         verification: [
           {
             required: true,

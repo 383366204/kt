@@ -16,8 +16,8 @@
           </el-tooltip>
         </div>
         <div class="nav-head_msg">
-          <p class="name">团小图</p>
-          <p class="vip">超级会员<i class="iconfont icon-huiyuan1"></i></p>
+          <p class="name">{{userInfo.nickName}}</p>
+          <p class="vip">{{userInfo.level}}<i class="iconfont icon-huiyuan1"></i></p>
         </div>
       </div>
       <ul>
@@ -33,8 +33,10 @@
       </div>
       <div class="view-content">
         <ul>
+          <li><i class="iconfont icon-zhanghao"></i>昵称：<span>{{userInfo.nickName}}</span><a @click="changeNickName()">更改</a></li>
+          <li><i class="iconfont icon-huiyuan"></i>会员等级：<span>{{userInfo.level}}</span><a @click="activeTab(3)">升级</a></li>
           <li><i class="iconfont icon-youxiang"></i>邮箱：<span>{{userInfo.email}}</span><a @click="changeEmail()">更改</a></li>
-          <li><i class="iconfont icon-shouji"></i>手机：<span>{{userInfo.phone}}</span><a @click="changePhone()">更改</a></li>
+          <li><i class="iconfont icon-shouji"></i>手机：<span>{{userInfo.phone}}</span><a @click="changePhone()">更改</a></li>         
           <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>
           <li><i class="iconfont icon-dingwei"></i>收货地址<router-link to="/Address">管理</router-link></li>
           <li><i class="iconfont icon-lianjie"></i>分享给好友</li>
@@ -140,6 +142,8 @@ export default {
     return {
       activeNum: 1,
       userInfo: {
+        nickName:'孙先生',
+        level:'普通会员',
         email: "383366204@qq.com",
         phone: "18928651029"
       },
@@ -175,6 +179,28 @@ export default {
   methods: {
     activeTab(activeNum) {
       this.activeNum = activeNum;
+    },
+    changeNickName() {
+      this.$prompt("请输入新昵称", "修改昵称", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}$/,
+        inputErrorMessage: "昵称为2到10个中英文字符组成"
+      })
+        .then(({ value }) => {
+          this.$notify.success({
+            title: "成功",
+            message: "昵称修改成功",
+            offset: 100
+          });
+        })
+        .catch(() => {
+          this.$notify.error({
+            title: "失败",
+            message: "昵称修改失败",
+            offset: 100
+          });
+        });
     },
     changeEmail() {
       this.$prompt("请输入新邮箱", "修改邮箱", {

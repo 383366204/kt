@@ -141,12 +141,6 @@ export default {
     };
     return {
       activeNum: 1,
-      userInfo: {
-        nickName:'孙先生',
-        level:'普通会员',
-        email: "383366204@qq.com",
-        phone: "18928651029"
-      },
       dialogFormVisible: false,
       modifyForm: {
         oldPassword: "",
@@ -288,6 +282,11 @@ export default {
       }
       return isJPG && isLt2M;
     }
+  },
+  computed:{
+    userInfo(){
+      return this.$store.state.userInfo;
+    },
   }
 };
 </script>

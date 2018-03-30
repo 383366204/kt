@@ -7,9 +7,7 @@ import Cart from '@/views/cart'
 import DetailPost from '@/views/detailPost'
 import DetailClothes from '@/views/detailClothes'
 import DetailBanner from '@/views/detailBanner'
-import SearchPost from '@/views/searchPost'
-import SearchClothes from '@/views/searchClothes'
-import SearchBanner from '@/views/searchBanner'
+import Search from '@/views/search'
 import DesignOverview from '@/views/designOverview'
 
 import LoginRegister from '@/views/login-register'
@@ -79,19 +77,9 @@ export default new Router({
             component: DetailBanner
         },
         {
-            path: '/SearchPost',
-            name: 'SearchPost',
-            component: SearchPost
-        },
-        {
-            path: '/SearchClothes',
-            name: 'SearchClothes',
-            component: SearchClothes
-        },
-        {
-            path: '/SearchBanner',
-            name: 'SearchBanner',
-            component: SearchBanner
+            path: '/Search',
+            name: 'Search',
+            component: Search
         },
         {
             path: '/DesignOverview',

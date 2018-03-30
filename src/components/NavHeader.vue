@@ -5,15 +5,15 @@
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
              <router-link to="MyDesign"><el-button type="text">我的设计</el-button></router-link>
              <router-link to="CustomDesign"><el-button type="text">定制设计</el-button></router-link>
-             <el-input class="searchBox" placeholder="搜索" v-model="searchContent">
-              <el-button slot="append" icon="el-icon-search"></el-button>
+             <el-input class="searchBox" placeholder="搜索" @keyup.enter.native="searchGoods()"  v-model="searchContent">
+              <el-button slot="append" icon="el-icon-search" @click="searchGoods()"></el-button>
             </el-input>
           </el-col>
           <el-col :span="4">      
-              <router-link to="/Service">             
+              <router-link to="/Contact">             
               <el-button type="text" class="hasIcon">
                <i class="iconfont icon-duihuakuang"></i>
-                在线客服
+                联系我们
                 </el-button>
               </router-link>
               <router-link to="/Message" class="message" v-if="getLogin">                 
@@ -27,8 +27,8 @@
                   <el-badge :value="100" :max="99">
                     <el-button><img src="../assets/img/head-pic.png" width="52"></el-button>
                   </el-badge>
-                  <h1>团小图</h1>
-                  <h2>超级会员</h2>
+                  <h1>{{userInfo.nickName}}</h1>
+                  <h2>{{userInfo.level}}</h2>
                 </div>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="accountSettings">
@@ -84,6 +84,9 @@
           default:
             break;
         }
+      },
+      searchGoods(){
+        this.$router.push({path:'/Search'});
       }
     },
     computed:{
@@ -92,7 +95,10 @@
       },
       getLogin(){
         return this.$store.state.isLogin;
-      }
+      },
+      userInfo(){
+        return this.$store.state.userInfo;
+      },
     }
   }
 </script>
@@ -146,7 +152,7 @@
     .header .el-col:last-child a:last-child .el-button{
        border: 1px solid #FFF;
        margin-left: 10px;
-       line-height: 10px;
+       line-height: 8px;
        background-color: transparent;
     }
     /* 最后登录按钮hover样式 */

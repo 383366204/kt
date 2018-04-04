@@ -109,7 +109,7 @@ export default {
     //验证确认密码
     var confirmPassword = (rule, value, callback) => {
       if (value !== this.forgetPasswordForm.newPassword) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error("两次输入密码不一致"));
       } else {
         callback();
       }

@@ -35,8 +35,8 @@
         <ul>
           <li><i class="iconfont icon-zhanghao"></i>昵称：<span>{{userInfo.nickName}}</span><a @click="changeNickName()">更改</a></li>
           <li><i class="iconfont icon-huiyuan"></i>会员等级：<span>{{userInfo.level}}</span><a @click="activeTab(3)">升级</a></li>
-          <li><i class="iconfont icon-youxiang"></i>邮箱：<span>{{userInfo.email}}</span><a @click="changeEmail()">更改</a></li>
-          <li><i class="iconfont icon-shouji"></i>手机：<span>{{userInfo.phone}}</span><a @click="changePhone()">更改</a></li>         
+          <li><i class="iconfont icon-youxiang"></i>邮箱：<span v-if="userInfo.email">{{userInfo.email}}</span><span v-else>暂未绑定</span><a @click="changeEmail()">更改</a></li>
+          <li><i class="iconfont icon-shouji"></i>手机：<span v-if="userInfo.phone">{{userInfo.phone}}</span><span v-else>暂未绑定</span><a @click="changePhone()">更改</a></li>         
           <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>
           <li><i class="iconfont icon-dingwei"></i>收货地址<router-link to="/Address">管理</router-link></li>
           <li><i class="iconfont icon-lianjie"></i>分享给好友</li>
@@ -105,21 +105,67 @@
     </div>
     <!-- 升级VIP会员END -->
 
-    <!-- 修改密码的模式窗 -->
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="30%" top="15%" @close="cancelMoPassword('modifyForm')">
-      <el-form :model="modifyForm" :rules="modifyRules" ref="modifyForm" label-width="100px">
-        <el-form-item label="旧密码" prop="oldPassword">
-          <el-input type="password" v-model="modifyForm.oldPassword" auto-complete="off"></el-input>
+    <!-- 修改邮箱的模式窗 -->
+    <el-dialog title="修改邮箱" :visible.sync="modifyEmailFormVisible" width="30%" top="15%" @close="cancelMoEmail('modifyEmailForm')">
+      <el-form :model="modifyEmailForm" :rules="modifyRules" ref="modifyEmailForm" label-width="100px">
+        <el-form-item label="验证方式" prop="veriType">
+          <el-radio-group  class="radioSize" v-model="modifyEmailForm.veriType">
+            <el-radio label="email" border>邮箱接收验证码</el-radio>
+            <el-radio label="phone" border>手机接收验证码</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="新密码" prop="newPassword">
-          <el-input type="password" v-model="modifyForm.newPassword" auto-complete="off"></el-input>
+        <el-form-item label="验证码" prop="verification">
+            <el-input class="modifyVerification" v-model="modifyEmailForm.verification" auto-complete="off" placeholder="验证码"></el-input>
+            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyEmailVerification}" @click="getVerification('modifyEmailForm')"><span v-if="modifyEmailVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
         </el-form-item>
-        <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input type="password" v-model="modifyForm.confirmPassword" auto-complete="off"></el-input>
+        <el-form-item label="新邮箱" prop="newEmail">
+          <el-input type="email" v-model="modifyEmailForm.newEmail" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('modifyForm')">提交</el-button>
-          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="submitForm('modifyEmailForm')">提交</el-button>
+          <el-button @click="modifyEmailFormVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    
+    <!-- 修改手机的模式窗 -->
+    <el-dialog title="修改手机" :visible.sync="modifyPhoneFormVisible" width="30%" top="15%" @close="cancelMoPhone('modifyPhoneForm')">
+      <el-form :model="modifyPhoneForm" :rules="modifyRules" ref="modifyPhoneForm" label-width="100px">
+        <el-form-item label="验证方式" prop="veriType">
+          <el-radio-group  class="radioSize" v-model="modifyPhoneForm.veriType">
+            <el-radio label="email" border>邮箱接收验证码</el-radio>
+            <el-radio label="phone" border>手机接收验证码</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="验证码" prop="verification">
+            <el-input class="modifyVerification" v-model="modifyPhoneForm.verification" auto-complete="off" placeholder="验证码"></el-input>
+            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyPhoneVerification}" @click="getVerification('modifyPhoneForm')"><span v-if="modifyPhoneVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
+        </el-form-item>
+        <el-form-item label="新手机" prop="newPhone">
+          <el-input v-model="modifyPhoneForm.newPhone" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('modifyPhoneForm')">提交</el-button>
+          <el-button @click="modifyPhoneFormVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <!-- 修改密码的模式窗 -->
+    <el-dialog title="修改密码" :visible.sync="modifyPwdFormVisible" width="30%" top="15%" @close="cancelMoPassword('modifyPwdForm')">
+      <el-form :model="modifyPwdForm" :rules="modifyRules" ref="modifyPwdForm" label-width="100px">
+        <el-form-item label="旧密码" prop="oldPassword">
+          <el-input type="password" v-model="modifyPwdForm.oldPassword" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input type="password" v-model="modifyPwdForm.newPassword" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPassword">
+          <el-input type="password" v-model="modifyPwdForm.confirmPassword" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('modifyPwdForm')">提交</el-button>
+          <el-button @click="modifyPwdFormVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -131,21 +177,47 @@
 export default {
   data() {
     var confirmPassword = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入新密码"));
-      } else if (value !== this.modifyForm.newPassword) {
-        callback(new Error("两次输入密码不一致!"));
+      if (value !== this.modifyPwdForm.newPassword) {
+        callback(new Error("两次输入密码不一致"));
       } else {
         callback();
       }
     };
+    var confirmVeriType = (rule, value, callback)=>{
+      if (value=='email'&& !this.$store.state.userInfo.email) {
+        callback(new Error("你还没有绑定邮箱，请选择手机接受验证码"));
+      }
+      else if (value=='phone'&& !this.$store.state.userInfo.phone) {
+        callback(new Error("你还没有绑定手机，请选择邮箱接受验证码"));
+      }
+      else {
+        callback();
+      }
+    }
     return {
+      value5: 100,
       activeNum: 1,
-      dialogFormVisible: false,
-      modifyForm: {
+      modifyPwdFormVisible: false,
+      modifyPwdForm: {
         oldPassword: "",
         newPassword: "",
         confirmPassword: ""
+      },
+      modifyEmailFormVisible: false,
+      modifyEmailVerification:false,
+      modifyEmailTiming:60,
+      modifyEmailForm: {
+        veriType:"",
+        newEmail: "",
+        verification: ""
+      },
+      modifyPhoneFormVisible: false,
+      modifyPhoneVerification:false,
+      modifyPhoneTiming:60,
+      modifyPhoneForm: {
+        veriType:"",
+        newPhone:"",
+        verification: ""
       },
       modifyRules: {
         oldPassword: [
@@ -160,7 +232,30 @@ export default {
             trigger: "blur"
           }
         ],
-        confirmPassword: [{ validator: confirmPassword, trigger: "blur" }]
+        confirmPassword: [
+          { required: true, message: "请再次输入新密码", trigger: "blur" },
+          { validator: confirmPassword, trigger: "blur" }
+        ],
+        verification: [
+          {
+            required: true,
+            len: 6,
+            message: "请输入6位数字的验证码",
+            trigger: "blur"
+          }
+        ],
+        newEmail:[
+          {required: true, message: "请输入您的新邮箱", trigger: "blur" },
+          {type:'email',message:'请输入正确的邮箱', trigger: "blur"}
+        ],
+        newPhone:[
+          {required: true, message: "请输入您的新手机", trigger: "blur" },
+          {pattern:/^1\d{10}$/,message:'请输入正确的手机号', trigger: "blur"}
+        ],
+        veriType:[
+          { required: true, message: '请选择验证码接收方式', trigger: 'blur' },
+          { validator: confirmVeriType, trigger: "change" }
+        ]
       },
       vipPrices:[{'price':20,'time':1},{'price':90,'time':6},{'price':120,'time':12}],
       //0代表第一种vip方案
@@ -197,59 +292,82 @@ export default {
         });
     },
     changeEmail() {
-      this.$prompt("请输入新邮箱", "修改邮箱", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        inputErrorMessage: "邮箱格式不正确"
-      })
-        .then(({ value }) => {
-          this.$notify.success({
-            title: "成功",
-            message: "邮箱修改成功",
-            offset: 100
-          });
-        })
-        .catch(() => {
-          this.$notify.error({
-            title: "失败",
-            message: "邮箱修改失败",
-            offset: 100
-          });
-        });
+      this.modifyEmailFormVisible = true;
     },
     changePhone() {
-      this.$prompt("请输入新手机", "修改手机", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPattern: /^1\d{10}$/,
-        inputErrorMessage: "手机格式不正确"
-      })
-        .then(({ value }) => {
-          this.$notify.success({
-            title: "成功",
-            message: "手机修改成功",
-            offset: 100
-          });
-        })
-        .catch(() => {
-          this.$notify.error({
-            title: "失败",
-            message: "手机修改失败",
-            offset: 100
-          });
-        });
+      this.modifyPhoneFormVisible = true;
     },
     changePassword() {
-      this.dialogFormVisible = true;
+      this.modifyPwdFormVisible = true;
     },
     cancelMoPassword(formName) {
-      this.dialogFormVisible = false;
+      this.modifyPwdFormVisible = false;
       this.$refs[formName].resetFields();
       this.$notify.error({
         title: "失败",
         message: "密码修改失败",
         offset: 100
+      });
+    },
+    cancelMoEmail(formName){
+      this.modifyEmailFormVisible = false;
+      this.$refs[formName].resetFields();
+      this.$notify.error({
+        title: "失败",
+        message: "邮箱修改失败",
+        offset: 100
+      });
+    },
+    cancelMoPhone(formName){
+      this.modifyEmailFormVisible = false;
+      this.$refs[formName].resetFields();
+      this.$notify.error({
+        title: "失败",
+        message: "手机修改失败",
+        offset: 100
+      });
+    },
+    // 获取验证码
+    getVerification(verifiForm) {
+      //先验证veriType再发送验证码
+      this.$refs[verifiForm].validateField("veriType", err => {
+        //如有错误便return
+        if (err) {
+          return;
+        }
+        if (verifiForm=='modifyEmailForm') {
+          //若已经点击过发送，则不触发后面的事件
+           if (this.modifyEmailVerification == true) {
+            return;
+          }
+          this.modifyEmailVerification = true;
+          let intervalId = setInterval(() => {
+            if (this.modifyEmailTiming == 0) {
+              clearInterval(intervalId);
+              this.modifyEmailVerification = false;
+              this.modifyEmailTiming = 60;
+            } else {
+              this.modifyEmailTiming--;
+            }
+          }, 1000);
+        }
+        else if (verifiForm=='modifyPhoneForm') {
+          //若已经点击过发送，则不触发后面的事件
+           if (this.modifyPhoneVerification == true) {
+            return;
+          }
+          this.modifyPhoneVerification = true;
+          let intervalId = setInterval(() => {
+            if (this.modifyPhoneTiming == 0) {
+              clearInterval(intervalId);
+              this.modifyPhoneVerification = false;
+              this.modifyPhoneTiming = 60;
+            } else {
+              this.modifyPhoneTiming--;
+            }
+          }, 1000);
+        }
+
       });
     },
     selectVIP(index){
@@ -575,5 +693,26 @@ a {
   margin-top:40px;
   background-color: rgba(46, 180, 233,1);
 }
+/* /验证码已发送后的样式 */
+.verify {
+  background-color: #c1c1c1 !important;
+  cursor: not-allowed;
+  border-color: #c1c1c1;
+}
 
+/* 修改邮箱模式窗口的验证码输入框的样式 */
+.modifyVerification.el-input {
+  width: 70%;
+}
+/* 修改邮箱模式窗口的验证码按钮的样式 */
+.modifyVerification.el-button {
+  width: 29%;
+}
+/*设定radio按钮的样式*/
+.radioSize.el-radio-group{
+  width:100%
+}
+.radioSize .el-radio{
+  width:48.8%;
+}
 </style>

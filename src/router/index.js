@@ -67,7 +67,7 @@ export default new Router({
             component: DetailPost
         },
         {
-            path: '/DetailClothes',
+            path: '/DetailClothes/:Id(\\d+)',
             name: 'DetailClothes',
             component: DetailClothes
         },
@@ -77,7 +77,7 @@ export default new Router({
             component: DetailBanner
         },
         {
-            path: '/Search',
+            path: '/Search/:Filters?',
             name: 'Search',
             component: Search
         },

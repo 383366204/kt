@@ -33,8 +33,8 @@
       <!-- 产品 -->
       <el-col class="content">
         <el-row type="flex">
-            <el-col :span="6" v-for="(product,index) in products" :key="index">
-              <el-card :body-style="{ padding: '12px 12px 0px 12px' }">
+            <el-col :span="6" v-for="(product,index) in products" :key="index" @click.native="toDetail(product)">
+              <el-card :body-style="{ padding: '12px 12px 0px 12px'}">
                 <div class="img">
                   <img :src="product.src"> 
                 </div>                              
@@ -112,9 +112,13 @@ export default {
       this.productInfos.forEach((productInfo,index,array)=>{
         this.tags.push(...productInfo.tag.slice(0,2));
       })
+    },
+    toDetail(product){
+      this.$router.push({path:`/DetailClothes/${product.id}`});
     }
   },
   mounted:function(){
+    console.log(this.$route.params);
     this.getAllTags();
   }
 }

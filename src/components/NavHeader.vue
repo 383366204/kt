@@ -3,8 +3,8 @@
          <el-row type="flex" justify="center">
           <el-col :span="10">
             <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
-             <router-link to="MyDesign"><el-button type="text">我的设计</el-button></router-link>
-             <router-link to="CustomDesign"><el-button type="text">定制设计</el-button></router-link>
+             <router-link to="/MyDesign"><el-button type="text">我的设计</el-button></router-link>
+             <router-link to="/CustomDesign"><el-button type="text">定制设计</el-button></router-link>
              <el-input class="searchBox" placeholder="搜索" @keyup.enter.native="searchGoods()"  v-model="searchContent">
               <el-button slot="append" icon="el-icon-search" @click="searchGoods()"></el-button>
             </el-input>
@@ -67,10 +67,10 @@
       handleCommand(command){
         switch (command) {
           case 'accountSettings':
-            this.$router.push({path:'AccountSettings'});
+            this.$router.push({path:'/AccountSettings'});
             break;
           case 'inform':
-            this.$router.push({path:'Inform'});
+            this.$router.push({path:'/Inform'});
             break;
           case 'orderList':
             this.$router.push({path:'/OrderList'});
@@ -86,7 +86,7 @@
         }
       },
       searchGoods(){
-        this.$router.push({path:'/Search'});
+        this.$router.push({path:`/Search/${this.searchContent}`});
       }
     },
     computed:{

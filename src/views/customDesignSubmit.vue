@@ -2,12 +2,12 @@
     <main class="main">
         <div class="title">
             <i class="iconfont icon-wancheng"></i>
-            <h1>我们已收到您的需求，会尽快为您安排设计，感谢您对我们的支持</h1>
+            <h1>我们已收到您的订单，会尽快为您安排送货，感谢您对我们的支持</h1>
         </div>
         <div class="option">
             <el-button size="large">再去逛逛</el-button>
             <el-badge value="V">
-                <el-button size="large">一对一设计</el-button>
+                <el-button size="large">查看订单</el-button>
             </el-badge>
         </div>
     </main>
@@ -50,7 +50,7 @@
        height: 80px;
        display: flex;
        margin-top:50px;
-       width: 460px;
+       width: 370px;
        justify-content: space-around;
    }
    .option .el-button{

@@ -3,9 +3,9 @@
       <div class="carousel">
         <el-row type="flex" justify="center">
           <el-col :span="16">
-            <el-carousel :interval="5000" type="card" height="414px">
-            <el-carousel-item v-for="item in 5" :key="item">
-               <img src="../assets/img/banner.jpg" width="636">
+            <el-carousel :interval="5000" type="card" height="400px">
+            <el-carousel-item v-for="(img,index) in carouselImg" :key="index">
+               <img :src="img.src" width="636">
             </el-carousel-item>
            </el-carousel>
           </el-col>
@@ -13,29 +13,29 @@
         <el-row type="flex" justify="space-around">
             <el-col :span="3" :push="2">
                 <div class="carousel-bottom-content bg-gray">
-                  <i class="iconfont icon-tupian2"></i>
+                  <i class="iconfont icon-icon--"></i>
                 </div>         
               <div class="carousel-bottom-introduce">
-                <h1>海报设计</h1>
-                <h2>专为社团提供最快捷海报制作</h2>
+                <h1>燃气灶</h1>
+                <h2>火焰精准，充分燃烧</h2>
               </div>            
             </el-col>
             <el-col :span="3">
               <div class="carousel-bottom-content bg-gray">
-                <i class="iconfont icon-page"></i>
+                <i class="iconfont icon-feng"></i>
               </div>
               <div class="carousel-bottom-introduce">
-                <h1>横幅制作</h1>
-                <h2>横幅想要与众不同只在团图</h2>
+                <h1>抽油烟机</h1>
+                <h2>专业电机，吸得更净</h2>
               </div>  
             </el-col>
             <el-col :span="3" :pull="2">
               <div class="carousel-bottom-content bg-gray">
-                <i class="iconfont icon-weibiaoti101"></i>
+                <i class="iconfont icon-electricity_icon"></i>
               </div>
               <div class="carousel-bottom-introduce">
-                <h1>队服定制</h1>
-                <h2>衣服在线设计印刷一步搞定</h2>
+                <h1>消毒柜</h1>
+                <h2>分层消毒，干净节能</h2>
               </div>  
             </el-col>
         </el-row>
@@ -43,8 +43,8 @@
       <div class="floor printing">
         <el-row type="flex" justify="center">
           <el-col :span="4" class="floor-title">
-            <h1>印刷流程</h1>
-            <h2>Printing Sequence</h2>
+            <h1>购买流程</h1>
+            <h2>Shopping Sequence</h2>
             <div class="underLine"></div>
           </el-col>
         </el-row>
@@ -64,26 +64,26 @@
       <div class="floor chat">
         <el-row type="flex" justify="center">
           <el-col :span="4" class="floor-title">
-            <h1>TA对我们说</h1>
-            <h2>Evaluation</h2>
+            <h1>本店承诺</h1>
+            <h2>Promise</h2>
             <div class="underLine"></div>
           </el-col>
         </el-row>
         <el-row type="flex" justify="center">
           <el-col :span="7">
-            <div class="chat-word" v-for="index in 3" :key="index">
+            <div class="chat-word" v-for="(chat,index) in leftChat" :key="index">
                 <img src="../assets/img/head-pic.png">
                 <div class="chat-border">
-                   <h1>机智少年  福师大信息学院足球协会</h1>
-                   <h2>一杯敬故乡，一杯敬远方，守着我的善良， 催着我成长。</h2>
+                   <h1>{{chat.title}}</h1>
+                   <h2>{{chat.content}}</h2>
                 </div>
             </div>
           </el-col>
           <el-col :span="7">
-            <div class="chat-word right" v-for="index in 3" :key="index">             
+            <div class="chat-word right" v-for="(chat,index) in rightChat" :key="index">             
               <div class="chat-border right">
-                 <h1>机智少年  福师大信息学院足球协会</h1>
-                 <h2>一杯敬故乡，一杯敬远方，守着我的善良， 催着我成长。</h2>
+                 <h1>{{chat.title}}</h1>
+                 <h2>{{chat.content}}</h2>
               </div>
               <img src="../assets/img/head-pic.png">
             </div>
@@ -122,23 +122,38 @@ export default {
   name: 'Index',
   data () {
     return {
+      carouselImg:[
+        {src:'./static/rangeHood.jpg'},
+        {src:'./static/cooker.jpg'},
+        {src:'./static/sterilizer.jpg'}
+      ],
+      leftChat:[
+        {'title':'诚信经营','content':'我们坚持从源头杜绝假货，对假冒伪劣商品“零容忍”的态度，以保证本店的信誉。'},
+        {'title':'质量保证','content':'我们认真监督制作流程中的每一步骤，以确保出厂的每件货物绝无劣质产品。'},
+        {'title':'上门安装','content':'在货物到达顾客所在地后，我们会安排专业的安装人员上门，以保证产品的正确使用。'}
+      ],
+      rightChat:[
+        {'title':'安心购物','content':'为了顾客的权益，您可以先确认货物后再验收，以保证顾客购买时可以安心、放心。'},
+        {'title':'无忧售后','content':'在产品售出后保修期内，我们的产品享有全国联保的待遇，真正实现售后无忧。'},
+        {'title':'贴心客服','content':'我们有专门的客服人员，若在购买流程中有任何疑惑均可向客服人员提出。'}
+      ],
       printingCard:[
         {
           id:1,
           cardContent:
           [
-            {'id':'1','title':'①制作','src':'iconfont icon-tupian2','content':'在线制作海报'},
-            {'id':'2','title':'②下单','src':'iconfont icon-qian','content':'填写收货地址并付款'},
-            {'id':'3','title':'③安排','src':'iconfont icon-yinshua','content':'下单24小时内安排印刷'}
+            {'id':'1','title':'①注册','src':'iconfont icon-zhanghao','content':'注册帐号'},
+            {'id':'2','title':'②浏览','src':'iconfont icon-tupian2','content':'在线浏览商品'},
+            {'id':'3','title':'③加购','src':'iconfont icon-cart-copy','content':'将商品加入购物车'}
           ]
         },
         {
           id:2,
           cardContent:
           [
-            {'id':'4','title':'④印刷','src':'iconfont icon-wancheng','content':'12小时内完成印刷'},
-            {'id':'5','title':'⑤发货','src':'iconfont icon-fahuo','content':'印刷完成后12小时内安排发货'},
-            {'id':'6','title':'⑥送达','src':'iconfont icon-cargo','content':'敬请耐心等待海报送达'}
+            {'id':'4','title':'④下单','src':'iconfont icon-qian','content':'填写货地址并付款'},
+            {'id':'5','title':'⑤发货','src':'iconfont icon-fahuo','content':'付款完成后12小时内安排发货'},
+            {'id':'6','title':'⑥送达','src':'iconfont icon-cargo','content':'敬请耐心等待商品送达'}
           ]
         }        
       ]

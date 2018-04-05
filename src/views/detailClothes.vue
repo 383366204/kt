@@ -20,18 +20,15 @@
           </el-col>
           <!-- 右边的选项及信息 -->
           <el-col :span="11" :offset="2">
-            <div class="p-name">冬季男款卫衣</div>
-            <div class="p-size">尺寸：98.7*109.18</div>
+            <div class="p-name">开田燃气灶H82</div>
+            <div class="p-size">开孔尺寸：98.7*109.18</div>
+            <div class="p-size">面板材料：钢化玻璃</div>
             <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign" class="p-order">
               <el-form-item label="气源：">
-                <el-select size="small" v-model="value">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
+                <el-radio-group v-model="fireType" size="small" class="mainColor">
+                  <el-radio-button :label="1">天然气</el-radio-button>
+                  <el-radio-button :label="2">液化气</el-radio-button>
+                </el-radio-group>
               </el-form-item>
 
               <ul class="count">
@@ -45,14 +42,14 @@
               </el-form-item>
 
               <el-form-item label="运费：" class="transPrice">
-                <p><span class="important">20</span>元</p>
+                <p><span class="important">10</span>元</p>
               </el-form-item>
 
             </el-form>
 
             <ul class="p-btn">
               <li><el-button type="primary">立即购买</el-button></li>
-              <li><el-button type="primary">加入购物车</el-button></li>
+              <li><el-button type="primary" @click="addToCart()">加入购物车</el-button></li>
             </ul>
             
           </el-col>
@@ -103,17 +100,10 @@ export default {
   data () {
     return {
       num1:1,
-      options: [{
-        value: '1',
-        label: '液化气'
-      }, {
-        value: '2',
-        label: '天然气'
-      }],
+      fireType: 1,
       value: '',
-      listItems: ['buy food', 'play games', 'sleep'],
-      
-      input: "",
+      listItems: ['buy food', 'play games', 'sleep'], 
+      input: '',
       labelPosition: 'right',
       formLabelAlign: {
         num: 1,
@@ -123,6 +113,9 @@ export default {
   methods: {
     handleChange(value) {
       console.log(value);
+    },
+    addToCart(){
+
     }
   },
   mounted:function(){
@@ -224,7 +217,8 @@ export default {
     width: 280px;
     margin-bottom: 16px;
     border-radius: 4px;
-    background-color: #2eb4e9; 
+    background-color: #2eb4e9;
+    border-color: #2eb4e9;
   }
   .p-btn li .el-button:hover{
     color: #000;
@@ -289,8 +283,7 @@ export default {
     margin-right: 4px;
     font-size: 14px;
   }
-  .detial div:nth-of-type(3){
-  }
+
   .detial div:nth-of-type(3) p{
     margin-bottom: 10px;
   }
@@ -318,7 +311,17 @@ export default {
     margin-top: -10px;
   }
   /* 运费 */
-  .transPrice{
-    
+  .transPrice >>> label,.transPrice >>> p{
+    height: 30px;
+    line-height: 15px;
+  }
+  /* 主色调 */
+  /* 起源按钮颜色 */
+  .mainColor >>> .is-active  .el-radio-button__inner {
+    background-color: #2eb4e9;
+    border-color: #2eb4e9;
+  }
+  .mainColor >>> :not(.is-active) .el-radio-button__inner:hover{
+    color: #2eb4e9
   }
 </style>

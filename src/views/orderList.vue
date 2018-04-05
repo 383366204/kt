@@ -28,7 +28,6 @@
 
 
           <el-tab-pane label="待付款" name="second"></el-tab-pane>
-          <el-tab-pane label="待制作" name="third"></el-tab-pane>
           <el-tab-pane label="待发货" name="fourth"></el-tab-pane>
           <el-tab-pane label="待收货" name="fifth"></el-tab-pane>
           <el-tab-pane label="已完成" name="sixth"></el-tab-pane>

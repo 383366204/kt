@@ -37,9 +37,9 @@ export default new Router({
             path: '/Cart',
             name: 'Cart',
             component: Cart,
-            meta:{
-                requireAuth:true
-            }
+            // meta:{
+            //     requireAuth:true
+            // }
         },
         {
             path: '/Login',

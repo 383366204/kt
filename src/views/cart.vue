@@ -4,12 +4,36 @@
       <el-col :span="22" :offset="1">
 
         <!-- 标题 -->
-        <el-row>
-          <el-col :span="24"><div class="cart-title"><i class="iconfont icon-gouwuche"></i>全部商品</div></el-col>
+        <el-row v-if="goods!=false">
+          <el-col :span="24"><div class="cart-title"><i class="iconfont icon-gouwuche"></i>购物车</div></el-col>
         </el-row>
 
+        <!-- 当购物车为空时显示的 -->
+        <div class="cart-empty" v-if="goods==false">
+          <el-row type="flex" >
+            <el-col :span="24">
+              <div class="empty">
+                <i class="iconfont icon-cart-copy"></i>
+                <h1>你的购物车里空空如也，请赶快去购物吧</h1>
+              </div>          
+            </el-col>         
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="24">
+              <div class="option">
+                <router-link to="/Search">
+                  <el-button size="large">再去逛逛</el-button>
+                </router-link>
+                <router-link to="/OrderList">
+                  <el-button size="large">查看订单</el-button>
+                </router-link>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        
         <!-- 头部 -->
-        <el-row class="cart-thead">
+        <el-row class="cart-thead" v-if="goods!=false">
           <el-col :span="11"><div>商品</div></el-col>
           <el-col :span="3"><div>规格</div></el-col>
           <el-col :span="3"><div>数量</div></el-col>
@@ -19,17 +43,17 @@
         </el-row>
 
         <!-- 全选 -->
-        <el-row>
+        <el-row v-if="goods!=false">
           <div id="checkbox-all">
             <input type="checkbox" id="selectAllTop" v-model="ischeckAll" @click="checkAll()">&nbsp;&nbsp;
             <label for="selectAllTop">全选</label> 
           </div>
         </el-row>
-
+      
         <good-floor v-for="(good,index) in goods" :key="index" :good="good" :page="1" @checkGood="checkFloor" @delGood="delFloor" @changeGoodNum="changeNum"></good-floor>
 
         <!-- 底部 -->
-        <el-row class="cart-tfoot">
+        <el-row class="cart-tfoot" v-if="goods!=false">
           <el-col :span="4"><div>
             <el-row>
               <el-col :span="12"><input type="checkbox" id="selectAllBottom" v-model="ischeckAll" @click="checkAll()">&nbsp;&nbsp;
@@ -53,8 +77,6 @@ import goodFloor from '@/components/goodFloor';
 export default {
   data () {
     return {
-      listItems: ['buy food', 'play games', 'sleep'],
-      num1: 1,
       goods:[],
       ischeckAll:false,//是否全选
       checkNum:0,//已选中的商品的总数
@@ -307,4 +329,42 @@ export default {
   label{
     cursor: pointer;
   }
+
+  /* 购物车为空时的样式 */
+    .cart-empty{
+      padding-top: 200px;
+      height: 410px;
+    }
+   .empty{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+   }
+   .empty h1{
+       font-size: 20px;
+       color:#555;
+       padding-left: 18px;
+   }
+   .empty i{
+       font-size: 60px;
+       color: #2eb4e9;
+   }
+   .option{
+       height: 80px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+   }
+   .option .el-button{
+       border-color: #2eb4e9;
+       color: #2eb4e9;
+       width: 144px;
+       height: 58px;
+       font-size: 20px;
+       margin:0 20px;
+   }
+   .option .el-button:hover{
+       background-color: #2eb4e9;
+       color: #FFF;
+   }
 </style>

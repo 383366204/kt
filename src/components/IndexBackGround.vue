@@ -3,10 +3,10 @@
         <el-row type="flex" justify="center">
             <el-col :span="8">
                 <div class="words">
-                    <img src="../assets/img/TEAMTO.png">
-                    <h1>每个人都是生活中的设计师</h1>
+                    <img src="../assets/img/KATEN.png">
+                    <h1>令你生活更满意的厨卫专家</h1>
                 </div>
-                <el-button type="primary" id="startToDesign">开启设计</el-button>  
+                <el-button type="primary" id="startToDesign">开始选购</el-button>  
             </el-col>
             <el-col :span="7">
                 <img src="../assets/img/computer.png" width="600">
@@ -44,7 +44,7 @@
     }
     /* 左边的按钮 */
     #startToDesign{
-        width: 150px;
+        width: 155px;
         height: 55px;
         font-size: 29px;
         font-weight: lighter;

@@ -67,7 +67,13 @@ const state = {
         price: 50
     }],
     checkOutGoods: [],
-    token:null
+    token:null,
+    userInfo: {
+        nickName:'孙先生',
+        level:'普通会员',
+        email: "383366204@qq.com",
+        phone: "18928651029"
+    }
 }
 
 const getters = {

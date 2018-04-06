@@ -20,6 +20,8 @@ import AccountSettings from '@/views/accountSettings'
 import Inform from '@/views/inform'
 
 import CustomDesignSubmit from '@/views/customDesignSubmit'
+import Contact from '@/views/contact';
+
 Vue.use(Router)
 
 export default new Router({
@@ -105,6 +107,11 @@ export default new Router({
             path: '/CustomDesignSubmit',
             name: 'CustomDesignSubmit',
             component: CustomDesignSubmit
+        },
+        {
+            path:'/Contact',
+            name:'Contact',
+            component:Contact
         }
     ]
 })

@@ -440,6 +440,7 @@ button {
 a {
   text-decoration: none;
 }
+
 .iconfont {
   margin-right: 10px;
   color: #41b9ea;
@@ -691,7 +692,8 @@ a {
   width:120px;
   margin-left:30px;
   margin-top:40px;
-  background-color: rgba(46, 180, 233,1);
+  background-color: #2eb4e9;
+  border-color:#2eb4e9;
 }
 /* /验证码已发送后的样式 */
 .verify {

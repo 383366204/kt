@@ -6,7 +6,7 @@
                     <img src="../assets/img/KATEN.png">
                     <h1>令你生活更满意的厨卫专家</h1>
                 </div>
-                <el-button type="primary" id="startToDesign">开始选购</el-button>  
+                <el-button type="primary" id="startToDesign" @click="goToSearch">开始选购</el-button>
             </el-col>
             <el-col :span="7">
                 <img src="../assets/img/computer.png" width="600">
@@ -22,6 +22,13 @@
       return {
         
       };
+    },
+    methods:{
+        goToSearch(){
+            this.$router.push({
+                path:'/Search'
+            })
+        }
     }
   }
 </script>

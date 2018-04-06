@@ -6,37 +6,19 @@
             </el-col>
         </el-row>
         <el-row type="flex" class="contactInfo">
-           <el-col>
-                <h1>开田厨卫有限责任公司</h1>
-                <ul>
-                    <li>地址：广东省佛山市南海区大沥镇南国小商城13街6号</li>
-                    <li>邮编：528247</li>
-                    <li>电话：0757-85731029</li>
-                </ul>
-            </el-col>
-            <el-col>
-                <h1>客服服务</h1>
-                <ul>
-                    <li>联系电话：400-100-1234</li>
-                    <li>微信号码：q383366204</li>
-                    <li>电子邮箱：383366204@qq.com</li>
-                </ul>
-            </el-col>
-            <el-col>
-                <h1>商务合作</h1>
-                <ul>
-                    <li>联系人：孙先生</li>
-                    <li>手机号码：18928651029</li>
-                    <li>电子邮箱：383366204@qq.com</li>
-                </ul>
-            </el-col>
-            <el-col>
-                <h1>其他咨询</h1>
-                <ul>
-                    <li>联系电话：400-100-1234</li>
-                    <li>微信号码：q383366204</li>
-                    <li>电子邮箱：383366204@qq.com</li>
-                </ul>
+           <el-col v-for="(way,index) in contactWay" :key="index">
+               <el-card class="box-card">
+                <div slot="header">
+                    <i v-if="index==0" class="el-icon-location"></i>
+                    <i v-if="index==1" class="el-icon-service"></i>
+                    <i v-if="index==2" class="el-icon-phone-outline"></i>
+                    <i v-if="index==3" class="el-icon-message"></i>
+                    <span>{{way.title}}</span>
+                </div>
+                <div v-for="(con,index) in way.content" :key="index" class="text item">
+                    {{con}}
+                </div>
+                </el-card>
             </el-col>
         </el-row>
         <el-row type="flex" justify="space-around">
@@ -97,7 +79,41 @@
           message: [
             { required: true, message: '请输入您的留言', trigger: 'blur' }
           ]
-        }
+        },
+        contactWay:[
+            {
+                title:'开田厨卫有限责任公司',
+                content:[
+                    '地址：广东省佛山市南海区大沥镇南国小商城13街6号',
+                    '邮编：528247',
+                    '电话：0757-85731029'
+                ]
+            },
+            {
+                title:'客服服务',
+                content:[
+                    '联系电话：400-100-1234',
+                    '微信号码：q383366204',
+                    '电子邮箱：383366204@qq.com'
+                ]
+            },
+            {
+                title:'商务合作',
+                content:[
+                    '联系人：孙先生',
+                    '手机号码：18928651029',
+                    '电子邮箱：383366204@qq.com'
+                ]
+            },
+            {
+                title:'其他咨询',
+                content:[
+                    '联系电话：400-100-1234',
+                    '微信号码：q383366204',
+                    '电子邮箱：383366204@qq.com'
+                ]
+            }
+        ]
       };
     },
     computed:{
@@ -187,16 +203,29 @@
         border-radius: 50%;
     }
     /* 联系方式 */
-    .main .contactInfo .el-col{
-        margin-bottom: 20px;
+    .main .text {
+        font-size: 14px;
     }
-    .main .contactInfo .el-col h1{
-        font-size:18px;
-        margin-bottom:10px;
+
+    .main .item {
+        margin-bottom: 18px;
     }
-    .main .contactInfo .el-col ul li{
-        list-style-type: none;
-        color:#aaa;
+
+    .main .clearfix:before,
+    .main .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .main .clearfix:after {
+        clear: both
+    }
+
+    .main .box-card {
+        width: 480px;
+        margin-top: 20px;
+    }
+    .main .box-card i{
+        color:#2eb4e9;
     }
     /* 留言 */
     .main .information{

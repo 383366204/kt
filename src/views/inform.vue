@@ -3,8 +3,8 @@
     <div class="nav">
       <div class="list">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p><!-- 
-           --><p>2017-10-27</p>
+          <p>【通知】我是标题啊标题啊......</p>
+          <p>2017-10-27</p>
         </div>
         <div class="list-body">
           <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
@@ -14,8 +14,8 @@
       </div>
       <div class="list">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p><!-- 
-           --><p>2017-10-27</p>
+          <p>【通知】我是标题啊标题啊......</p>
+          <p>2017-10-27</p>
         </div>
         <div class="list-body">
           <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
@@ -25,8 +25,8 @@
       </div>
       <div class="list">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p><!-- 
-           --><p>2017-10-27</p>
+          <p>【通知】我是标题啊标题啊......</p>
+          <p>2017-10-27</p>
         </div>
         <div class="list-body">
           <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
@@ -36,8 +36,8 @@
       </div>
       <div class="list">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p><!-- 
-           --><p>2017-10-27</p>
+          <p>【通知】我是标题啊标题啊......</p>
+          <p>2017-10-27</p>
         </div>
         <div class="list-body">
           <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
@@ -47,8 +47,8 @@
       </div>
       <div class="list">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p><!-- 
-           --><p>2017-10-27</p>
+          <p>【通知】我是标题啊标题啊......</p>
+          <p>2017-10-27</p>
         </div>
         <div class="list-body">
           <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
@@ -59,8 +59,8 @@
     </div>
     <div class="view">
       <div class="view-head">
-        <p>【通知】我是标题啊标题啊......</p><!-- 
-         --><p>2017-10-27</p>
+        <p>【通知】我是标题啊标题啊......</p>
+        <p>2017-10-27</p>
       </div>
       <div class="view-body">
         <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
@@ -121,7 +121,7 @@ a{
   background-color: #ebf0f4;
   height: 560px;
   float: left;
-  padding: 20px 0;
+  padding: 10px 0;
   overflow: auto;
 }
 .list{

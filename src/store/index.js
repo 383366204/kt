@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const state = {
     isIndex: true, //判断是否在首页
-    isLogin: true, //判断是否有登录
+    isLogin: false, //判断是否有登录
     addresses: [ //收货地址
         { name: '团小图', region: '福建省/福州市/闽侯县', detail: '上街镇乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '15211110000', isDefault: false },
         { name: '孙先生', region: '福建省/福州市/闽侯县', detail: '乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '18928651029', isDefault: true },
@@ -69,11 +69,12 @@ const state = {
     checkOutGoods: [],
     token:null,
     userInfo: {
-        nickName:'孙先生',
-        level:'普通会员',
-        email: "383366204@qq.com",
-        phone: "18928651029"
-    }
+        nickName:'',
+        level:'',
+        email: "",
+        phone: ""
+    },
+    level:['超级会员','普通会员']
 }
 
 const getters = {
@@ -91,9 +92,14 @@ const mutations = {
     setIndexFalse(state) {
         state.isIndex = false;
     },
-    login(state,token) {
+    login(state,data) {
+        //登录
         state.isLogin = true;
-        state.token = token;
+        state.token = data.token;
+        state.userInfo.nickName = data.nickName;
+        state.userInfo.level = state.level[data.level];
+        state.userInfo.email = data.email;
+        state.userInfo.phone = data.phone;
     },
     logout(state,router) {
         state.isLogin = false;

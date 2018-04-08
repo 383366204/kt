@@ -197,10 +197,44 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (formName == "loginForm") {
-            this.checkUser(this.loginForm.userId, this.loginForm.password);
+            this.signin();
           } else if (formName == "registerForm") {
+            let self = this;
+            let regisData = {
+              nickName:this.registerForm.nickName,
+              password:this.registerForm.password
+            }
+            //判断是用手机还是邮箱注册
+            if (this.registerForm.userId.match(/^1\d{10}$/)) {
+              regisData.phone = this.registerForm.userId;
+            }
+            else if (this.registerForm.userId.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/)){
+              regisData.email = this.registerForm.userId;
+            }
+            this.$ajax
+            .post('http://127.0.0.1:4040/api/user/signup',regisData)
+            .then(function (response) {
+              console.log(response);
+              if (response.data.success) {
+                  self.$notify.success({
+                  title: "成功",
+                  message: response.data.message,
+                  offset: 100
+                });
+                self.changeForm();
+              }else{
+                self.$notify.error({
+                  title: "失败",
+                  message: response.data.message,
+                  offset: 100
+                });
+              }
+            }) 
+            .catch(function (err) {
+              console.log(err);
+            })
           } else if (formName == "forgetPasswordForm") {
-            console.log("forgetPassword");
+
           }
         } else {
           console.log("error submit!!");
@@ -251,24 +285,41 @@ export default {
         }
       });
     },
-    checkUser() {
+    signin() {
+      let self = this;
+      let loginData = {
+        password:this.loginForm.password
+      }
+      //判断是用手机还是邮箱注册
+      if (this.loginForm.userId.match(/^1\d{10}$/)) {
+        loginData.phone = this.loginForm.userId;
+      }
+      else if (this.loginForm.userId.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/)){
+        loginData.email = this.loginForm.userId;
+      }
       this.$ajax
-        .post("http://127.0.0.1:3000/login", {
-          userId: this.loginForm.userId,
-          password: this.loginForm.password
-        })
+        .post("http://127.0.0.1:4040/api/user/signin",loginData)
         .then(response => {
-          this.$store.commit("login", response.data);
-          //登录后跳转
-          let redirect = decodeURIComponent(this.$route.query.redirect || "/");
-          this.$router.push({
-            path: redirect
-          });
-          this.$notify.success({
-            title: "成功",
-            message: "登录成功",
-            offset: 100
-          });
+          console.log(response);
+          if (response.data.success) {
+            this.$store.commit("login", response.data);
+            //登录后跳转
+            let redirect = decodeURIComponent(this.$route.query.redirect || "/");
+            this.$router.push({
+              path: redirect
+            });
+            this.$notify.success({
+              title: "成功",
+              message: response.data.message,
+              offset: 100
+            });
+          }else{
+            this.$notify.error({
+              title: "失败",
+              message: response.data.message,
+              offset: 100
+            });
+          }
         })
         .catch(error => {
           console.log(error);

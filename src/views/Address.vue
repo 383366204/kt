@@ -253,7 +253,7 @@ export default {
     },
     getProvince() {
       this.$ajax
-        .get("../../static/json/queryAllProvinces.json")
+        .get("../json/queryAllProvinces.json")
         .then(
           function(response) {
             this.allProvinces = response.data.provinces;
@@ -265,7 +265,7 @@ export default {
     },
     getCities() {
       this.$ajax
-        .get("../../static/json/queryCities.json")
+        .get("../json/queryCities.json")
         .then(
           function(response) {
             this.allCities = response.data.cities;
@@ -277,7 +277,7 @@ export default {
     },
     getAreas() {
       this.$ajax
-        .get("../../static/json/queryAllAreas.json")
+        .get("../json/queryAllAreas.json")
         .then(
           function(response) {
             this.allAreas = response.data.areas;

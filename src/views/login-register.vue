@@ -212,7 +212,7 @@ export default {
               regisData.email = this.registerForm.userId;
             }
             this.$ajax
-            .post('http://127.0.0.1:4040/api/user/signup',regisData)
+            .post('user/signup',regisData)
             .then(function (response) {
               console.log(response);
               if (response.data.success) {
@@ -298,7 +298,7 @@ export default {
         loginData.email = this.loginForm.userId;
       }
       this.$ajax
-        .post("http://127.0.0.1:4040/api/user/signin",loginData)
+        .post("user/signin",loginData)
         .then(response => {
           console.log(response);
           if (response.data.success) {

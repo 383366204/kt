@@ -12,7 +12,11 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+//设置api路径
+axios.defaults.baseURL = "http://127.0.0.1:4040/api";
+
 Vue.prototype.$ajax = axios;
+
 
 router.beforeEach((to,from,next) => {
     //网页跳转到最顶

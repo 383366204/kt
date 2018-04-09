@@ -22,7 +22,8 @@
                     <el-button><img src="../assets/img/head-pic.png" width="52"></el-button>
                   </el-badge>
                   <h1>{{userInfo.nickName}}</h1>
-                  <h2>{{userInfo.level}}</h2>
+                  <h2 v-if="userInfo.level==1">普通会员</h2>
+                  <h2 v-else-if="userInfo.level==2">超级会员</h2>
                 </div>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="accountSettings">
@@ -196,6 +197,9 @@
       top: 9px;
       right: 16px;
       font-size: 16px;
+    }
+    .headPic h1{
+      left: 64px;
     }
     .headPic h2{
       top:32px;

@@ -17,7 +17,11 @@
         </div>
         <div class="nav-head_msg">
           <p class="name">{{userInfo.nickName}}</p>
-          <p class="vip">{{userInfo.level}}<i class="iconfont icon-huiyuan1"></i></p>
+          <p class="vip">
+            <span v-if="userInfo.level==1">普通会员</span>
+            <span v-else-if="userInfo.level==2">超级会员</span>
+            <i class="iconfont icon-huiyuan1"></i>
+            </p>
         </div>
       </div>
       <ul>
@@ -275,20 +279,37 @@ export default {
         cancelButtonText: "取消",
         inputPattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}$/,
         inputErrorMessage: "昵称为2到10个中英文字符组成"
-      })
-        .then(({ value }) => {
-          this.$notify.success({
-            title: "成功",
-            message: "昵称修改成功",
-            offset: 100
-          });
         })
-        .catch(() => {
-          this.$notify.error({
-            title: "失败",
-            message: "昵称修改失败",
-            offset: 100
-          });
+        .then(({ value }) => {
+          return this.$ajax.post('/user/info',{
+              nickName:value
+            });
+        })
+        .then((response)=>{
+            if (response.data.success) {
+              this.$notify.success({
+                title: "成功",
+                message: response.data.message,
+                offset: 100
+              });
+              this.$store.state.userInfo = response.data.user;
+            }else{
+              this.$notify.error({
+                title: "失败",
+                message: response.data.message,
+                offset: 100
+              });
+            }
+        })
+        .catch((err) => {
+          if (err.response.status==401) {
+            this.$alert('登录状态已失效，请重新登录', '注意', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.$store.commit('logout',this.$router);
+              }
+            });
+          }
         });
     },
     changeEmail() {

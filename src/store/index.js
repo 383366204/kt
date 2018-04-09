@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex)
 const state = {
@@ -71,10 +71,9 @@ const state = {
     userInfo: {
         nickName:'',
         level:'',
-        email: "",
-        phone: ""
-    },
-    level:['超级会员','普通会员']
+        email: '',
+        phone: ''
+    }
 }
 
 const getters = {
@@ -97,9 +96,12 @@ const mutations = {
         state.isLogin = true;
         state.token = data.token;
         state.userInfo.nickName = data.nickName;
-        state.userInfo.level = state.level[data.level];
+        state.userInfo.level = data.level;
         state.userInfo.email = data.email;
         state.userInfo.phone = data.phone;
+        
+        // 设置头部
+        Vue.prototype.$ajax.defaults.headers.common['Authorization'] = state.token;
     },
     logout(state,router) {
         state.isLogin = false;

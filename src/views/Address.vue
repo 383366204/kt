@@ -105,7 +105,7 @@
               </el-col>
               <el-col :span="2">
                 <div class="default" v-if="address.isDefault">默认地址</div>
-                <div v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</div>
+                <div v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefaultAddress(index)" type="text">设为默认地址</div>
               </el-col>
             </el-row>
             <el-row class="add-tbody" v-if="isAddressEmpty">
@@ -260,6 +260,9 @@ export default {
               });
           } else {
             //编辑状态
+
+            // 编辑状态要带上id
+            address._id = this.addresses[this.editIndex]._id;
             this.$ajax
               .put("/user/address", address)
               .then(response => {
@@ -487,6 +490,40 @@ export default {
           break;
         }
       }
+    },
+    setDefaultAddress(index) {
+      let address = {
+        _id : this.addresses[index]._id,
+        isDefault: true
+      };
+      this.$ajax
+        .put("/user/address", address)
+        .then(response => {
+          if (response.data.success) {
+            this.$notify.success({
+              title: "成功",
+              message: response.data.message,
+              offset: 100
+            });
+            this.setDefault(index);
+          } else {
+            this.$notify.error({
+              title: "失败",
+              message: response.data.message,
+              offset: 100
+            });
+          }
+        })
+        .catch(err => {
+          if (err.response.status == 401) {
+            this.$alert("登录状态已失效，请重新登录", "注意", {
+              confirmButtonText: "确定",
+              callback: action => {
+                this.$store.commit("logout", this.$router);
+              }
+            });
+          }
+        });
     }
   },
   mounted: function() {

@@ -202,7 +202,8 @@ export default {
             let self = this;
             let regisData = {
               nickName:this.registerForm.nickName,
-              password:this.registerForm.password
+              password:this.registerForm.password,
+              verification:this.registerForm.verification
             }
             //判断是用手机还是邮箱注册
             if (this.registerForm.userId.match(/^1\d{10}$/)) {
@@ -267,6 +268,22 @@ export default {
                 this.registerTiming--;
               }
             }, 1000);
+
+            let getVeriParams = {
+              type:'',
+              ajax:this.$ajax,
+              userId:this.registerForm.userId,
+              status:'signup'
+            }
+
+            //判断是用手机还是邮箱获取
+            if (this.registerForm.userId.match(/^1\d{10}$/)) {
+              getVeriParams.type = 'phone';
+            }
+            else if (this.registerForm.userId.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/)){
+              getVeriParams.type = 'email';           
+            }
+            this.$store.commit('getVeriCode',getVeriParams);
           } else if (verifiForm == "forgetPasswordForm") {
             if (this.forgetPasswordVerification == true) {
               return;

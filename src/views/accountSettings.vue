@@ -38,7 +38,7 @@
       <div class="view-content">
         <ul>
           <li><i class="iconfont icon-zhanghao"></i>昵称：<span>{{userInfo.nickName}}</span><a @click="changeNickName()">更改</a></li>
-          <li><i class="iconfont icon-huiyuan"></i>会员等级：<span>{{userInfo.level}}</span><a @click="activeTab(3)">升级</a></li>
+          <li><i class="iconfont icon-huiyuan"></i>会员等级：<span v-if="userInfo.level==1">普通会员</span><span v-else-if="userInfo.level==2">超级会员</span><a @click="activeTab(3)">升级</a></li>
           <li><i class="iconfont icon-youxiang"></i>邮箱：<span v-if="userInfo.email">{{userInfo.email}}</span><span v-else>暂未绑定</span><a @click="changeEmail()">更改</a></li>
           <li><i class="iconfont icon-shouji"></i>手机：<span v-if="userInfo.phone">{{userInfo.phone}}</span><span v-else>暂未绑定</span><a @click="changePhone()">更改</a></li>         
           <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>

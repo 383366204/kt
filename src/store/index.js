@@ -145,21 +145,16 @@ const mutations = {
     } else if (getVeriParams.type == 'phone') {
       param.phone = getVeriParams.userId;
     }
-
-    // 注册验证码
-    if (getVeriParams.status == 'signup') {
-      ajax.post('/user/signup/verification', param)
-        .then(response => {
-          if (response.data.success) {
-            console.log(response.data.message);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    }
-
-
+    // 获取验证码
+    ajax.put('/user/verification', param)
+      .then(response => {
+        if (response.data.success) {
+          console.log(response.data.message);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 }
 export default new Vuex.Store({

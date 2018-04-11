@@ -14,6 +14,7 @@ Vue.use(ElementUI)
 
 //设置api路径
 axios.defaults.baseURL = "http://127.0.0.1:4040/api";
+axios.defaults.withCredentials=true;
 
 Vue.prototype.$ajax = axios;
 

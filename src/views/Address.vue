@@ -221,8 +221,13 @@ export default {
             areaTemp.areaName;
           address.detail = this.addressForm.detail;
           address.zipCode = this.addressForm.zipCode;
-          address.phone = this.addressForm.phone;
+          address.phone = this.addressForm.phone;        
           address.isDefault = this.addressForm.setDefault;
+           // 若原本没有地址则设为默认地址
+          if(this.addresses==false){
+            address.isDefault = true;
+          }
+
           //新增状态
           if (this.addMode) {
             this.$ajax
@@ -236,8 +241,8 @@ export default {
                   });
                   // 添加时成功后，将新增的地址unshift到前面
                   this.addresses.unshift(response.data.address);
-                  //设为默认
-                  if (address.isDefault) {
+                  //若设为默认或地址只有一个时
+                  if (address.isDefault||this.addresses.length==1) {
                     this.setDefault(0);
                   }
                 } else {

@@ -194,12 +194,13 @@
     .headPic h1,h2{
       position: absolute;
       color: #FFF;
-      top: 9px;
-      right: 16px;
       font-size: 16px;
     }
     .headPic h1{
+      top: 11px;
       left: 64px;
+      width: 100%;
+      right: 16px;
     }
     .headPic h2{
       top:32px;

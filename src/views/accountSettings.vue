@@ -325,20 +325,10 @@ export default {
     cancelMoPassword(formName) {
       this.modifyPwdFormVisible = false;
       this.$refs[formName].resetFields();
-      this.$notify.error({
-        title: "失败",
-        message: "密码修改失败",
-        offset: 100
-      });
     },
     cancelMoEmail(formName) {
       this.modifyEmailFormVisible = false;
       this.$refs[formName].resetFields();
-      this.$notify.error({
-        title: "失败",
-        message: "邮箱修改失败",
-        offset: 100
-      });
     },
     cancelMoPhone(formName) {
       this.modifyEmailFormVisible = false;
@@ -414,10 +404,12 @@ export default {
               .post("/user/info", {
                 oldPassword: this.modifyEmailForm.oldPassword,
                 email: this.modifyEmailForm.newEmail,
-                verification:this.modifyEmailForm.verification
+                verification: this.modifyEmailForm.verification
               })
               .then(response => {
+                console.log(response);
                 if (response.data.success) {
+                  this.cancelMoEmail("modifyEmailForm");
                   this.$notify.success({
                     title: "成功",
                     message: response.data.message,
@@ -432,9 +424,33 @@ export default {
                   });
                 }
               })
-              .catch(err=>console.log(err));
+              .catch(err => console.log(err));
           } else if (formName == "modifyPhoneForm") {
           } else if (formName == "modifyPwdForm") {
+            this.$ajax
+              .post("/user/info", {
+                oldPassword: this.modifyPwdForm.oldPassword,
+                password: this.modifyPwdForm.newPassword
+              })
+              .then(response => {
+                console.log(response);
+                if (response.data.success) {
+                  this.cancelMoPassword("modifyPwdForm");
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  this.$store.state.userInfo = response.data.user;
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(err => console.log(err));
           }
         } else {
           console.log("error submit!!");

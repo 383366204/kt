@@ -37,9 +37,12 @@
               <el-card :body-style="{ padding: '12px 12px 0px 12px'}">
                 <div class="img">
                   <img :src="product.src"> 
-                </div>                              
-                <div style="padding: 4px; color:#6c6c6c">
+                </div>
+                <div class="clearfix description" style="width:50%; padding: 4px; color:#6c6c6c">
                   <span>{{product.description}}</span>             
+                </div>                         
+                <div class="clearfix price" style="padding: 4px; color:#6c6c6c">
+                  <i class="iconfont icon-rmb"></i><span>{{product.price}}</span>             
                 </div>  
               </el-card>
             </el-col>
@@ -62,16 +65,16 @@ export default {
     return {
       loading:false,
       products:[
-        {id:'168',src:'../../static/poster.png',description:'十佳歌手海报',folder:'1'},
-        {id:'45',src:'../../static/poster.png',description:'十佳歌手海报',folder:'1'},
-        {id:'99',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
-        {id:'13',src:'../../static/poster.png',description:'十佳歌手海报',folder:'2'},
-        {id:'2',src:'../../static/poster.png',description:'十佳歌手海报',folder:'3'},
-        {id:'5',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'},
-        {id:'10',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'},
-        {id:'2',src:'../../static/poster.png',description:'十佳歌手海报',folder:'3'},
-        {id:'5',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'},
-        {id:'5',src:'../../static/poster.png',description:'十佳歌手海报',folder:'-1'}
+        {id:'168',src:'../../static/vatti.jpg',description:'华帝燃气灶C35',price:1000},
+        {id:'45',src:'../../static/cooktop2.jpg',description:'华帝燃气灶C35',price:388},
+        {id:'99',src:'../../static/rangehood2.jpg',description:'华帝燃气灶C35',price:700},
+        {id:'13',src:'../../static/vatti.jpg',description:'华帝燃气灶C35',price:500},
+        {id:'2',src:'../../static/vatti.jpg',description:'华帝燃气灶C35',price:754},
+        {id:'5',src:'../../static/rangehood2.jpg',description:'华帝燃气灶C35',price:478},
+        {id:'10',src:'../../static/rangehood2.jpg',description:'华帝燃气灶C35',price:440},
+        {id:'2',src:'../../static/cooktop2.jpg',description:'华帝燃气灶C35',price:785},
+        {id:'80',src:'../../static/cooktop2.jpg',description:'华帝燃气灶C35',price:220},
+        {id:'20',src:'../../static/vatti.jpg',description:'华帝燃气灶C35',price:304}
       ],
       searchHot:['自动清洗','天然气','双涡轮'],
       productInfos:[
@@ -226,30 +229,44 @@ export default {
   }
   .content .el-row .el-col {
     margin-top: 20px;
-    margin-right: 18px;   
-    flex-basis: 217px;
+    margin-right: 20px;   
+    flex-basis: 274px;
   }
   /* 最左边的margin */
-  .content .el-col:nth-child(5n+1) {
-    margin-left: 18px;
+  .content .el-col:nth-child(4n+1) {
+    margin-left: 10px;
   }
   /* 相对定位 */
   .content .el-card{
     position: relative;
     cursor: pointer;
+    overflow: hidden;
   }
     /* img */
   .content .el-card .img{
-    width: 192px;
-    height: 266px;
+    width: 250px;
+    height: 250px;
     display: flex;
     align-items: center;
-  }
-  .content .el-card .img img{
-    width: 100%;
   }
   /* hover效果 */
   .content .el-card:hover{
     opacity: 0.9;
+  }
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
+  .price i{  
+    color: #de1100;
+  }
+  .price span{
+    font-size: 20px;
+    color: #de1100;
   }
 </style>

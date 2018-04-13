@@ -15,14 +15,14 @@
           <!-- 左边的海报图 -->
           <el-col :span="11">
             <div class="clothes-lt">
-              <img src="../assets/img/clothes2.png">
+              <img src="../assets/img/cooktop2.jpg">
             </div>
           </el-col>
           <!-- 右边的选项及信息 -->
           <el-col :span="11" :offset="2">
             <div class="p-name">开田燃气灶H82</div>
             <div class="p-size">开孔尺寸：98.7*109.18</div>
-            <div class="p-size">面板材料：钢化玻璃</div>
+            <div class="p-size">面板材料：不锈钢</div>
             <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign" class="p-order">
               <el-form-item label="气源：">
                 <el-radio-group v-model="fireType" size="small" class="mainColor">
@@ -152,6 +152,7 @@ export default {
     padding: 15px;
     padding-bottom: 20px;
     border-radius: 5px;
+    background-color: #fff;
   }
   .clothes-lt img{
     width: 100%;

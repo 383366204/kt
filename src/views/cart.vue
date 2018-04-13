@@ -232,6 +232,24 @@ export default {
     goodFloor
   },
   mounted:function(){
+    // 获取收货
+    this.$ajax
+      .get("/user/address")
+      .then(response => {
+        if (response.data.success) {
+          this.$store.addresses = response.data.address;
+        }
+      })
+      .catch(err => {
+        if (err.response.status == 401) {
+          this.$alert("登录状态已失效，请重新登录", "注意", {
+            confirmButtonText: "确定",
+            callback: action => {
+              this.$store.commit("logout", this.$router);
+            }
+          });
+        }
+      });
     this.goods = this.$store.state.goods;
     let self = this;
     this.goods.forEach((item)=>{

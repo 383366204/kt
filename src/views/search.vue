@@ -86,6 +86,14 @@ export default {
         {
           category:'消毒柜',
           tag:['高温','臭氧','大容量','嵌入式','柜式','壁挂式']
+        },
+        {
+          category:'燃气热水器',
+          tag:['恒温','变频','强排式','平衡式']
+        },
+        {
+          category:'电热水器',
+          tag:['圆筒','扁筒','大升数']
         }
       ],
       tags:[],
@@ -106,6 +114,10 @@ export default {
     },
     searchByTag(index){
       this.selectTag = index;
+      // 标签点击后，若类别还是选择'全部'时，切换到相应类别
+      if (index!=-1&&this.selectCategory==-1) {  
+        this.searchByCategory(Math.floor(index/2));
+      }
     },
     getAllTags(){
       this.tags = [];
@@ -118,7 +130,7 @@ export default {
     }
   },
   mounted:function(){
-    console.log(this.$route.params);
+    // console.log(this.$route.params);
     this.getAllTags();
   }
 }

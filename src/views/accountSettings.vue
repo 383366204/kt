@@ -131,7 +131,7 @@
     <el-dialog title="修改手机" :visible.sync="modifyPhoneFormVisible" width="30%" top="15%" @close="cancelMoPhone('modifyPhoneForm')">
       <el-form :model="modifyPhoneForm" :rules="modifyRules" ref="modifyPhoneForm" label-width="100px">
         <el-form-item label="密码" prop="oldPassword">
-          <el-input type="password" v-model="modifyEmailForm.oldPassword"></el-input>
+          <el-input type="password" v-model="modifyPhoneForm.oldPassword"></el-input>
         </el-form-item>
         <el-form-item label="新手机" prop="newPhone">
           <el-input v-model="modifyPhoneForm.newPhone" auto-complete="off"></el-input>
@@ -331,13 +331,8 @@ export default {
       this.$refs[formName].resetFields();
     },
     cancelMoPhone(formName) {
-      this.modifyEmailFormVisible = false;
+      this.modifyPhoneFormVisible = false;
       this.$refs[formName].resetFields();
-      this.$notify.error({
-        title: "失败",
-        message: "手机修改失败",
-        offset: 100
-      });
     },
     // 获取验证码
     getVerification(verifiForm) {
@@ -386,6 +381,12 @@ export default {
                 this.modifyPhoneTiming--;
               }
             }, 1000);
+            let getVeriParams = {
+              type: "phone",
+              ajax: this.$ajax,
+              userId: this.modifyPhoneForm.newPhone
+            };
+            this.$store.commit("getVeriCode", getVeriParams);
           }
         });
       }
@@ -426,6 +427,31 @@ export default {
               })
               .catch(err => console.log(err));
           } else if (formName == "modifyPhoneForm") {
+            this.$ajax
+              .post("/user/info", {
+                oldPassword: this.modifyPhoneForm.oldPassword,
+                phone: this.modifyPhoneForm.newPhone,
+                verification: this.modifyPhoneForm.verification
+              })
+              .then(response => {
+                console.log(response);
+                if (response.data.success) {
+                  this.cancelMoPhone("modifyPhoneForm");
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  this.$store.state.userInfo = response.data.user;
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(err => console.log(err));
           } else if (formName == "modifyPwdForm") {
             this.$ajax
               .post("/user/info", {

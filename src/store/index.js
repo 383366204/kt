@@ -68,7 +68,8 @@ const state = {
     nickName: '',
     level: '',
     email: '',
-    phone: ''
+    phone: '',
+    levelTime:Date
   }
 }
 
@@ -95,6 +96,7 @@ const mutations = {
     state.userInfo.level = data.level;
     state.userInfo.email = data.email;
     state.userInfo.phone = data.phone;
+    state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
 
     // 设置头部
     Vue.prototype.$ajax.defaults.headers.common['Authorization'] = state.token;

@@ -38,7 +38,14 @@
       <div class="view-content">
         <ul>
           <li><i class="iconfont icon-zhanghao"></i>昵称：<span>{{userInfo.nickName}}</span><a @click="changeNickName()">更改</a></li>
-          <li><i class="iconfont icon-huiyuan"></i>会员等级：<span v-if="userInfo.level==1">普通会员</span><span v-else-if="userInfo.level==2">超级会员</span><a @click="activeTab(3)">升级</a></li>
+          <li>
+            <i class="iconfont icon-huiyuan"></i>
+            会员等级：
+            <span v-if="userInfo.level==1">普通会员</span>
+            <span v-else-if="userInfo.level==2">超级会员</span>
+            <a @click="activeTab(3)">升级</a>
+            <span class="levelTime" v-if="userInfo.level==2">你的超级会员还有{{userInfo.levelTime}}天到期</span>
+          </li>
           <li><i class="iconfont icon-youxiang"></i>邮箱：<span v-if="userInfo.email">{{userInfo.email}}</span><span v-else>暂未绑定</span><a @click="changeEmail()">更改</a></li>
           <li><i class="iconfont icon-shouji"></i>手机：<span v-if="userInfo.phone">{{userInfo.phone}}</span><span v-else>暂未绑定</span><a @click="changePhone()">更改</a></li>         
           <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>
@@ -100,7 +107,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-button class="payButton" type="primary" @click="pay()">支付</el-button>
+            <el-button class="payButton" type="primary" @click="upgrade()">支付</el-button>
           </el-col>
         </el-row>
       </div>
@@ -394,8 +401,24 @@ export default {
     selectVIP(index) {
       this.selectVIPType = index;
     },
-    pay() {
-      console.log("pay");
+    upgrade() {
+      let days = this.vipPrices[this.selectVIPType].time*30;
+      this.$ajax.post('/user/upgrade',{
+        upgradeDays:days,
+        payOption:this.payOption
+      })
+      .then(response=>{
+        if(response.data.success){
+          var reg = new RegExp('"',"g");
+          let url = `https://openapi.alipaydev.com/gateway.do?${JSON.stringify(response.data.params)}`;
+          url = url.replace(reg,"");
+          // 重定向到支付宝支付接口
+          window.location = url;
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -820,5 +843,10 @@ a {
 }
 .radioSize .el-radio {
   width: 48.8%;
+}
+/*会员过期时间*/
+.levelTime{
+  margin-left:20px;
+  color:rgb(170,170,170);
 }
 </style>

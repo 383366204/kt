@@ -3,15 +3,17 @@
     <div class="nav">
       <div class="nav-head">
         <div class="nav-head_img">
-          <!-- <img src="../assets/img/head-pic.png"> -->
-          <el-tooltip effect="dark" content="点击更换头像" placement="left">
+          <el-tooltip effect="dark" placement="left">
+            <div slot="content">点击更换您的头像<br/>(分辨率需为64x64)</div>
             <el-upload
+              name="avatar"
               class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="uploadForm.url"
+              :headers="uploadForm.auth"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">          
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <img v-if="userInfo.headPicUrl" :src="userInfo.headPicUrl" class="avatar">
             </el-upload>
           </el-tooltip>
         </div>
@@ -270,8 +272,11 @@ export default {
       //0代表第一种vip方案
       selectVIPType: 0,
       payOption: 0,
-      //头像的路径
-      imageUrl: "../static/head-pic.png"
+      //上传头像的表单
+      uploadForm: {
+        auth: { Authorization: this.$store.state.token },
+        url: "http://127.0.0.1:4040/api/user/headPic/"
+      }
     };
   },
   methods: {
@@ -297,7 +302,7 @@ export default {
               message: response.data.message,
               offset: 100
             });
-            this.$store.state.userInfo = response.data.user;
+            this.$store.commit('setUserInfo',response.data.user);
           } else {
             this.$notify.error({
               title: "失败",
@@ -402,23 +407,21 @@ export default {
       this.selectVIPType = index;
     },
     upgrade() {
-      let days = this.vipPrices[this.selectVIPType].time*30;
-      this.$ajax.post('/user/upgrade',{
-        upgradeDays:days,
-        payOption:this.payOption
-      })
-      .then(response=>{
-        if(response.data.success){
-          var reg = new RegExp('"',"g");
-          let url = `https://openapi.alipaydev.com/gateway.do?${JSON.stringify(response.data.params)}`;
-          url = url.replace(reg,"");
-          // 重定向到支付宝支付接口
-          window.location = url;
-        }
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+      let days = this.vipPrices[this.selectVIPType].time * 30;
+      this.$ajax
+        .post("/user/upgrade", {
+          upgradeDays: days,
+          payOption: this.payOption
+        })
+        .then(response => {
+          if (response.data.success) {
+            // 重定向到支付宝支付接口
+            window.location = response.data.url;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -439,7 +442,7 @@ export default {
                     message: response.data.message,
                     offset: 100
                   });
-                  this.$store.state.userInfo = response.data.user;
+                  this.$store.commit('setUserInfo',response.data.user);
                 } else {
                   this.$notify.error({
                     title: "失败",
@@ -465,7 +468,7 @@ export default {
                     message: response.data.message,
                     offset: 100
                   });
-                  this.$store.state.userInfo = response.data.user;
+                  this.$store.commit('setUserInfo',response.data.user);
                 } else {
                   this.$notify.error({
                     title: "失败",
@@ -490,7 +493,7 @@ export default {
                     message: response.data.message,
                     offset: 100
                   });
-                  this.$store.state.userInfo = response.data.user;
+                  this.$store.commit('setUserInfo',response.data.user);
                 } else {
                   this.$notify.error({
                     title: "失败",
@@ -507,19 +510,34 @@ export default {
         }
       });
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleAvatarSuccess(response, file) {
+      console.log(response);
+      if (response.success) {
+        this.headPicUrl = response.headPicUrl;
+        this.$notify.success({
+          title: "成功",
+          message: response.message,
+          offset: 100
+        });
+        this.$store.commit('setUserInfo',response.user);
+      } else {
+        this.$notify.error({
+          title: "失败",
+          message: response.message,
+          offset: 100
+        });
+      }
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt10K = file.size / 1024 < 12;
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+      if (!isLt10K) {
+        this.$message.error("上传头像图片大小不能超过 12KB!");
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt10K;
     }
   },
   computed: {
@@ -845,8 +863,8 @@ a {
   width: 48.8%;
 }
 /*会员过期时间*/
-.levelTime{
-  margin-left:20px;
-  color:rgb(170,170,170);
+.levelTime {
+  margin-left: 20px;
+  color: rgb(170, 170, 170);
 }
 </style>

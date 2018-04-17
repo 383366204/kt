@@ -19,7 +19,7 @@
               <el-dropdown v-if="getLogin" @command="handleCommand" trigger="click">
                 <div class="headPic">
                   <el-badge :value="100" :max="99">
-                    <el-button><img src="../assets/img/head-pic.png" width="52"></el-button>
+                    <el-button><img :src="userInfo.headPicUrl" width="52"></el-button>
                   </el-badge>
                   <h1>{{userInfo.nickName}}</h1>
                   <h2 v-if="userInfo.level==1">普通会员</h2>
@@ -178,7 +178,8 @@
       position: relative;
       width: 55px !important;
       height: 55px !important;
-      border-radius: 50%;    
+      border-radius: 50%;
+      overflow: hidden;
     }
     /* 头像hover效果*/
     .headPic .el-badge .el-button:hover{

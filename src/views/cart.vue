@@ -184,11 +184,7 @@ export default {
       }
     },
     getSum(good){
-        let numSum=0;
-        for (let i = 0; i < good.num.length; i++) {
-          numSum += good.num[i];
-        }
-        return numSum*good.price;
+        return good.price*good.num;
     },
     changeNum(price,good){
       let index = this.goods.findIndex((item)=>{return item.id == good.id});//找出good的index
@@ -237,7 +233,7 @@ export default {
       .get("/user/address")
       .then(response => {
         if (response.data.success) {
-          this.$store.addresses = response.data.address;
+          this.$store.state.addresses = response.data.address;
         }
       })
       .catch(err => {
@@ -250,7 +246,7 @@ export default {
           });
         }
       });
-    this.goods = this.$store.state.goods;
+    this.goods = this.$store.state.cart;
     let self = this;
     this.goods.forEach((item)=>{
       self.$set(item,'isCheck',false);

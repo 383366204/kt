@@ -2,7 +2,7 @@
   <main>
     <el-row>
       <!-- 面包屑导航栏 -->
-      <el-col :span="16" :offset="4" class="margin-top">
+      <el-col :span="16" :offset="3" class="margin-top">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: `/Search` }">燃气灶</el-breadcrumb-item>
           <el-breadcrumb-item>开田燃气灶</el-breadcrumb-item>
@@ -10,7 +10,7 @@
         </el-breadcrumb>
       </el-col>
       <!-- 海报展示及购买 -->
-      <el-col :span="16" :offset="4">
+      <el-col :span="18" :offset="3">
         <el-row>
           <!-- 左边的海报图 -->
           <el-col :span="11">
@@ -56,11 +56,11 @@
         </el-row>
       </el-col>
       <!-- 详细信息标题 -->
-      <el-col :span="16" :offset="4">
+      <el-col :span="16" :offset="3">
         <div class="detial-title"><i class="iconfont icon-detail"></i>详细信息</div>
       </el-col>
       <!-- 详细信息 -->
-      <el-col :span="16" :offset="4" class="detial">
+      <el-col :span="18" :offset="3" class="detial">
         <div>
           <ul>
             <li>详情</li>
@@ -69,8 +69,8 @@
         </div>
         <div>
           <ul>
-            <li>品牌名称：Teamto/团图</li>
-            <li>上市时间：2017年冬季</li>
+            <li>品牌名称：Katen</li>
+            <li>上市时间：2017年</li>
             <li>材料成分：纯棉</li>
             <li>货号：tt40090909</li>
             <li>风格：嘻哈风</li>
@@ -78,8 +78,8 @@
         </div>
         <div>
           <p><i class="iconfont icon-zhuyi"></i>注意</p>
-          <p>尊敬的客户，凡在我平台直接购买<span class="msg">无修改</span>原有设计可以在<span class="msg">10天内退换货</span>。</p>
-          <p>凡是<span class="msg">个性设计后</span>购买的衣服，由于无法转售给他人，所以本站<span class="msg">不支持退换货</span>，给您造成的不便尽请谅解</p>
+          <p>尊敬的客户，凡在我平台直接购买到任何因<span class="msg">质量问题</span>而无法正常使用的商品可以在<span class="msg">本店可在10天内退换货</span>。</p>
+          <p>凡是<span class="msg">私自拆卸、组装后</span>的商品，因有可能造成内部重要零件的损坏，本站<span class="msg">不支持退换货</span>，给您造成的不便尽请谅解</p>
         </div>
         <div>
           <ul>
@@ -161,7 +161,7 @@ export default {
 
   /*右边订单选择*/
   .p-name{
-    font-size: 18px;
+    font-size: 24px;
     margin: 20px 0 20px 44px;
     font-weight: 700;
   }
@@ -216,6 +216,7 @@ export default {
   }
   .p-btn li .el-button{
     width: 280px;
+    margin-left:-40px;
     margin-bottom: 16px;
     border-radius: 4px;
     background-color: #2eb4e9;

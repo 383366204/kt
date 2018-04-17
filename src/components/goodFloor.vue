@@ -9,28 +9,27 @@
                 <el-col :span="3" v-else-if="page==2||page==3"></el-col>
                 <el-col :span="5"><div><img :src="good.src"></div></el-col>
                 <el-col :span="9"><div>{{good.name}}</div></el-col>
-                <el-col :span="7" v-if="good.type==1"><div>{{good.description}}</div></el-col>
+                <el-col :span="7"><div>{{good.description}}</div></el-col>
             </el-row>
         </el-col>
 
         <el-col :span="3">
             <div class="cart-tbody_second">
-                <p v-for="(size,index) in good.size" :key="index">{{size}}</p>
+                <p>{{good.size}}</p>
             </div>
         </el-col>
         <!-- page = 1 代表是在购物车 -->
         <el-col :span="3" v-if="page==1">
           <div class="cart-tbody_third">
-            <el-input-number v-for="(num,index) in good.num" :key="index" @change="changeNum" v-model="good.num[index]" :min="1" :max="99" size="small"></el-input-number>
+            <el-input-number @change="changeNum" v-model="good.num" :min="1" :max="99" size="small"></el-input-number>
           </div>
         </el-col>
-
+        <!-- 另外两个页面 -->
         <el-col :span="3" v-else>
             <div class="cart-tbody_third">
-                <p v-for="(num,index) in good.num" :key="index">{{num}}</p>
+                <p>{{good.num}}</p>
             </div>
         </el-col>
-
 
         <!-- page = 1 或 2 代表是在购物车或者訂單 -->
         <el-col :span="2" v-if="page==1||page==2" class="colorRed"><div>{{good.price}}</div></el-col>
@@ -113,11 +112,7 @@ export default {
         return this.status[status];
       },
       getSum(good){
-        let numSum=0;
-        for (let i = 0; i < good.num.length; i++) {
-          numSum += good.num[i];
-        }
-        return numSum*good.price;
+        return good.price*good.num;
       },
       check(id){
         this.$emit('checkGood',id);

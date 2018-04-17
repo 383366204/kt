@@ -6,21 +6,70 @@ const state = {
   isIndex: true, //判断是否在首页
   isLogin: false, //判断是否有登录
   addresses: [], //收货地址
-  goods: [{
+  cart:[{
     id: 10001,
     page: 1,
-    type: 1,
     status: 1,
     name: '冬季男款卫衣',
     description: '红色',
     src: '../../static/clothes2.png',
-    size: ['S', 'M', 'L', 'XL', 'XXl'],
-    num: [1, 1, 1, 1, 1],
+    size: '65*100cm',
+    num: 1,
     price: 200
   }, {
     id: 10002,
     page: 1,
-    type: 2,
+    status: 2,
+    name: '记忆协会海报',
+    description: '',
+    src: '../../static/poster2.png',
+    size: '65*100cm',
+    num: 1,
+    price: 50
+  }, {
+    id: 10003,
+    page: 1,
+    status: 3,
+    name: '横幅',
+    description: '',
+    src: '../../static/banner2.jpg',
+    size: '5m',
+    num: 1,
+    price: 50
+  }, {
+    id: 10004,
+    page: 1,
+    status: 4,
+    name: '横幅',
+    description: '',
+    src: '../../static/banner2.jpg',
+    size: '5m',
+    num: 1,
+    price: 50
+  }, {
+    id: 10005,
+    page: 1,
+    status: 5,
+    name: '横幅',
+    description: '',
+    src: '../../static/banner2.jpg',
+    size: '5m',
+    num: 1,
+    price: 50
+  }],
+  goods: [{
+    id: 10001,
+    page: 1,
+    status: 1,
+    name: '冬季男款卫衣',
+    description: '红色',
+    src: '../../static/clothes2.png',
+    size: ['65*100cm'],
+    num: [1],
+    price: 200
+  }, {
+    id: 10002,
+    page: 1,
     status: 2,
     name: '记忆协会海报',
     description: '',
@@ -31,7 +80,6 @@ const state = {
   }, {
     id: 10003,
     page: 1,
-    type: 3,
     status: 3,
     name: '横幅',
     description: '',
@@ -42,7 +90,6 @@ const state = {
   }, {
     id: 10004,
     page: 1,
-    type: 3,
     status: 4,
     name: '横幅',
     description: '',
@@ -53,7 +100,6 @@ const state = {
   }, {
     id: 10005,
     page: 1,
-    type: 3,
     status: 5,
     name: '横幅',
     description: '',
@@ -69,7 +115,8 @@ const state = {
     level: '',
     email: '',
     phone: '',
-    levelTime:Date
+    levelTime:Date,
+    headPicUrl:''
   }
 }
 
@@ -78,7 +125,9 @@ const getters = {
 }
 
 const actions = {
-
+  // setUserInfo(context){
+  //   context.commit('login');
+  // }
 }
 
 const mutations = {
@@ -87,6 +136,14 @@ const mutations = {
   },
   setIndexFalse(state) {
     state.isIndex = false;
+  },
+  setUserInfo(state, data){
+    state.userInfo.nickName = data.nickName;
+    state.userInfo.level = data.level;
+    state.userInfo.email = data.email;
+    state.userInfo.phone = data.phone;
+    state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
+    state.userInfo.headPicUrl = 'http://127.0.0.1:4040'+data.headPicUrl;
   },
   login(state, data) {
     //登录
@@ -97,10 +154,11 @@ const mutations = {
     state.userInfo.email = data.email;
     state.userInfo.phone = data.phone;
     state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
-
+    state.userInfo.headPicUrl = 'http://127.0.0.1:4040'+data.headPicUrl;
     // 设置头部
     Vue.prototype.$ajax.defaults.headers.common['Authorization'] = state.token;
-  },
+  }
+  ,
   logout(state, router) {
     state.isLogin = false;
     state.token = null;

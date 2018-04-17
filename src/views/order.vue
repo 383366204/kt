@@ -51,7 +51,7 @@
 
         <!-- 留言框 -->
         <el-row>
-        留言：<el-input size="small" placeholder="例如：要求哪家快递公司配送" v-model="liuyan"></el-input>
+        留言：<el-input size="small" placeholder="例如：要求哪家快递公司配送" v-model="message"></el-input>
         </el-row>
         <!-- 详细信息 -->
         <el-row class="detail">
@@ -72,63 +72,69 @@
 </template>
 
 <script>
-import goodFloor from '@/components/goodFloor';
+import goodFloor from "@/components/goodFloor";
 export default {
-  name: 'cart',
-  data () {
+  name: "cart",
+  data() {
     return {
-      listItems: ['buy food', 'play games', 'sleep'],
-      liuyan: '',
-      goods:[],
-      addressIndex:'',
-      checkSum:0,//已选中商品的总价
-      selectAddress :[]
-    }
+      message: "",
+      goods: [],
+      addressIndex: "",
+      checkSum: 0, //已选中商品的总价
+      selectAddress: []
+    };
   },
   methods: {
-    delFloor(id){
-      this.$confirm('删除此商品?', '确认删除', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          // 查找要删除的元素位置
-           let index = this.goods.findIndex((item)=>{ return item.id==id});
-           this.checkSum -= this.getSum(this.goods[index]);//总价减少
-           this.goods.splice(index,1);
-           this.$notify.success({
-            title: '成功',
-            message: '已从订单中删除',
-            offset:100
+    delFloor(id) {
+      // 至少有一件商品
+      if (this.goods.length == 1) {
+        this.$alert("至少要有一件商品", "提示", {
+          confirmButtonText: "确定"
+        });
+      } else {
+        this.$confirm("删除此商品?", "确认删除", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            // 查找要删除的元素位置
+            let index = this.goods.findIndex(item => {
+              return item.id == id;
+            });
+            this.checkSum -= this.getSum(this.goods[index]); //总价减少
+            this.goods.splice(index, 1);
+            this.$notify.success({
+              title: "成功",
+              message: "已从订单中删除",
+              offset: 100
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            this.$notify.warning({
+              title: "提示",
+              message: "已取消删除",
+              offset: 100
+            });
           });
-        }).catch((err) => {
-          console.log(err);
-          this.$notify.warning({
-              title: '提示',
-              message: '已取消删除',
-              offset:100
-            });        
-        });  
+      }
     },
-    getSum(good){
-      let numSum=0;
-        for (let i = 0; i < good.num.length; i++) {
-          numSum += good.num[i];
-        }
-        return numSum*good.price;
+    getSum(good) {
+      return good.num * good.price;
     }
   },
-  components:{
+  components: {
     goodFloor
   },
-  computed:{
-    addresses(){
+  computed: {
+    addresses() {
       return this.$store.state.addresses;
-    },
+    }
   },
-  mounted:function(){
+  mounted: function() {
     //选择默认地址
-    this.addressIndex=this.$store.state.addresses.findIndex((item)=>{
+    this.addressIndex = this.$store.state.addresses.findIndex(item => {
       return item.isDefault;
     });
     this.goods = this.$store.state.checkOutGoods;
@@ -143,125 +149,126 @@ export default {
         //获取当前选中的地址
         this.selectAddress = this.$store.state.addresses[this.addressIndex];
         //处理地址中的省市区
-        this.selectAddress.region = this.selectAddress.region.split('/').join(' ');
+        this.selectAddress.region = this.selectAddress.region
+          .split("/")
+          .join(" ");
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
-  main{
-    width: 1200px;
-    margin: 0 auto;
-    color: #555;
-    font-size: 14px;
-  }
-  img{
-    width: 100%;
-  }
-  button{
-    cursor: pointer;
-  }
+main {
+  width: 1200px;
+  margin: 0 auto;
+  color: #555;
+  font-size: 14px;
+}
+img {
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}
 
-  /*收货地址选择*/
-  .address-title{
-    color: #de1100;
-    font-weight: 700;
-  }
-  .address-title i{
-    margin-right: 10px;
-  }
-  .address li{
-    display: inline-block;
-    margin-left: 10px;
-    color: #666;
-  }
-  .address li:nth-of-type(5),
-  .address li:nth-of-type(6){
-    color: #aaa;
-  }
+/*收货地址选择*/
+.address-title {
+  color: #de1100;
+  font-weight: 700;
+}
+.address-title i {
+  margin-right: 10px;
+}
+.address li {
+  display: inline-block;
+  margin-left: 10px;
+  color: #666;
+}
+.address li:nth-of-type(5),
+.address li:nth-of-type(6) {
+  color: #aaa;
+}
 
+/*确认订单*/
+/*标题*/
+.cart-title {
+  font-size: 18px;
+  color: #555;
+  margin-top: 40px;
+}
+.cart-title > i {
+  font-size: 22px;
+  color: #2eb4e9;
+  margin-right: 10px;
+}
+/*订单头部*/
+.cart-thead div {
+  background-color: #e6eaeb;
+  text-align: center;
+  color: #666;
+  padding: 4px 0;
+  border-right: 1px solid #d7dadb;
+}
+/* 去掉最右边的border */
+.cart-thead div:last-child {
+  border-right: none;
+}
 
-  /*确认订单*/
-  /*标题*/
-  .cart-title{
-    font-size: 18px;
-    color: #555;
-    margin-top: 40px;
-  }
-  .cart-title > i{
-    font-size: 22px;
-    color: #2eb4e9;
-    margin-right: 10px;
-  }
-  /*订单头部*/
-  .cart-thead div{
-    background-color: #e6eaeb;
-    text-align: center;
-    color: #666;
-    padding: 4px 0;
-    border-right: 1px solid #d7dadb;
-  }
-  /* 去掉最右边的border */
-  .cart-thead div:last-child{
-    border-right: none;
-  }
+/*留言框*/
+.el-input {
+  width: 500px;
+}
 
-  /*留言框*/
-  .el-input{
-    width: 500px;
-  }
+/*详细信息*/
+.detail {
+  font-size: 16px;
+}
+.detail ul {
+  float: right;
+  text-align: right;
+  width: 500px;
+  border: 1px solid #de1100;
+  padding: 14px 20px;
+  border-radius: 4px;
+}
+.detail li {
+  margin-bottom: 10px;
+}
+.detail li:last-of-type {
+  margin-bottom: 0;
+}
+.important {
+  color: #ff0000;
+  padding: 0 10px;
+  font-size: 18px;
+}
+/*提交订单按钮*/
+.order-tj {
+  float: right;
+}
+.btn {
+  border: none;
+  padding: 6px 20px;
+  border-radius: 4px;
+}
+.btn-red {
+  background-color: #de1100;
+  color: #fff;
+  font-size: 14px;
+}
 
-  /*详细信息*/
-  .detail{
-    font-size: 16px;
-  }
-  .detail ul{
-    float: right;
-    text-align: right;
-    width: 500px;
-    border: 1px solid #de1100;
-    padding: 14px 20px;
-    border-radius: 4px;
-  }
-  .detail li{
-    margin-bottom: 10px;
-  }
-  .detail li:last-of-type{
-    margin-bottom: 0;
-  }
-  .important{
-    color: #ff0000;
-    padding: 0 10px;
-    font-size: 18px;
-  }
-  /*提交订单按钮*/
-  .order-tj{
-    float: right;
-  }
-  .btn{
-    border: none;
-    padding: 6px 20px;
-    border-radius: 4px;
-  }
-  .btn-red{
-    background-color: #de1100;
-    color: #fff;
-    font-size: 14px;
-  }
-
-  .el-row {
-    margin-bottom: 20px;
-  }
-  label{
-    cursor: pointer;
-  }
-  .addressManager{
-    color:#de1100;
-    text-align: center;
-  }
-  a{
-    text-decoration: none;
-  }
+.el-row {
+  margin-bottom: 20px;
+}
+label {
+  cursor: pointer;
+}
+.addressManager {
+  color: #de1100;
+  text-align: center;
+}
+a {
+  text-decoration: none;
+}
 </style>

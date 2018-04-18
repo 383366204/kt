@@ -612,6 +612,7 @@ a {
   margin-left: 20px;
   border-radius: 50%;
   overflow: hidden;
+  background-color: #fff;
 }
 .nav-head_msg {
   float: right;

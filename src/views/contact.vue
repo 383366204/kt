@@ -227,6 +227,15 @@
     .main .box-card i{
         color:#2eb4e9;
     }
+    .main .contactInfo{
+        flex-direction: row;
+        width: 1000px;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .main .contactInfo .el-col{
+        flex-basis: 483px;
+    }
     /* 留言 */
     .main .information{
         width: 810px;

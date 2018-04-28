@@ -18,7 +18,17 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+
+    };
+  },
+  mounted:function(){
+    this.$ajax.get('/user/info')
+    .then(response=>{
+      if (response.data.success) {
+        this.$store.commit('setUserInfo',response.data);
+      }
+    })
   }
 };
 </script>

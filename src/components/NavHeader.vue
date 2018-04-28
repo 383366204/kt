@@ -89,10 +89,10 @@
         return this.$store.state.isIndex;
       },
       getLogin(){
-        return this.$store.state.isLogin;
+        return this.$store.getters.isLogin;
       },
       userInfo(){
-        return this.$store.state.userInfo;
+        return this.$store.getters.userInfo;
       },
     }
   }

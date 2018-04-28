@@ -274,7 +274,7 @@ export default {
       payOption: 0,
       //上传头像的表单
       uploadForm: {
-        auth: { Authorization: this.$store.state.token },
+        auth: { Authorization: this.$store.getters.token },
         url: "http://127.0.0.1:4040/api/user/headPic/"
       }
     };
@@ -542,7 +542,7 @@ export default {
   },
   computed: {
     userInfo() {
-      return this.$store.state.userInfo;
+      return this.$store.getters.userInfo;
     }
   }
 };

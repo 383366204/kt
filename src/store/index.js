@@ -121,13 +121,37 @@ const state = {
 }
 
 const getters = {
-
+  isLogin:state=>{
+    if (localStorage.getItem('isLogin')) {
+      state.isLogin = localStorage.getItem('isLogin')=="true"?true:false;
+      return state.isLogin;
+    }
+    else {
+      return state.isLogin;
+    }
+  },
+  token:state=>{
+    if (localStorage.getItem('token')) {
+        state.token = localStorage.getItem('token');
+        return state.token;
+    }
+    else {
+       return state.token;
+    }
+  },
+  userInfo:state=>{
+    if(localStorage.getItem('userInfo')){
+      state.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      return state.userInfo;
+    }
+    else{
+      return state.userInfo;
+    }
+  }
 }
 
 const actions = {
-  // setUserInfo(context){
-  //   context.commit('login');
-  // }
+  
 }
 
 const mutations = {
@@ -144,24 +168,30 @@ const mutations = {
     state.userInfo.phone = data.phone;
     state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
     state.userInfo.headPicUrl = 'http://127.0.0.1:4040'+data.headPicUrl;
+
+    localStorage.setItem('userInfo',JSON.stringify(state.userInfo));
   },
   login(state, data) {
     //登录
     state.isLogin = true;
+    localStorage.setItem('isLogin',true);
+
     state.token = data.token;
-    state.userInfo.nickName = data.nickName;
-    state.userInfo.level = data.level;
-    state.userInfo.email = data.email;
-    state.userInfo.phone = data.phone;
-    state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
-    state.userInfo.headPicUrl = 'http://127.0.0.1:4040'+data.headPicUrl;
+    localStorage.setItem('token',data.token);
+
+    mutations.setUserInfo(state,data);
+
     // 设置头部
-    Vue.prototype.$ajax.defaults.headers.common['Authorization'] = state.token;
+    Vue.prototype.$ajax.defaults.headers.common['Authorization'] = getters.token(state);
   }
   ,
   logout(state, router) {
     state.isLogin = false;
     state.token = null;
+    localStorage.removeItem('isLogin');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
+    
     router.push({
       path: '/'
     });

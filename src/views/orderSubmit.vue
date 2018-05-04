@@ -23,7 +23,7 @@ export default {
     };
   },
   mounted:function(){
-    this.$ajax.get('/user/info')
+    this.$ajax.get('/api/user/info')
     .then(response=>{
       if (response.data.success) {
         this.$store.commit('setUserInfo',response.data);

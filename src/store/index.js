@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import config from '../config/config.js'
 
 Vue.use(Vuex)
 const state = {
@@ -167,7 +168,7 @@ const mutations = {
     state.userInfo.email = data.email;
     state.userInfo.phone = data.phone;
     state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
-    state.userInfo.headPicUrl = 'http://127.0.0.1:4040'+data.headPicUrl;
+    state.userInfo.headPicUrl = config.baseURL+''+data.headPicUrl;
 
     localStorage.setItem('userInfo',JSON.stringify(state.userInfo));
   },

@@ -7,13 +7,14 @@ import ElementUI from 'element-ui';
 import App from './App';
 import router from './router';
 import axios from 'axios';
+import config from './config/config';
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
 //设置api路径
-axios.defaults.baseURL = "http://127.0.0.1:4040/api";
+axios.defaults.baseURL = config.baseURL;
 axios.defaults.withCredentials=true;
 axios.defaults.headers.common['Authorization'] = store.getters.token;
 

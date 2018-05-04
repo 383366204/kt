@@ -230,7 +230,7 @@ export default {
   mounted:function(){
     // 获取收货
     this.$ajax
-      .get("/user/address")
+      .get("/api/user/address")
       .then(response => {
         if (response.data.success) {
           this.$store.state.addresses = response.data.address;

@@ -179,6 +179,8 @@
 </template>
 
 <script>
+import config from '../config/config';
+
 export default {
   data() {
     var confirmPassword = (rule, value, callback) => {
@@ -275,7 +277,7 @@ export default {
       //上传头像的表单
       uploadForm: {
         auth: { Authorization: this.$store.getters.token },
-        url: "http://127.0.0.1:4040/api/user/headPic/"
+        url: config.baseURL+"api/user/headPic/"
       }
     };
   },
@@ -291,7 +293,7 @@ export default {
         inputErrorMessage: "昵称为2到10个中英文字符组成"
       })
         .then(({ value }) => {
-          return this.$ajax.post("/user/info", {
+          return this.$ajax.post("/api/user/info", {
             nickName: value
           });
         })
@@ -409,7 +411,7 @@ export default {
     upgrade() {
       let days = this.vipPrices[this.selectVIPType].time * 30;
       this.$ajax
-        .post("/user/upgrade", {
+        .post("/api/user/upgrade", {
           upgradeDays: days,
           payOption: this.payOption
         })
@@ -428,7 +430,7 @@ export default {
         if (valid) {
           if (formName == "modifyEmailForm") {
             this.$ajax
-              .post("/user/info", {
+              .post("/api/user/info", {
                 oldPassword: this.modifyEmailForm.oldPassword,
                 email: this.modifyEmailForm.newEmail,
                 verification: this.modifyEmailForm.verification
@@ -454,7 +456,7 @@ export default {
               .catch(err => console.log(err));
           } else if (formName == "modifyPhoneForm") {
             this.$ajax
-              .post("/user/info", {
+              .post("/api/user/info", {
                 oldPassword: this.modifyPhoneForm.oldPassword,
                 phone: this.modifyPhoneForm.newPhone,
                 verification: this.modifyPhoneForm.verification
@@ -480,7 +482,7 @@ export default {
               .catch(err => console.log(err));
           } else if (formName == "modifyPwdForm") {
             this.$ajax
-              .post("/user/info", {
+              .post("/api/user/info", {
                 oldPassword: this.modifyPwdForm.oldPassword,
                 password: this.modifyPwdForm.newPassword
               })

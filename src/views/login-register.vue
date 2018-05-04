@@ -220,7 +220,7 @@ export default {
               regisData.email = this.registerForm.userId;
             }
             this.$ajax
-              .post("user/signup", regisData)
+              .post("/api/user/signup", regisData)
               .then(function(response) {
                 console.log(response);
                 if (response.data.success) {
@@ -256,7 +256,7 @@ export default {
             ) {
               forgetData.email = this.forgetPasswordForm.userId;
             }
-            this.$ajax.post("/user/forget", forgetData)
+            this.$ajax.post("/api/user/forget", forgetData)
             .then(response => {             
               if (response.data.success) {
                 this.$alert(response.data.message, "注意", {
@@ -376,7 +376,7 @@ export default {
         loginData.email = this.loginForm.userId;
       }
       this.$ajax
-        .post("user/signin", loginData)
+        .post("/api/user/signin", loginData)
         .then(response => {
           console.log(response);
           if (response.data.success) {

@@ -231,7 +231,7 @@ export default {
           //新增状态
           if (this.addMode) {
             this.$ajax
-              .post("/user/address", address)
+              .post("/api/user/address", address)
               .then(response => {
                 if (response.data.success) {
                   this.$notify.success({
@@ -269,7 +269,7 @@ export default {
             // 编辑状态要带上id
             address._id = this.addresses[this.editIndex]._id;
             this.$ajax
-              .put("/user/address", address)
+              .put("/api/user/address", address)
               .then(response => {
                 if (response.data.success) {
                   this.$notify.success({
@@ -417,7 +417,7 @@ export default {
       })
         .then(() => {
           this.$ajax
-            .delete("/user/address", {
+            .delete("/api/user/address", {
               // delete方法要加data
               data: {
                 _id: this.addresses[index]._id
@@ -502,7 +502,7 @@ export default {
         isDefault: true
       };
       this.$ajax
-        .put("/user/address", address)
+        .put("/api/user/address", address)
         .then(response => {
           if (response.data.success) {
             this.$notify.success({
@@ -533,7 +533,7 @@ export default {
   },
   mounted: function() {
     this.$ajax
-      .get("/user/address")
+      .get("/api/user/address")
       .then(response => {
         if (response.data.success) {
           this.addresses = response.data.address;

@@ -36,7 +36,7 @@
             <el-col :span="6" v-for="(product,index) in products" :key="index" @click.native="toDetail(product)">
               <el-card :body-style="{ padding: '12px 12px 0px 12px'}">
                 <div class="img">
-                  <img :src="'http://127.0.0.1:4040/productPic/'+ product.name+'/'+product.imgSrc" :onerror="errImg">
+                  <img :src="config.baseURL+'/productPic/'+ product.name+'/'+product.imgSrc" :onerror="errImg">
                 </div>
                 <div class="clearfix description" style="width:100%; padding: 4px; color:#6c6c6c">
                   <span>{{product.grand}}</span>
@@ -48,7 +48,7 @@
                 </div>
               </el-card>
             </el-col>
-            <el-col :span="6" v-if="total==0">
+            <el-col class="searchNull" v-if="total==0">
               <div class="searchNull">
                   <i class="iconfont icon-cry"></i>
                   <h1>查询结果为空</h1>
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import config from '../config/config';
 export default {
   data() {
     return {
@@ -167,7 +168,9 @@ export default {
       total: 100,
       currentPage: 1,
 
-      errImg:'this.src="' + require('../assets/img/err.png') + '"'
+      errImg:'this.src="' + require('../assets/img/err.png') + '"',
+
+      config:config
     };
   },
   methods: {
@@ -225,7 +228,7 @@ export default {
         selectFilter: this.selectFilter
       };
       this.$ajax
-        .get("http://127.0.0.1:4040/admin/product", { params: params })
+        .get("/admin/product", { params: params })
         .then(response => {
           if (response.data.success) {
             this.total = response.data.total;
@@ -241,7 +244,7 @@ export default {
             let tasks = [];
 
             outProduct.forEach((value,index,array) => {
-              tasks.push(this.$ajax.get('http://127.0.0.1:4040/admin/product/img',{ params: {name:value.name} }));
+              tasks.push(this.$ajax.get('/admin/product/img',{ params: {name:value.name} }));
             })
 
             Promise.all(tasks).then(response=>{
@@ -420,6 +423,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-basis: 1200px !important;
 }
 .searchNull h1 {
   font-size: 20px;

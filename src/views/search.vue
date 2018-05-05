@@ -5,7 +5,7 @@
         <!-- 热门搜索 -->
         <div class="search-hot">热门搜索：
           <ul>
-            <li v-for="(hot,index) in searchHot" :key="index">
+            <li v-for="(hot,index) in searchHot" :key="index" @click="searchByHot(index)">
               {{hot}}
             </li>
           </ul>
@@ -211,6 +211,9 @@ export default {
         }
       }
     },
+    searchByHot(index){
+      this.$router.push({path:`/Search/${this.searchHot[index]}`});
+    },
     getAllTags() {
       this.tags = [];
       this.productInfos.forEach((productInfo, index, array) => {
@@ -272,6 +275,7 @@ export default {
     searchParams(){
       this.searchFilter = this.$route.params.Filters;
       this.loadProductData();
+      this.selectFilter = '';
     }
   },
   mounted: function() {

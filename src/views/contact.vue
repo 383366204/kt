@@ -38,8 +38,8 @@
                     <el-form-item label="邮箱：" prop="email">
                         <el-input v-model="information.email" placeholder="您的电子邮箱"></el-input>
                     </el-form-item>
-                    <el-form-item label="QQ号：">
-                        <el-input v-model="information.QQ" placeholder="您的QQ号码"></el-input>
+                    <el-form-item label="QQ号：" prop="qq">
+                        <el-input v-model="information.qq" placeholder="您的QQ号码"></el-input>
                     </el-form-item>
                     <el-form-item label="留言：" prop="message">
                         <el-input type="textarea" v-model="information.message" placeholder="您的留言"></el-input>
@@ -61,7 +61,7 @@
             name:'',
             phone:'',
             email:'',
-            QQ:'',
+            qq:'',
             message:''
         },
         infoRules: {
@@ -75,6 +75,9 @@
           email:[
               {required:true,message: '请输入您的邮箱',trigger :'blur'},
               {type:'email',message: '请输入正确的邮箱',trigger: 'blur'}
+          ],
+          qq:[
+              
           ],
           message: [
             { required: true, message: '请输入您的留言', trigger: 'blur' }
@@ -123,7 +126,26 @@
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                this.$router.push({path:'/CustomDesignSubmit'})
+                this.$ajax.post('/message',this.information)
+                .then(response=>{
+                    if (response.data.success) {
+                        this.$notify.success({
+                            title: "成功",
+                            message: response.data.message,
+                            offset: 100
+                        });
+                        this.$refs[formName].resetFields();
+                    }else{
+                        this.$notify.error({
+                            title: "失败",
+                            message: response.data.message,
+                            offset: 100
+                        });
+                    }
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
             } else {
                 console.log('error submit!!');
                 return false;

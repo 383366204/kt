@@ -76,68 +76,7 @@ export default {
   data() {
     return {
       loading: false,
-      products: [
-        // {
-        //   id: "168",
-        //   src: "../../static/vatti.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 1000
-        // },
-        // {
-        //   id: "45",
-        //   src: "../../static/cooktop2.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 388
-        // },
-        // {
-        //   id: "99",
-        //   src: "../../static/rangehood2.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 700
-        // },
-        // {
-        //   id: "13",
-        //   src: "../../static/vatti.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 500
-        // },
-        // {
-        //   id: "2",
-        //   src: "../../static/vatti.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 754
-        // },
-        // {
-        //   id: "5",
-        //   src: "../../static/rangehood2.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 478
-        // },
-        // {
-        //   id: "10",
-        //   src: "../../static/rangehood2.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 440
-        // },
-        // {
-        //   id: "2",
-        //   src: "../../static/cooktop2.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 785
-        // },
-        // {
-        //   id: "80",
-        //   src: "../../static/cooktop2.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 220
-        // },
-        // {
-        //   id: "20",
-        //   src: "../../static/vatti.jpg",
-        //   description: "华帝燃气灶C35",
-        //   price: 304
-        // }
-      ],
+      products: [],
       searchHot: ["自动清洗", "嵌入式", "双涡轮"],
       productInfos: [
         {
@@ -244,24 +183,23 @@ export default {
 
             let outProduct = response.data.product;
             
-            let tasks = [];
-
-            outProduct.forEach((value,index,array) => {
-              tasks.push(this.$ajax.get('/admin/product/img',{ params: {name:value.name} }));
+            let getAllImgSrc = outProduct.map((value) => {
+              return this.$ajax.get('/admin/product/img',{ params: {name:value.name} });
             })
 
-            Promise.all(tasks).then(response=>{
+            Promise.all(getAllImgSrc).then(response=>{
               response.forEach((value,index,array) => {
-                outProduct[index].imgSrc = value.data.fileList[0];
+                if (value.data.fileList) {
+                  outProduct[index].imgSrc = value.data.fileList[0];
+                }
                 if (index==array.length-1) {
                   this.products = outProduct;
                 }
               })
             })
             .catch(err=>{
-              console.log(err);
+              console.table(err);
             })
-
           }
         })
         .catch(err => {

@@ -212,7 +212,7 @@ const mutations = {
       param.phone = getVeriParams.userId;
     }
     // 获取验证码
-    ajax.put('/user/verification', param)
+    ajax.put('api/user/verification', param)
       .then(response => {
         if (response.data.success) {
           console.log(response.data.message);

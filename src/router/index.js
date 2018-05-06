@@ -5,7 +5,7 @@ import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
 
 import DetailPost from '@/views/detailPost'
-import DetailClothes from '@/views/detailClothes'
+import Detail from '@/views/Detail'
 import DetailBanner from '@/views/detailBanner'
 import Search from '@/views/search'
 import DesignOverview from '@/views/designOverview'
@@ -69,9 +69,9 @@ export default new Router({
             component: DetailPost
         },
         {
-            path: '/DetailClothes/:Id(\\d+)',
-            name: 'DetailClothes',
-            component: DetailClothes
+            path: '/Detail/:Category/:Grand/:Name',
+            name: 'Detail',
+            component: Detail
         },
         {
             path: '/DetailBanner',

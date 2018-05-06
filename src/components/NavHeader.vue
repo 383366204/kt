@@ -11,14 +11,14 @@
                 联系我们
               </el-button>
              </router-link>
-             <el-input class="searchBox" placeholder="搜索" @keyup.enter.native="searchGoods()"  v-model="searchContent">
+             <el-input class="searchBox" placeholder="搜索" @keyup.enter.native="searchGoods()"  v-model="search">
               <el-button slot="append" icon="el-icon-search" @click="searchGoods()"></el-button>
             </el-input>
           </el-col>
           <el-col>
               <el-dropdown v-if="getLogin" @command="handleCommand" trigger="click">
                 <div class="headPic">
-                  <el-badge :value="100" :max="99">
+                  <el-badge :hidden="cartNum<=0" :value="cartNum" :max="10">
                     <el-button><img :src="userInfo.headPicUrl" width="52"></el-button>
                   </el-badge>
                   <h1>{{userInfo.nickName}}</h1>
@@ -94,6 +94,17 @@
       userInfo(){
         return this.$store.getters.userInfo;
       },
+      search:{
+        get:function(){
+          return this.$route.params.Filters||this.searchContent;
+        },
+        set:function(value){
+          this.searchContent = value;
+        }
+      },
+      cartNum(){
+        return this.$store.state.cart.length;
+      }
     }
   }
 </script>

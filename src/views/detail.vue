@@ -4,9 +4,9 @@
       <!-- 面包屑导航栏 -->
       <el-col :span="16" :offset="3" class="margin-top">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: `/Search` }">燃气灶</el-breadcrumb-item>
-          <el-breadcrumb-item>开田燃气灶</el-breadcrumb-item>
-          <el-breadcrumb-item>H82</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: `/Search/${this.$route.params.Category}` }">{{this.$route.params.Category}}</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: `/Search/${this.$route.params.Grand}` }">{{this.$route.params.Grand}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{this.$route.params.Name}}</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
       <!-- 海报展示及购买 -->
@@ -15,40 +15,29 @@
           <!-- 左边的海报图 -->
           <el-col :span="11">
             <div class="clothes-lt">
-              <img src="../assets/img/cooktop2.jpg">
+              <img v-if="imgSrc.length!=0" :src="config.baseURL+'productPic/'+ this.$route.params.Name +'/'+imgSrc[0]">
             </div>
           </el-col>
           <!-- 右边的选项及信息 -->
           <el-col :span="11" :offset="2">
-            <div class="p-name">开田燃气灶H82</div>
+            <div class="p-name">{{this.$route.params.Grand}}{{this.$route.params.Category}}{{this.$route.params.Name}}</div>
             <div class="p-size">开孔尺寸：98.7*109.18</div>
             <div class="p-size">面板材料：不锈钢</div>
-            <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign" class="p-order">
-              <el-form-item label="气源：">
-                <el-radio-group v-model="fireType" size="small" class="mainColor">
-                  <el-radio-button :label="1">天然气</el-radio-button>
-                  <el-radio-button :label="2">液化气</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
+            <div class="p-size">{{productInfo.tag | prettyTag}}</div>
+            <el-form label-position="right" label-width="100px">
 
               <ul class="count">
                 <li>数量：</li>
-                <li><el-input-number size="small" v-model="num1" @change="handleChange" :min="1" :max="10" controls-position="right"></el-input-number></li>
-                <li>库存<span class="stock">100</span>件</li>
+                <li><el-input-number size="small" v-model="productNum" @change="handleChange" :min="1" :max="10" controls-position="right"></el-input-number></li>
               </ul>
 
               <el-form-item label="价格：">
-                <p><span class="important">70</span>元</p>
-              </el-form-item>
-
-              <el-form-item label="运费：" class="transPrice">
-                <p><span class="important">10</span>元</p>
+                <p><span class="important">{{productInfo.price}}</span>元</p>
               </el-form-item>
 
             </el-form>
 
             <ul class="p-btn">
-              <li><el-button type="primary">立即购买</el-button></li>
               <li><el-button type="primary" @click="addToCart()">加入购物车</el-button></li>
             </ul>
             
@@ -69,11 +58,9 @@
         </div>
         <div>
           <ul>
-            <li>品牌名称：Katen</li>
-            <li>上市时间：2017年</li>
-            <li>材料成分：纯棉</li>
-            <li>货号：tt40090909</li>
-            <li>风格：嘻哈风</li>
+            <li>品牌名称：{{this.$route.params.Grand}}</li>
+            <li>产品分类：{{this.$route.params.Category}}</li>
+            <li>型号：{{this.$route.params.Name}}</li>
           </ul>
         </div>
         <div>
@@ -95,19 +82,26 @@
 </template>
 
 <script>
+import config from '../config/config';
 export default {
   name: 'cart',
   data () {
     return {
-      num1:1,
+      productNum:1,
       fireType: 1,
-      value: '',
-      listItems: ['buy food', 'play games', 'sleep'], 
-      input: '',
-      labelPosition: 'right',
-      formLabelAlign: {
-        num: 1,
-      }
+      productInfo:{
+        name:'',
+        packageSize:'',
+        power:0,
+        price:0,
+        property:{},
+        sales:0,
+        size:'',
+        tag:[],
+        weight:''
+      },
+      imgSrc:[],
+      config:config
     }
   },
   methods: {
@@ -115,11 +109,33 @@ export default {
       console.log(value);
     },
     addToCart(){
-
+      
     }
   },
   mounted:function(){
-    console.log(this.$route.params);
+      this.$ajax
+        .get("/admin/product/detail", { params: {name:this.$route.params.Name} })
+        .then(response => {
+          if (response.data.success) {
+            this.productInfo = response.data.product;
+          }
+        })
+        .then(() => {
+          return this.$ajax.get('/admin/product/img',{params:{name:this.productInfo.name}})
+        })
+        .then(response=>{
+          if (response.data.success) {
+            this.imgSrc = response.data.fileList;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  },
+  filters:{
+    prettyTag(val){
+      return val.join(' ');
+    }
   }
 }
 </script>

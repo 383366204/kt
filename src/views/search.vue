@@ -160,7 +160,7 @@ export default {
       });
     },
     toDetail(product) {
-      this.$router.push({ path: `/DetailClothes/${product.id}` });
+      this.$router.push({ path: `/Detail/${product.category}/${product.grand}/${product.name}` });
     },
     loadProductData() {
       let params = {

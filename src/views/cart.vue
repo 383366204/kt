@@ -84,8 +84,8 @@ export default {
     }
   },
   methods: {
-    checkFloor(id){
-      let index = this.goods.findIndex((item)=>{return item.id==id});
+    checkFloor(name){
+      let index = this.goods.findIndex((item)=>{return item.name==name});
       this.goods[index].isCheck = !this.goods[index].isCheck;
       if (this.goods[index].isCheck) {
         this.checkNum++;
@@ -102,19 +102,20 @@ export default {
         this.ischeckAll = false;
       }
     },
-    delFloor(id){
+    delFloor(name){
       this.$confirm('删除此商品?', '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 查找要删除的元素位置
-           let index = this.goods.findIndex((item)=>{ return item.id==id});
+           let index = this.goods.findIndex((item)=>{ return item.name==name});
            if (this.goods[index].isCheck) {//判断是否选中
               this.checkNum--;//总数减少
               this.checkSum -= this.getSum(this.goods[index]);//总价减少
            }
-           this.goods.splice(index,1);
+           
+           this.$store.state.cart.splice(index,1);
            this.$notify.success({
             title: '成功',
             message: '已从购物车中删除',
@@ -136,7 +137,6 @@ export default {
         });
         return;
       }
-      // this.hasAnyCheck();
       this.$confirm('删除所选中的商品?', '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -145,7 +145,8 @@ export default {
             let newGoods = this.goods.filter((item)=>{//找出没有选中的商品
               return !item.isCheck;
             });
-            this.goods = newGoods;//替换原来的数组
+            this.goods = newGoods;
+            this.$store.state.cart = newGoods;//替换原来的数组
             this.checkNum = 0;
             this.checkSum = 0;
             this.$notify.success({
@@ -187,7 +188,7 @@ export default {
         return good.price*good.num;
     },
     changeNum(price,good){
-      let index = this.goods.findIndex((item)=>{return item.id == good.id});//找出good的index
+      let index = this.goods.findIndex((item)=>{return item.name == good.name});//找出good的index
       
       this.goods[index] = good;//替代原来的位置
 
@@ -237,14 +238,7 @@ export default {
         }
       })
       .catch(err => {
-        if (err.response.status == 401) {
-          this.$alert("登录状态已失效，请重新登录", "注意", {
-            confirmButtonText: "确定",
-            callback: action => {
-              this.$store.commit("logout", this.$router);
-            }
-          });
-        }
+        console.log(err);
       });
     this.goods = this.$store.state.cart;
     let self = this;

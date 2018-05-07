@@ -254,14 +254,7 @@ export default {
                 }
               })
               .catch(err => {
-                if (err.response.status == 401) {
-                  this.$alert("登录状态已失效，请重新登录", "注意", {
-                    confirmButtonText: "确定",
-                    callback: action => {
-                      this.$store.commit("logout", this.$router);
-                    }
-                  });
-                }
+                console.log(err);
               });
           } else {
             //编辑状态
@@ -302,14 +295,7 @@ export default {
                 }
               })
               .catch(err => {
-                if (err.response.status == 401) {
-                  this.$alert("登录状态已失效，请重新登录", "注意", {
-                    confirmButtonText: "确定",
-                    callback: action => {
-                      this.$store.commit("logout", this.$router);
-                    }
-                  });
-                }
+                console.log(err);
               });
           }
           this.resetForm("addressForm"); //清空表单
@@ -520,14 +506,7 @@ export default {
           }
         })
         .catch(err => {
-          if (err.response.status == 401) {
-            this.$alert("登录状态已失效，请重新登录", "注意", {
-              confirmButtonText: "确定",
-              callback: action => {
-                this.$store.commit("logout", this.$router);
-              }
-            });
-          }
+          console.log(err);
         });
     }
   },
@@ -540,14 +519,7 @@ export default {
         }
       })
       .catch(err => {
-        if (err.response.status == 401) {
-          this.$alert("登录状态已失效，请重新登录", "注意", {
-            confirmButtonText: "确定",
-            callback: action => {
-              this.$store.commit("logout", this.$router);
-            }
-          });
-        }
+        console.log(err);
       });
     this.getProvince();
     this.getCities();

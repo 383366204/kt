@@ -21,9 +21,14 @@
           <!-- 右边的选项及信息 -->
           <el-col :span="11" :offset="2">
             <div class="p-name">{{this.$route.params.Grand}}{{this.$route.params.Category}}{{this.$route.params.Name}}</div>
-            <div class="p-size">开孔尺寸：98.7*109.18</div>
-            <div class="p-size">面板材料：不锈钢</div>
-            <div class="p-size">{{productInfo.tag | prettyTag}}</div>
+            <div class="p-size">商品尺寸：{{productInfo.size}}mm</div>
+            <div class="p-size">包装尺寸：{{productInfo.size}}mm</div>
+            <div class="p-size">商品重量：{{productInfo.weight}}kg</div>
+            <div class="p-size">商品功率：{{productInfo.power}}kg</div>
+            <div class="p-size">商品销量：{{productInfo.sales}}</div>
+            <div class="p-size tag">
+              <el-tag v-for="(tag,index) in productInfo.tag" :key="index">{{tag}}</el-tag>
+            </div>
             <el-form label-position="right" label-width="100px">
 
               <ul class="count">
@@ -38,7 +43,13 @@
             </el-form>
 
             <ul class="p-btn">
-              <li><el-button type="primary" @click="addToCart()">加入购物车</el-button></li>
+              <li>
+                <el-button class="blue" v-show="!isAdded" type="primary" @click="addToCart(productInfo,productNum,imgSrc)">加入购物车</el-button>
+                <el-button v-show="isAdded" @click="deleteFromCart(productInfo)" type="info">取消加入购物车</el-button>
+                <router-link to="/Cart">
+                  <el-button class="blue" type="primary">跳转到购物车</el-button>
+                </router-link>               
+              </li>
             </ul>
             
           </el-col>
@@ -46,10 +57,10 @@
       </el-col>
       <!-- 详细信息标题 -->
       <el-col :span="16" :offset="3">
-        <div class="detial-title"><i class="iconfont icon-detail"></i>详细信息</div>
+        <div class="detail-title"><i class="iconfont icon-detail"></i>详细信息</div>
       </el-col>
       <!-- 详细信息 -->
-      <el-col :span="18" :offset="3" class="detial">
+      <el-col :span="18" :offset="3" class="detail">
         <div>
           <ul>
             <li>详情</li>
@@ -61,19 +72,18 @@
             <li>品牌名称：{{this.$route.params.Grand}}</li>
             <li>产品分类：{{this.$route.params.Category}}</li>
             <li>型号：{{this.$route.params.Name}}</li>
+            <li v-for="(property,index) in productInfo.property" :key="index">{{property.proName+'：'}}{{property.proValue}}</li>
           </ul>
         </div>
         <div>
           <p><i class="iconfont icon-zhuyi"></i>注意</p>
           <p>尊敬的客户，凡在我平台直接购买到任何因<span class="msg">质量问题</span>而无法正常使用的商品可以在<span class="msg">本店可在10天内退换货</span>。</p>
           <p>凡是<span class="msg">私自拆卸、组装后</span>的商品，因有可能造成内部重要零件的损坏，本站<span class="msg">不支持退换货</span>，给您造成的不便尽请谅解</p>
+          <p>凡是购买<span class="msg">热水器、燃气灶</span>的客户，请在订单页面留言适用气源<span class="msg">（天然气或液化气）</span>，如没有注明则一律发送天然气</p>
         </div>
         <div>
           <ul>
-            <li>正面图</li>
-            <li>侧面图</li>
-            <li>背面图</li>
-            <li>效果图</li>
+            <li v-for="(imgSrc,index) in imgSrc" :key="index"><img :src="config.baseURL+'productPic/'+ productInfo.name +'/'+imgSrc"></li>
           </ul>
         </div>
       </el-col>
@@ -94,7 +104,7 @@ export default {
         packageSize:'',
         power:0,
         price:0,
-        property:{},
+        property:[],
         sales:0,
         size:'',
         tag:[],
@@ -108,8 +118,33 @@ export default {
     handleChange(value) {
       console.log(value);
     },
-    addToCart(){
-      
+    addToCart(productInfo,productNum,imgSrc){
+      if (!this.$store.getters.isLogin) {
+        this.$router.push({
+            path:'/login',
+            query:{
+              redirect: this.$route.path
+            }
+        })
+      }else{
+        let product = {
+          page:1,
+          status:1,
+          grand:productInfo.grand,
+          category:productInfo.category,
+          name:productInfo.name,
+          tag:productInfo.tag,
+          src:config.baseURL+'productPic/'+ productInfo.name +'/'+imgSrc[0],
+          size:productInfo.size,
+          num:productNum,
+          price:productInfo.price
+        }
+        this.$store.state.cart.push(product);
+      }
+    },
+    deleteFromCart(productInfo){
+      let index = this.$store.state.cart.findIndex((item)=>{ return item.name==name});
+      this.$store.state.cart.splice(index,1);
     }
   },
   mounted:function(){
@@ -132,9 +167,11 @@ export default {
           console.log(err);
         });
   },
-  filters:{
-    prettyTag(val){
-      return val.join(' ');
+  computed:{
+    isAdded(){
+      return this.$store.state.cart.some(product=>{
+        return product.name == this.productInfo.name;
+      })
     }
   }
 }
@@ -178,7 +215,7 @@ export default {
   /*右边订单选择*/
   .p-name{
     font-size: 24px;
-    margin: 20px 0 20px 44px;
+    margin: 2px 0 20px 44px;
     font-weight: 700;
   }
   .p-size{
@@ -235,64 +272,63 @@ export default {
     margin-left:-40px;
     margin-bottom: 16px;
     border-radius: 4px;
+  }
+  .p-btn li .el-button.blue{
     background-color: #2eb4e9;
     border-color: #2eb4e9;
   }
-  .p-btn li .el-button:hover{
-    color: #000;
+  .p-btn li .el-button.blue:hover{
+    opacity: 0.9;
   }
 
 
   /*详细信息*/
-  .detial-title{
+  .detail-title{
     font-size: 18px;
     color: #555;
     margin-top: 40px;
   }
-  .detial-title > i{
+  .detail-title > i{
     font-size: 20px;
     color: #2eb4e9;
     margin-right: 10px;
   }
 
-  .detial{
+  .detail{
     border: 1px solid #aaa;
     border-radius: 5px;
   }
-  .detial > div{
+  .detail > div{
     border-bottom: 1px solid #aaa;
     padding: 20px;
   }
-  .detial > div:last-of-type{
+  .detail > div:last-of-type{
     border-bottom: none;
   }
 
-  .detial div:first-of-type{
+  .detail div:first-of-type{
     padding: 8px 0;
     font-weight: 700;
   }
-  .detial div:first-of-type li{
+  .detail div:first-of-type li{
     border-right: 1px solid #aaa;
     display: inline-block;
     padding: 12px 20px;
   }
-  .detial div:first-of-type li:last-of-type{
+  .detail div:first-of-type li:last-of-type{
     margin-bottom: 0;
     border-right: none;
   }
 
-  .detial div:nth-of-type(2){
-    
-  }
-  .detial div:nth-of-type(2) li{
+  .detail div:nth-of-type(2) li{
     margin-bottom: 15px;
     display: inline-block;
     width: 32%;
   }
-  .detial div:nth-of-type(2) li:first-of-type{
+  .detail div:nth-of-type(2) li:first-of-type{
     width: 100%;
   }
-  .detial div:nth-of-type(2) li:last-of-type{
+  .detail div:nth-of-type(2) li:last-of-type{
     margin-bottom: 0;
   }
 
@@ -302,19 +338,18 @@ export default {
     font-size: 14px;
   }
 
-  .detial div:nth-of-type(3) p{
+  .detail div:nth-of-type(3) p{
     margin-bottom: 10px;
   }
-  .detial div:nth-of-type(3) p:last-of-type{
+  .detail div:nth-of-type(3) p:last-of-type{
     margin-bottom: 0;
   }
-  .detial div:nth-of-type(4) li{
+  .detail div:nth-of-type(4) li{
     border: 1px dashed #aaa;
     margin-bottom: 10px;
-    height: 400px;
     text-align: center;
   }
-  .detial div:nth-of-type(4) li:last-of-type{
+  .detail div:nth-of-type(4) li:last-of-type{
     margin-bottom: 0;
   }
   
@@ -341,5 +376,9 @@ export default {
   }
   .mainColor >>> :not(.is-active) .el-radio-button__inner:hover{
     color: #2eb4e9
+  }
+  /* 标签样式 */
+  .tag .el-tag{
+    margin-right: 5px;
   }
 </style>

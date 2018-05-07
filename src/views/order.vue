@@ -51,7 +51,7 @@
 
         <!-- 留言框 -->
         <el-row>
-        留言：<el-input size="small" placeholder="例如：要求哪家快递公司配送" v-model="message"></el-input>
+        留言：<el-input size="small" placeholder="例如：燃气灶和热水器的适用气源（天然气或液化气）" v-model="message"></el-input>
         </el-row>
         <!-- 详细信息 -->
         <el-row class="detail">
@@ -85,7 +85,7 @@ export default {
     };
   },
   methods: {
-    delFloor(id) {
+    delFloor(name) {
       // 至少有一件商品
       if (this.goods.length == 1) {
         this.$alert("至少要有一件商品", "提示", {
@@ -100,7 +100,7 @@ export default {
           .then(() => {
             // 查找要删除的元素位置
             let index = this.goods.findIndex(item => {
-              return item.id == id;
+              return item.name == name;
             });
             this.checkSum -= this.getSum(this.goods[index]); //总价减少
             this.goods.splice(index, 1);

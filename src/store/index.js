@@ -7,57 +7,7 @@ const state = {
   isIndex: true, //判断是否在首页
   isLogin: false, //判断是否有登录
   addresses: [], //收货地址
-  cart:[{
-    id: 10001,
-    page: 1,
-    status: 1,
-    name: '冬季男款卫衣',
-    description: '红色',
-    src: '../../static/clothes2.png',
-    size: '65*100cm',
-    num: 1,
-    price: 200
-  }, {
-    id: 10002,
-    page: 1,
-    status: 2,
-    name: '记忆协会海报',
-    description: '',
-    src: '../../static/poster2.png',
-    size: '65*100cm',
-    num: 1,
-    price: 50
-  }, {
-    id: 10003,
-    page: 1,
-    status: 3,
-    name: '横幅',
-    description: '',
-    src: '../../static/banner2.jpg',
-    size: '5m',
-    num: 1,
-    price: 50
-  }, {
-    id: 10004,
-    page: 1,
-    status: 4,
-    name: '横幅',
-    description: '',
-    src: '../../static/banner2.jpg',
-    size: '5m',
-    num: 1,
-    price: 50
-  }, {
-    id: 10005,
-    page: 1,
-    status: 5,
-    name: '横幅',
-    description: '',
-    src: '../../static/banner2.jpg',
-    size: '5m',
-    num: 1,
-    price: 50
-  }],
+  cart:[],
   goods: [{
     id: 10001,
     page: 1,

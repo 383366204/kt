@@ -4,18 +4,18 @@
         <el-col :span="11">
             <el-row class="cart-tbody_first">
                  <!-- 购物车或者訂單列表會出現checkbox -->
-                <el-col :span="3" v-if="page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.id)"></el-col>
+                <el-col :span="3" v-if="page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.name)"></el-col>
                 <!-- 訂單消息頁沒有checkbox -->
                 <el-col :span="3" v-else-if="page==2||page==3"></el-col>
                 <el-col :span="5"><div><img :src="good.src"></div></el-col>
-                <el-col :span="9"><div>{{good.name}}</div></el-col>
-                <el-col :span="7"><div>{{good.description}}</div></el-col>
+                <el-col :span="9"><div>{{good.grand}}{{good.category}}{{good.name}}</div></el-col>
+                <el-col :span="7"><div>{{good.tag | prettyTag}}</div></el-col>
             </el-row>
         </el-col>
 
         <el-col :span="3">
             <div class="cart-tbody_second">
-                <p>{{good.size}}</p>
+                <p>{{good.size}}mm</p>
             </div>
         </el-col>
         <!-- page = 1 代表是在购物车 -->
@@ -35,7 +35,7 @@
         <el-col :span="2" v-if="page==1||page==2" class="colorRed"><div>{{good.price}}</div></el-col>
         <el-col :span="2" v-if="page==1||page==2" class="colorRed"><div>{{getSum(good)}}</div></el-col>
         <el-col :span="3" v-if="page==1||page==2">
-          <div><button class="cart-remove" @click="delFloor(good.id)">删除</button></div>
+          <div><button class="cart-remove" @click="delFloor(good.name)">删除</button></div>
         </el-col>
 
         <!-- page = 3代表是在訂單列表 -->
@@ -43,7 +43,7 @@
         <el-col :span="2" v-if="page==3" class="colorGray"><div>{{getStatus(good.status)}}</div></el-col>
         <el-col :span="3" v-if="page==3 && good.status==1">
             <div><button class="btn btn-blue">付款</button></div>
-            <div><button class="btn btn-gray" @click="delFloor(good.id)">删除</button></div>
+            <div><button class="btn btn-gray" @click="delFloor(good.name)">删除</button></div>
         </el-col>
 
         <el-col :span="3" v-else-if="page==3 && good.status==2">
@@ -60,7 +60,7 @@
         </el-col>
 
         <el-col :span="3" v-else-if="page==3 && good.status==5">
-          <button class="btn btn-gray" style="margin-top:0" @click="delFloor(good.id)">删除</button>
+          <button class="btn btn-gray" style="margin-top:0" @click="delFloor(good.name)">删除</button>
         </el-col>
 
     </el-row>
@@ -72,8 +72,7 @@ export default {
     return {
         status:['','待付款','待制作','待发货','待收货','已完成'],
         //id代表商品编号
-        // type代表商品种类 1：服装 2:海报 3:横幅
-        // status代表商品状态 1:待付款 2:待制作 3:待发货 4:待收货 5:已完成
+        // status代表商品状态 1:待付款 2:待发货 3:待收货 :已完成
         // name代表商品名称
         // description代表描述
         // src代表商品图片的链接
@@ -87,7 +86,6 @@ export default {
           type:Object,
           // default:function(){
           //     return {
-          //       id:10001,
           //       type:1,
           //       status:1,
           //       name:'冬季男款卫衣',
@@ -114,11 +112,11 @@ export default {
       getSum(good){
         return good.price*good.num;
       },
-      check(id){
-        this.$emit('checkGood',id);
+      check(name){
+        this.$emit('checkGood',name);
       },
-      delFloor(id){
-        this.$emit('delGood',id);
+      delFloor(name){
+        this.$emit('delGood',name);
       },
       changeNum(val,oldVal){
         if (val>oldVal) {//增加
@@ -128,6 +126,11 @@ export default {
           this.$emit('changeGoodNum',-this.good.price,this.good);
         }
       }
+  },
+  filters:{
+    prettyTag(val){
+      return val.join(' ');
+    }
   }
 }
 </script>

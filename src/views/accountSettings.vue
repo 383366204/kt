@@ -314,17 +314,7 @@ export default {
           }
         })
         .catch(err => {
-          if (err) {
-            console.log(err);
-          }
-          if (err.response.status == 401) {
-            this.$alert("登录状态已失效，请重新登录", "注意", {
-              confirmButtonText: "确定",
-              callback: action => {
-                this.$store.commit("logout", this.$router);
-              }
-            });
-          }
+          console.log(err);
         });
     },
     changeEmail() {

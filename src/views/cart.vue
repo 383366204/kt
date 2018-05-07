@@ -263,7 +263,6 @@ export default {
     cursor: pointer;
   }
 
-
   /*标题*/
   .cart-title{
     font-size: 18px;
@@ -275,7 +274,6 @@ export default {
     color: #2eb4e9;
     margin-right: 10px;
   }
-
 
   /*头部*/
   .cart-thead div{
@@ -339,40 +337,40 @@ export default {
   }
 
   /* 购物车为空时的样式 */
-    .cart-empty{
-      padding-top: 200px;
-      height: 410px;
-    }
-   .empty{
-       display: flex;
-       align-items: center;
-       justify-content: center;
+  .cart-empty{
+     padding-top: 200px;
+     min-height: 415px;
    }
-   .empty h1{
-       font-size: 20px;
-       color:#555;
-       padding-left: 18px;
-   }
-   .empty i{
-       font-size: 60px;
-       color: #2eb4e9;
-   }
-   .option{
-       height: 80px;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-   }
-   .option .el-button{
-       border-color: #2eb4e9;
-       color: #2eb4e9;
-       width: 144px;
-       height: 58px;
-       font-size: 20px;
-       margin:0 20px;
-   }
-   .option .el-button:hover{
-       background-color: #2eb4e9;
-       color: #FFF;
-   }
+  .empty{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .empty h1{
+      font-size: 20px;
+      color:#555;
+      padding-left: 18px;
+  }
+  .empty i{
+      font-size: 60px;
+      color: #2eb4e9;
+  }
+  .option{
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .option .el-button{
+      border-color: #2eb4e9;
+      color: #2eb4e9;
+      width: 144px;
+      height: 58px;
+      font-size: 20px;
+      margin:0 20px;
+  }
+  .option .el-button:hover{
+      background-color: #2eb4e9;
+      color: #FFF;
+  }
 </style>

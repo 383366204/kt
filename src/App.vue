@@ -7,7 +7,7 @@
     <transition>
       <router-view class="flex-bottom"/>
     </transition>
-    <nav-footer></nav-footer>
+    <nav-footer class="stickyFooter"></nav-footer>
   </div>
 </template>
 
@@ -53,8 +53,10 @@ export default {
 </script>
 
 <style>
+
   .topHeight{
     height: 568px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   }
+
 </style>

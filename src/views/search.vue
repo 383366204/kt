@@ -1,5 +1,5 @@
 <template>
-  <main v-loading="loading">
+  <main>
     <el-row>
       <el-col :span="12" :offset="1">
         <!-- 热门搜索 -->
@@ -31,7 +31,7 @@
         </div>
       </el-col>
       <!-- 产品 -->
-      <el-col class="content">
+      <el-col class="content" v-loading="loading">
         <el-row type="flex">
             <el-col :span="6" v-for="(product,index) in products" :key="index" @click.native="toDetail(product)">
               <el-card :body-style="{ padding: '12px 12px 0px 12px'}">
@@ -75,7 +75,7 @@ import config from '../config/config';
 export default {
   data() {
     return {
-      loading: false,
+      loading: true,
       products: [],
       searchHot: ["触控式", "嵌入式", "防冻型"],
       productInfos: [
@@ -191,6 +191,7 @@ export default {
               response.forEach((value,index,array) => {
                 if (value.data.fileList) {
                   outProduct[index].imgSrc = value.data.fileList[0];
+                  this.loading = false;
                 }
                 if (index==array.length-1) {
                   this.products = outProduct;
@@ -241,7 +242,7 @@ button {
   cursor: pointer;
 }
 .el-row{
-  min-height: 467px;
+  min-height: 474px;
 }
 .el-col .el-col {
   margin-bottom: 0;

@@ -5,19 +5,47 @@
         <!-- 导航栏 -->
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部订单" name="first">
-            
+
             <!-- 头部 -->
             <el-row class="cart-thead">
               <el-col :span="11"><div>商品</div></el-col>
-              <el-col :span="3"><div>规格</div></el-col>
-              <el-col :span="3"><div>数量</div></el-col>
-              <el-col :span="2"><div>实付款</div></el-col>
+              <el-col :span="2"><div>数量</div></el-col>
+              <el-col :span="3"><div>价格</div></el-col>
+              <el-col :span="3"><div>总价格</div></el-col>
               <el-col :span="2"><div>状态</div></el-col>
               <el-col :span="3"><div>操作</div></el-col>
             </el-row>
 
-            <good-floor v-for="(good,index) in goods" :key="index" :good="good" :page="3"></good-floor>
+            <div v-for="(order,index) in order" :key="index">
+              <el-row class="orderHead">
+                <el-col :span="3"><b>{{order.date | prettyDate}}</b></el-col>
+                <el-col :span="6"><div>订单号：{{order.orderId}}</div></el-col>
+              </el-row>
 
+              <el-row class="goodFloor" type="flex">
+                <el-col :span="16">
+                  <good-floor v-for="(good,index) in order.goods" :key="index" :good="good" :page="3"></good-floor>
+                </el-col>
+                <el-col :span="3"><div class="colorRed">{{sumPrice(order.goods)}}</div></el-col>
+                <el-col :span="2"><div><el-tag :type="statusType(order.status)">{{order.status | prettyStatus}}</el-tag></div></el-col>
+                <el-col :span="3">
+                  <div v-if="order.status==1">
+                    <div><button class="btn btn-blue">付款</button></div>
+                    <div><button class="btn btn-gray" @click="delOrder(order.orderId)">删除</button></div>
+                  </div>
+                  <div v-else-if="order.status==2">
+                    <div><button class="btn btn-blue" @click="remindOrder(order.orderId)">提醒发货</button></div>
+                  </div>
+                  <div v-else-if="order.status==3">
+                    <div><button class="btn btn-blue" @click="comfirmOrder(order.orderId)">确认收货</button></div>
+                  </div>
+                  <div v-else-if="order.status==4">
+                    <button class="btn btn-gray" style="margin-top:0" @click="delOrder(order.orderId)">删除</button>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            
             <!-- 分页 -->
             <el-pagination
               layout="prev, pager, next"
@@ -48,61 +76,202 @@ export default {
       listItems: ["buy food", "play games", "sleep"],
       num1: 1,
       activeName: "first",
-      goods: [
+      order: [
         {
-          id: 10001,
-          page: 1,
+          orderId: '143194578926284844',
           status: 1,
-          name: "冬季男款卫衣",
-          description: "红色",
-          src: "../../static/clothes2.png",
-          size: "65*100cm",
-          num: 1,
-          price: 200
+          price: 10000,
+          goods: [
+            {
+              page: 1,
+              status: 1,
+              grand: "美的",
+              category: "热水器",
+              name: "JSQ22-12HWA(T)",
+              tag: ["强排式", "恒温式", "防冻型"],
+              src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
+              size: "895x647x517",
+              num: 1,
+              price: 1199,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "康宝",
+              category: "消毒碗柜",
+              name: "ZTP380H-1",
+              tag: ["柜式", "双门"],
+              src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
+              size: "555x410x1630",
+              num: 2,
+              price: 999,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "能率",
+              category: "热水器",
+              name: "JSQ31-E3",
+              tag: ["强排式", "防冻型", "恒温式"],
+              src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
+              size: "895x647x517",
+              num: 4,
+              price: 3098,
+              isCheck: false
+            }
+          ],
+          address: {},
+          message: "",
+          date:Date.now()
         },
         {
-          id: 10002,
-          page: 1,
+          orderId: '143194578926284845',
           status: 2,
-          name: "记忆协会海报",
-          description: "",
-          src: "../../static/poster2.png",
-          size: "65*100cm",
-          num: 1,
-          price: 50
+          price: 10000,
+          goods: [
+            {
+              page: 1,
+              status: 1,
+              grand: "美的",
+              category: "热水器",
+              name: "JSQ22-12HWA(T)",
+              tag: ["强排式", "恒温式", "防冻型"],
+              src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
+              size: "895x647x517",
+              num: 1,
+              price: 1199,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "康宝",
+              category: "消毒碗柜",
+              name: "ZTP380H-1",
+              tag: ["柜式", "双门"],
+              src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
+              size: "555x410x1630",
+              num: 2,
+              price: 999,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "能率",
+              category: "热水器",
+              name: "JSQ31-E3",
+              tag: ["强排式", "防冻型", "恒温式"],
+              src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
+              size: "895x647x517",
+              num: 4,
+              price: 3098,
+              isCheck: false
+            }
+          ],
+          address: {},
+          message: "",
+          date:Date.now()
         },
         {
-          id: 10003,
-          page: 1,
+          orderId: '143194578926284846',
           status: 3,
-          name: "横幅",
-          description: "",
-          src: "../../static/banner2.jpg",
-          size: "5m",
-          num: 1,
-          price: 50
+          price: 10000,
+          goods: [
+            {
+              page: 1,
+              status: 1,
+              grand: "美的",
+              category: "热水器",
+              name: "JSQ22-12HWA(T)",
+              tag: ["强排式", "恒温式", "防冻型"],
+              src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
+              size: "895x647x517",
+              num: 1,
+              price: 1199,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "康宝",
+              category: "消毒碗柜",
+              name: "ZTP380H-1",
+              tag: ["柜式", "双门"],
+              src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
+              size: "555x410x1630",
+              num: 2,
+              price: 999,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "能率",
+              category: "热水器",
+              name: "JSQ31-E3",
+              tag: ["强排式", "防冻型", "恒温式"],
+              src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
+              size: "895x647x517",
+              num: 4,
+              price: 3098,
+              isCheck: false
+            }
+          ],
+          address: {},
+          message: "",
+          date:Date.now()
         },
         {
-          id: 10004,
-          page: 1,
+          orderId: '143194578926284847',
           status: 4,
-          name: "横幅",
-          description: "",
-          src: "../../static/banner2.jpg",
-          size: "5m",
-          num: 1,
-          price: 50
-        },
-        {
-          id: 10005,
-          page: 1,
-          status: 5,
-          name: "横幅",
-          description: "",
-          src: "../../static/banner2.jpg",
-          size: "5m",
-          num: 1,
-          price: 50
+          price: 10000,
+          goods: [
+            {
+              page: 1,
+              status: 1,
+              grand: "美的",
+              category: "热水器",
+              name: "JSQ22-12HWA(T)",
+              tag: ["强排式", "恒温式", "防冻型"],
+              src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
+              size: "895x647x517",
+              num: 1,
+              price: 1199,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "康宝",
+              category: "消毒碗柜",
+              name: "ZTP380H-1",
+              tag: ["柜式", "双门"],
+              src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
+              size: "555x410x1630",
+              num: 2,
+              price: 999,
+              isCheck: false
+            },
+            {
+              page: 1,
+              status: 1,
+              grand: "能率",
+              category: "热水器",
+              name: "JSQ31-E3",
+              tag: ["强排式", "防冻型", "恒温式"],
+              src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
+              size: "895x647x517",
+              num: 4,
+              price: 3098,
+              isCheck: false
+            }
+          ],
+          address: {},
+          message: "",
+          date:Date.now()
         }
       ]
     };
@@ -113,9 +282,67 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    sumPrice(goods) {
+      let s = goods.reduce((sum, good) => {
+        return sum + good.price * good.num;
+      }, 0);
+      return s;
+    },
+    statusType(status){
+      let type = ['','info','warning','','success'];
+      return type[status];
+    },
+    comfirmOrder(orderId){
+      this.$confirm('已确认收货?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'success'
+      }).then(() => {
+          this.$notify.success({
+          title: '成功',
+          message: '订单已确认收货',
+          offset:100
+        });
+      }).catch(() => {
+        this.$notify.warning({
+            title: '提示',
+            message: '已取消确认收货',
+            offset:100
+          });        
+      });
+    },
+    delOrder(orderId){
+      this.$confirm('删除所选中的订单?', '确认删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+          this.$notify.success({
+          title: '成功',
+          message: '订单已删除',
+          offset:100
+        });
+      }).catch(() => {
+        this.$notify.warning({
+            title: '提示',
+            message: '已取消删除',
+            offset:100
+          });        
+      });
     }
   },
-  components: { goodFloor }
+  components: { goodFloor },
+  filters:{
+    prettyDate(val){
+      let orderDate = new Date(val);
+      return `${orderDate.getFullYear()}年${orderDate.getMonth()}月${orderDate.getDay()}日`;
+    },
+    prettyStatus(val){
+      let status = ['','待付款','待发货','待收货','已完成'];
+      return status[val];
+    }
+  }
 };
 </script>
 <style>
@@ -204,5 +431,40 @@ button {
 }
 .el-row {
   margin-bottom: 20px;
+}
+.orderHead {
+  margin-bottom: 0px;
+  background-color: #e6eaeb;
+  height: 34px;
+  line-height:34px;
+  padding-left:30px;
+}
+
+.goodFloor .el-col:not(:first-child) {
+  color: #666;
+  border-right: 1px solid #e6eaeb;
+  border-bottom: 1px solid #e6eaeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.colorRed {
+  color: #ff0000;
+}
+/*按钮*/
+.btn{
+  margin:2px 0px;
+  border: none;
+  color: #535353;
+  padding: 4px 0;
+  width: 70px;
+  border-radius: 2px;
+}
+.btn-blue{
+  background-color: #00b7ff;
+  color: #fff;
+}
+.btn-gray{
+  background-color: #e6eaeb;
 }
 </style>

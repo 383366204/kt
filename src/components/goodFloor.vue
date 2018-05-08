@@ -1,19 +1,31 @@
 <template>
     <!-- 列表框 -->
-    <el-row class="cart-tbody">
-        <el-col :span="11">
+    <el-row class="cart-tbody" :class="{orderList:page==3}">
+        <el-col v-if="page!=3" :span="11">
             <el-row class="cart-tbody_first">
                  <!-- 购物车或者訂單列表會出現checkbox -->
                 <el-col :span="3" v-if="page==1"><input type="checkbox" v-model="good.isCheck" @click="check(good.name)"></el-col>
                 <!-- 訂單消息頁沒有checkbox -->
-                <el-col :span="3" v-else-if="page==2||page==3"></el-col>
+                <el-col :span="3" v-else-if="page==2"></el-col>
                 <el-col :span="5"><div><img :src="good.src"></div></el-col>
                 <el-col :span="9"><div>{{good.grand}}{{good.category}}{{good.name}}</div></el-col>
                 <el-col :span="7"><div>{{good.tag | prettyTag}}</div></el-col>
             </el-row>
         </el-col>
 
-        <el-col :span="3">
+        <el-col v-else :span="16">
+            <el-row class="cart-tbody_first">
+                 <!-- 购物车或者訂單列表會出現checkbox -->
+                <!-- 訂單消息頁沒有checkbox -->
+                <el-col :span="3"></el-col>
+                <el-col :span="5"><div><img :src="good.src"></div></el-col>
+                <el-col :span="9"><div>{{good.grand}}{{good.category}}{{good.name}}</div></el-col>
+                <el-col :span="7"><div>{{good.tag | prettyTag}}</div></el-col>
+            </el-row>
+        </el-col>
+
+
+        <el-col v-show="page!=3" :span="3">
             <div class="cart-tbody_second">
                 <p>{{good.size}}mm</p>
             </div>
@@ -24,8 +36,15 @@
             <el-input-number @change="changeNum" v-model="good.num" :min="1" :max="99" size="small"></el-input-number>
           </div>
         </el-col>
-        <!-- 另外两个页面 -->
-        <el-col :span="3" v-else>
+        <!-- page = 2 代表是訂單 -->
+        <el-col :span="3" v-else-if="page==2">
+            <div class="cart-tbody_third">
+                <p>{{good.num}}</p>
+            </div>
+        </el-col>
+
+        <!-- page = 3代表是在訂單列表 -->
+        <el-col :span="4" v-else>
             <div class="cart-tbody_third">
                 <p>{{good.num}}</p>
             </div>
@@ -39,9 +58,8 @@
         </el-col>
 
         <!-- page = 3代表是在訂單列表 -->
-        <el-col :span="2" v-if="page==3" class="colorRed"><div>{{getSum(good)}}</div></el-col>
-        <el-col :span="2" v-if="page==3" class="colorGray"><div>{{getStatus(good.status)}}</div></el-col>
-        <el-col :span="3" v-if="page==3 && good.status==1">
+        <el-col :span="3" v-if="page==3" class="colorRed orderList"><div>{{getSum(good)}}</div></el-col>
+        <!-- <el-col :span="3" v-if="page==3 && good.status==1">
             <div><button class="btn btn-blue">付款</button></div>
             <div><button class="btn btn-gray" @click="delFloor(good.name)">删除</button></div>
         </el-col>
@@ -61,8 +79,7 @@
 
         <el-col :span="3" v-else-if="page==3 && good.status==5">
           <button class="btn btn-gray" style="margin-top:0" @click="delFloor(good.name)">删除</button>
-        </el-col>
-
+        </el-col> -->
     </el-row>
 </template>
 
@@ -147,11 +164,16 @@ export default {
 
   /*列表框*/
   .cart-tbody{
-    border: 2px solid #e6eaeb;
+    border: 1px solid #e6eaeb;
     text-align: center;
     display: flex;
     align-items: center;
     padding: 20px 0;
+  }
+
+  .cart-tbody.orderList{
+    width: 734px;
+    border-top: none;
   }
 
   .cart-tbody_first{
@@ -195,6 +217,9 @@ export default {
   .colorRed{
     color: #ff0000;
   }
+  .colorRed.orderList{
+    margin-left:8px;
+  }
 
   /*按钮*/
   .btn{
@@ -215,6 +240,10 @@ export default {
 
   .el-row {
     margin-bottom: 20px;
+  }
+
+  .el-row.orderList{
+    margin-bottom: 0px;
   }
   /*删除按钮*/
   .cart-remove{

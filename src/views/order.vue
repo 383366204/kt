@@ -64,7 +64,7 @@
         </el-row>
         <!-- 提交按钮 -->
         <el-row class="order-tj">
-          <button class="btn btn-red">提交订单</button>
+          <button class="btn btn-red" @click="addOrder">提交订单</button>
         </el-row>
       </el-col>
     </el-row>
@@ -122,6 +122,9 @@ export default {
     },
     getSum(good) {
       return good.num * good.price;
+    },
+    addOrder(){
+      // this.$ajax.post('/admin/product/Order')
     }
   },
   components: {

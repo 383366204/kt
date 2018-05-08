@@ -443,6 +443,7 @@ export default {
         });
     },
     editAddress(index) {
+      this.resetForm("addressForm");
       this.addMode = false; //设定为编辑模式
       this.editIndex = index; //正在编辑的地址名单
 
@@ -485,6 +486,11 @@ export default {
     setDefaultAddress(index) {
       let address = {
         _id : this.addresses[index]._id,
+        region:this.addresses[index].region,
+        detail : this.addresses[index].detail,
+        zipCode : this.addresses[index].zipCode,
+        name : this.addresses[index].name,
+        phone : this.addresses[index].phone,
         isDefault: true
       };
       this.$ajax

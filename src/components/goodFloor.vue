@@ -59,27 +59,6 @@
 
         <!-- page = 3代表是在訂單列表 -->
         <el-col :span="3" v-if="page==3" class="colorRed orderList"><div>{{getSum(good)}}</div></el-col>
-        <!-- <el-col :span="3" v-if="page==3 && good.status==1">
-            <div><button class="btn btn-blue">付款</button></div>
-            <div><button class="btn btn-gray" @click="delFloor(good.name)">删除</button></div>
-        </el-col>
-
-        <el-col :span="3" v-else-if="page==3 && good.status==2">
-            <div><button class="btn btn-blue">退换货</button></div>
-            <div><button class="btn btn-gray">提醒制作</button></div>
-        </el-col>
-
-        <el-col :span="3" v-else-if="page==3 && good.status==3">
-            <div><button class="btn btn-blue">提醒发货</button></div>
-        </el-col>
-
-        <el-col :span="3" v-else-if="page==3 && good.status==4">
-            <div><button class="btn btn-blue">查看物流</button></div>
-        </el-col>
-
-        <el-col :span="3" v-else-if="page==3 && good.status==5">
-          <button class="btn btn-gray" style="margin-top:0" @click="delFloor(good.name)">删除</button>
-        </el-col> -->
     </el-row>
 </template>
 
@@ -87,9 +66,7 @@
 export default {
   data () {
     return {
-        status:['','待付款','待制作','待发货','待收货','已完成'],
         //id代表商品编号
-        // status代表商品状态 1:待付款 2:待发货 3:待收货 :已完成
         // name代表商品名称
         // description代表描述
         // src代表商品图片的链接
@@ -101,18 +78,6 @@ export default {
   props:{
       good:{
           type:Object,
-          // default:function(){
-          //     return {
-          //       type:1,
-          //       status:1,
-          //       name:'冬季男款卫衣',
-          //       description:'红色',
-          //       src:'../../static/clothes2.png',
-          //       size:['S','M','L','XL','XXl'],
-          //       num:[10,5,5,5,5],
-          //       price:200
-          //     }
-          // }
       },
       // page代表頁面 1：购物车 2：訂單 3：訂單列表
       page:{

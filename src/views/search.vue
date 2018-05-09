@@ -36,7 +36,7 @@
             <el-col :span="6" v-for="(product,index) in products" :key="index" @click.native="toDetail(product)">
               <el-card :body-style="{ padding: '12px 12px 0px 12px'}">
                 <div class="img">
-                  <img :src="config.baseURL+'/productPic/'+ product.name+'/'+product.imgSrc" :onerror="errImg">
+                  <img :src="config.baseURL+'productPic/'+ product.name+'/'+product.imgSrc" :onerror="errImg">
                 </div>
                 <div class="clearfix description" style="width:100%; padding: 4px; color:#6c6c6c">
                   <span>{{product.grand}}</span>
@@ -180,11 +180,12 @@ export default {
             // 若查询总数为0
             if (this.total==0) {
               this.products = [];
+              this.loading = false; // 若是产品列表为空，不显示加载中
               return;
             }
 
             let outProduct = response.data.product;
-            
+
             let getAllImgSrc = outProduct.map((value) => {
               return this.$ajax.get('/admin/product/img',{ params: {name:value.name} });
             })

@@ -108,7 +108,8 @@ export default {
         sales:0,
         size:'',
         tag:[],
-        weight:''
+        weight:'',
+        _id:''
       },
       imgSrc:[],
       config:config
@@ -129,7 +130,6 @@ export default {
       }else{
         let product = {
           page:1,
-          status:1,
           grand:productInfo.grand,
           category:productInfo.category,
           name:productInfo.name,
@@ -137,7 +137,8 @@ export default {
           src:config.baseURL+'productPic/'+ productInfo.name +'/'+imgSrc[0],
           size:productInfo.size,
           num:productNum,
-          price:productInfo.price
+          price:productInfo.price,
+          _id:productInfo._id
         }
         this.$store.state.cart.push(product);
       }

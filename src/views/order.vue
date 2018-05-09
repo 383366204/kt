@@ -124,7 +124,32 @@ export default {
       return good.num * good.price;
     },
     addOrder(){
-      // this.$ajax.post('/admin/product/Order')
+      let orderData = {
+        products:this.goods.map(good=>{return {product:good._id,num:good.num}}),
+        price:this.checkSum,
+        address:this.selectAddress._id,
+        message:this.message,
+      }
+      this.$ajax.post('/Order',orderData)
+      .then(response=>{
+        if (response.data.success) {
+          this.$notify.success({
+            title: "成功",
+            message: response.data.message,
+            offset: 100
+          });
+        }
+        else{
+          this.$notify.error({
+            title: "失败",
+            message: response.data.message,
+            offset: 100
+          });
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     }
   },
   components: {

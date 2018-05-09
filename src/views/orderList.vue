@@ -7,7 +7,7 @@
           <el-tab-pane label="全部订单" name="first">
 
             <!-- 头部 -->
-            <el-row class="cart-thead">
+            <el-row v-if="order.length != 0" class="cart-thead">
               <el-col :span="11"><div>商品</div></el-col>
               <el-col :span="2"><div>数量</div></el-col>
               <el-col :span="3"><div>价格</div></el-col>
@@ -19,14 +19,15 @@
             <div v-for="(order,index) in order" :key="index">
               <el-row class="orderHead">
                 <el-col :span="3"><b>{{order.date | prettyDate}}</b></el-col>
-                <el-col :span="6"><div>订单号：{{order.orderId}}</div></el-col>
+                <el-col :span="6"><div>订单号：{{order._id}}</div></el-col>
+                <el-col :span="12"><div>收货地址：{{order.address|prettyAddress}}</div></el-col>
               </el-row>
 
               <el-row class="goodFloor" type="flex">
                 <el-col :span="16">
-                  <good-floor v-for="(good,index) in order.goods" :key="index" :good="good" :page="3"></good-floor>
+                  <good-floor v-for="(good,index) in order.products" :key="index" :good="good" :page="3"></good-floor>
                 </el-col>
-                <el-col :span="3"><div class="colorRed">{{sumPrice(order.goods)}}</div></el-col>
+                <el-col :span="3"><div class="colorRed">{{sumPrice(order.products)}}</div></el-col>
                 <el-col :span="2"><div><el-tag :type="statusType(order.status)">{{order.status | prettyStatus}}</el-tag></div></el-col>
                 <el-col :span="3">
                   <div v-if="order.status==1">
@@ -48,43 +49,80 @@
             
             <!-- 分页 -->
             <el-pagination
+              v-if="order.length != 0"
               layout="prev, pager, next"
-              :total="1000">
+              :current-page="currentPage"
+              :limit="limit"
+              :total="total">
             </el-pagination>
 
           </el-tab-pane>
 
+          <el-tab-pane label="待付款" name="second">
 
-          <el-tab-pane label="待付款" name="second"></el-tab-pane>
-          <el-tab-pane label="待发货" name="fourth"></el-tab-pane>
-          <el-tab-pane label="待收货" name="fifth"></el-tab-pane>
-          <el-tab-pane label="已完成" name="sixth"></el-tab-pane>
+          </el-tab-pane>
+          <el-tab-pane label="待发货" name="fourth">
+
+          </el-tab-pane>
+          <el-tab-pane label="待收货" name="fifth">
+
+          </el-tab-pane>
+          <el-tab-pane label="已完成" name="sixth">
+
+          </el-tab-pane>
         </el-tabs>
-
-        
+      </el-col>
+      <el-col :span="22" :offset="1" v-if="order.length==0">
+         <!-- 当订单列表为空时显示的 -->
+        <div class="order-empty">
+          <el-row type="flex" >
+            <el-col :span="24">
+              <div class="empty">
+                <i class="iconfont icon-orders"></i>
+                <h1>暂时没有符合条件的订单，请赶快去购物吧</h1>
+              </div>          
+            </el-col>         
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="24">
+              <div class="option">
+                <router-link to="/Search">
+                  <el-button size="large">再去逛逛</el-button>
+                </router-link>
+                <router-link to="/Cart">
+                  <el-button size="large">查看购物车</el-button>
+                </router-link>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
       </el-col>
     </el-row>
   </main>
 </template>
 
 <script>
+import config from '../config/config';
 import goodFloor from "@/components/goodFloor";
 export default {
   name: "cart",
   data() {
     return {
+      config:config,
       listItems: ["buy food", "play games", "sleep"],
       num1: 1,
       activeName: "first",
+      currentPage:1,
+      limit:5,
+      total:100,
       order: [
         {
           orderId: '143194578926284844',
           status: 1,
           price: 10000,
-          goods: [
+          products: [
             {
-              page: 1,
-              status: 1,
+              page: 1,           
               grand: "美的",
               category: "热水器",
               name: "JSQ22-12HWA(T)",
@@ -97,7 +135,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "康宝",
               category: "消毒碗柜",
               name: "ZTP380H-1",
@@ -110,7 +148,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "能率",
               category: "热水器",
               name: "JSQ31-E3",
@@ -122,7 +160,12 @@ export default {
               isCheck: false
             }
           ],
-          address: {},
+          address: {
+            region:"广东省/茂名市/电白县",
+            detail:"电白区第一中学",
+            name:"孙文达",
+            phone:"18928651029"
+          },
           message: "",
           date:Date.now()
         },
@@ -130,10 +173,9 @@ export default {
           orderId: '143194578926284845',
           status: 2,
           price: 10000,
-          goods: [
+          products: [
             {
               page: 1,
-              status: 1,
               grand: "美的",
               category: "热水器",
               name: "JSQ22-12HWA(T)",
@@ -146,7 +188,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "康宝",
               category: "消毒碗柜",
               name: "ZTP380H-1",
@@ -159,7 +201,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "能率",
               category: "热水器",
               name: "JSQ31-E3",
@@ -171,7 +213,12 @@ export default {
               isCheck: false
             }
           ],
-          address: {},
+          address: {
+            region:"广东省/茂名市/电白县",
+            detail:"电白区第一中学",
+            name:"孙文达",
+            phone:"18928651029"
+          },
           message: "",
           date:Date.now()
         },
@@ -179,10 +226,9 @@ export default {
           orderId: '143194578926284846',
           status: 3,
           price: 10000,
-          goods: [
+          products: [
             {
-              page: 1,
-              status: 1,
+              page: 1,     
               grand: "美的",
               category: "热水器",
               name: "JSQ22-12HWA(T)",
@@ -195,7 +241,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "康宝",
               category: "消毒碗柜",
               name: "ZTP380H-1",
@@ -208,7 +254,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "能率",
               category: "热水器",
               name: "JSQ31-E3",
@@ -220,7 +266,12 @@ export default {
               isCheck: false
             }
           ],
-          address: {},
+          address: {
+            region:"广东省/茂名市/电白县",
+            detail:"电白区第一中学",
+            name:"孙文达",
+            phone:"18928651029"
+          },
           message: "",
           date:Date.now()
         },
@@ -228,10 +279,9 @@ export default {
           orderId: '143194578926284847',
           status: 4,
           price: 10000,
-          goods: [
+          products: [
             {
-              page: 1,
-              status: 1,
+              page: 1,       
               grand: "美的",
               category: "热水器",
               name: "JSQ22-12HWA(T)",
@@ -244,7 +294,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "康宝",
               category: "消毒碗柜",
               name: "ZTP380H-1",
@@ -257,7 +307,7 @@ export default {
             },
             {
               page: 1,
-              status: 1,
+              
               grand: "能率",
               category: "热水器",
               name: "JSQ31-E3",
@@ -269,7 +319,12 @@ export default {
               isCheck: false
             }
           ],
-          address: {},
+          address: {
+            region:"广东省/茂名市/电白县",
+            detail:"电白区第一中学",
+            name:"孙文达",
+            phone:"18928651029"
+          },
           message: "",
           date:Date.now()
         }
@@ -283,8 +338,8 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    sumPrice(goods) {
-      let s = goods.reduce((sum, good) => {
+    sumPrice(products) {
+      let s = products.reduce((sum, good) => {
         return sum + good.price * good.num;
       }, 0);
       return s;
@@ -330,6 +385,20 @@ export default {
             offset:100
           });        
       });
+    },
+    async destructureOrder(orders){
+      for (let i = 0; i < orders.length; i++) {
+        for (let j = 0; j < orders[i].products.length; j++) {
+          let response = await this.$ajax.get('/admin/product/img',{ params: {name:orders[i].products[j].product.name}})
+          let newProduct = {
+            ...orders[i].products[j].product,
+            num:orders[i].products[j].num,
+            src:this.config.baseURL+'productPic/'+orders[i].products[j].product.name +'/'+ response.data.fileList[0]
+          };
+          orders[i].products[j] = newProduct;
+        }
+      }
+      return orders;
     }
   },
   components: { goodFloor },
@@ -341,7 +410,36 @@ export default {
     prettyStatus(val){
       let status = ['','待付款','待发货','待收货','已完成'];
       return status[val];
+    },
+    prettyAddress(val){
+      return `${val.region.split('/').join(' ')} ${val.detail}  (${val.name}收)`
     }
+  },
+  mounted(){
+    let params = {
+      currentPage:this.currentPage,
+      limit:this.limit
+    }
+    this.$ajax.get('/order',{params:params})
+    .then(async response=>{
+      if (response.data.success) {
+        this.order = await this.destructureOrder(response.data.order);
+        this.$notify.success({
+          title: "成功",
+          message: response.data.message,
+          offset: 100
+        });
+      }else{
+        this.$notify.error({
+          title: "失败",
+          message: response.data.message,
+          offset: 100
+        });
+      }
+    })
+    .catch(err=>{
+      console.log(err);
+    })
   }
 };
 </script>
@@ -467,4 +565,42 @@ button {
 .btn-gray{
   background-color: #e6eaeb;
 }
+
+/* 订单列表为空时的样式 */
+  .order-empty{
+     padding-top: 110px;
+     min-height: 445px;
+   }
+  .empty{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .empty h1{
+      font-size: 20px;
+      color:#555;
+      padding-left: 18px;
+  }
+  .empty i{
+      font-size: 60px;
+      color: #2eb4e9;
+  }
+  .option{
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .option .el-button{
+      border-color: #2eb4e9;
+      color: #2eb4e9;
+      width: 144px;
+      height: 58px;
+      font-size: 20px;
+      margin:0 20px;
+  }
+  .option .el-button:hover{
+      background-color: #2eb4e9;
+      color: #FFF;
+  }
 </style>

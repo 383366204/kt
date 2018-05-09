@@ -128,6 +128,7 @@ export default {
     searchByTag(index,tag) {
       this.selectTag = index;
       this.selectFilter = 'tag';
+      this.currentPage = 1;
       // 若还没选类别
       if (this.selectCategory==-1) {
         if (tag) {
@@ -151,6 +152,7 @@ export default {
       }
     },
     searchByHot(index){
+      this.currentPage = 1;
       this.$router.push({path:`/Search/${this.searchHot[index]}`});
     },
     getAllTags() {
@@ -242,7 +244,7 @@ button {
   cursor: pointer;
 }
 .el-row{
-  min-height: 474px;
+  min-height: 504px;
 }
 .el-col .el-col {
   margin-bottom: 0;

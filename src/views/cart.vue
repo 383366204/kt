@@ -1,7 +1,7 @@
 <template>
   <main>
     <el-row>
-      <el-col :span="22" :offset="1">
+      <el-col class="minHeight" :span="22" :offset="1">
 
         <!-- 标题 -->
         <el-row v-if="goods!=false">
@@ -339,7 +339,7 @@ export default {
   /* 购物车为空时的样式 */
   .cart-empty{
      padding-top: 200px;
-     min-height: 415px;
+     min-height: 445px;
    }
   .empty{
       display: flex;
@@ -372,5 +372,8 @@ export default {
   .option .el-button:hover{
       background-color: #2eb4e9;
       color: #FFF;
+  }
+  .minHeight{
+    min-height: 665px;
   }
 </style>

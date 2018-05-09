@@ -336,7 +336,7 @@ export default {
   filters:{
     prettyDate(val){
       let orderDate = new Date(val);
-      return `${orderDate.getFullYear()}年${orderDate.getMonth()}月${orderDate.getDay()}日`;
+      return `${orderDate.getFullYear()}年${orderDate.getMonth()+1}月${orderDate.getDate()}日`;
     },
     prettyStatus(val){
       let status = ['','待付款','待发货','待收货','已完成'];

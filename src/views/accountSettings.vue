@@ -550,7 +550,7 @@ body {
 }
 main {
   width: 1040px;
-  margin: 80px auto;
+  margin: 27px auto 58px auto;
   color: #555;
   font-size: 14px;
 }

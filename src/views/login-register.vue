@@ -425,7 +425,7 @@ export default {
 /* 主体的布局和长宽 */
 .main {
   width: 100%;
-  height: 655px;
+  height: 685px;
   display: flex;
   align-items: center;
 }

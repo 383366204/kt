@@ -114,8 +114,8 @@ export default {
               this.checkNum--;//总数减少
               this.checkSum -= this.getSum(this.goods[index]);//总价减少
            }
-           
-           this.$store.state.cart.splice(index,1);
+           this.goods.splice(index,1);
+           this.$store.commit('deleteFromCart',index);
            this.$notify.success({
             title: '成功',
             message: '已从购物车中删除',
@@ -146,7 +146,7 @@ export default {
               return !item.isCheck;
             });
             this.goods = newGoods;
-            this.$store.state.cart = newGoods;//替换原来的数组
+            this.$store.commit('replaceCart',newGoods);//替换原来的数组
             this.checkNum = 0;
             this.checkSum = 0;
             this.$notify.success({
@@ -229,7 +229,7 @@ export default {
     goodFloor
   },
   mounted:function(){
-    // 获取收货
+    // 获取收货地址
     this.$ajax
       .get("/api/user/address")
       .then(response => {
@@ -240,7 +240,7 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    this.goods = this.$store.state.cart;
+    this.goods = this.$store.getters.cart;
     let self = this;
     this.goods.forEach((item)=>{
       self.$set(item,'isCheck',false);

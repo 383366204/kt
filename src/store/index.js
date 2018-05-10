@@ -47,6 +47,15 @@ const getters = {
     else{
       return state.userInfo;
     }
+  },
+  cart:state=>{
+    if(localStorage.getItem('cart')){
+      state.cart = JSON.parse(localStorage.getItem('cart'));
+      return state.cart;
+    }
+    else{
+      return state.cart;
+    }
   }
 }
 
@@ -60,6 +69,24 @@ const mutations = {
   },
   setIndexFalse(state) {
     state.isIndex = false;
+  },
+  deleteFromCart(state, index){
+    state.cart.splice(index,1);
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  deleteFromCartByName(state, namesArray){
+    state.cart = state.cart.filter((product,index) => {
+      return !namesArray.includes(product.name);
+    })
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  addToCart(state, data){
+    state.cart.push(data);
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  replaceCart(state, data){
+    state.cart = data;
+    localStorage.setItem('cart',JSON.stringify(state.cart));
   },
   setUserInfo(state, data){
     state.userInfo.nickName = data.nickName;
@@ -91,7 +118,8 @@ const mutations = {
     localStorage.removeItem('isLogin');
     localStorage.removeItem('token');
     localStorage.removeItem('userInfo');
-    
+    localStorage.removeItem('cart');
+    state.cart = [];
     router.push({
       path: '/'
     });

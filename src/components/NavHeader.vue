@@ -103,7 +103,7 @@
         }
       },
       cartNum(){
-        return this.$store.state.cart.length;
+        return this.$store.getters.cart.length;
       }
     }
   }

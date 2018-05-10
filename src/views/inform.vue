@@ -36,7 +36,7 @@
       </div>
       <div class="list">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p>
+          <p>【通知】我是标题啊标题1123......</p>
           <p>2017-10-27</p>
         </div>
         <div class="list-body">
@@ -81,16 +81,19 @@ export default {
 }
 </script>
 <style>
-body{
+/* body{
   background-color: #f4f8fb !important;
-}
+} */
 </style>
 <style scoped>
 main {
-  width: 1040px;
-  margin: 27px auto 58px auto;
+  background-color: #f4f8fb !important;
+  min-height: 685px;
   color: #555;
   font-size: 14px;
+  display: flex;
+  justify-content:center;
+  align-items:center;
 }
 main:after {
   content:"";

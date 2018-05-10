@@ -140,12 +140,12 @@ export default {
           price:productInfo.price,
           _id:productInfo._id
         }
-        this.$store.state.cart.push(product);
+        this.$store.commit('addToCart',product);
       }
     },
     deleteFromCart(productInfo){
-      let index = this.$store.state.cart.findIndex((item)=>{ return item.name==name});
-      this.$store.state.cart.splice(index,1);
+      let index = this.$store.getters.cart.findIndex((item)=>{ return item.name==name});
+      this.$store.commit('deleteFromCart',index);
     }
   },
   mounted:function(){
@@ -170,7 +170,7 @@ export default {
   },
   computed:{
     isAdded(){
-      return this.$store.state.cart.some(product=>{
+      return this.$store.getters.cart.some(product=>{
         return product.name == this.productInfo.name;
       })
     }

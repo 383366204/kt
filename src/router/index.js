@@ -48,17 +48,26 @@ export default new Router({
         {
             path: '/Address',
             name: 'Address',
-            component: Address
+            component: Address,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/OrderList',
             name: 'OrderList',
-            component: OrderList
+            component: OrderList,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/Order',
             name: 'Order',
-            component: Order
+            component: Order,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/Detail/:Category/:Grand/:Name',
@@ -73,17 +82,26 @@ export default new Router({
         {
             path: '/AccountSettings',
             name: 'AccountSettings',
-            component: AccountSettings
+            component: AccountSettings,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/Inform',
             name: 'Inform',
-            component: Inform
+            component: Inform,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/OrderSubmit',
             name: 'OrderSubmit',
-            component: OrderSubmit
+            component: OrderSubmit,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path:'/Contact',

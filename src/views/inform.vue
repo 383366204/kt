@@ -86,9 +86,6 @@ body{
 }
 </style>
 <style scoped>
-body{
-  background-color: #f4f8fb !important;
-}
 main {
   width: 1040px;
   margin: 27px auto 58px auto;

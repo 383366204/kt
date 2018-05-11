@@ -32,14 +32,14 @@
           <el-col :span="3"><div>操作</div></el-col>
         </el-row>
 
-        <div v-loading="loading" v-for="(order,index) in order" :key="index">
+        <div v-for="(order,index) in order" :key="index">
           <el-row class="orderHead">
             <el-col :span="3"><b>{{order.date | prettyDate}}</b></el-col>
             <el-col :span="6"><div>订单号：{{order._id}}</div></el-col>
             <el-col :span="12"><div>收货地址：{{order.address|prettyAddress}}</div></el-col>
           </el-row>
 
-          <el-row class="goodFloor" type="flex">
+          <el-row v-loading="loading" class="goodFloor" type="flex">
             <el-col :span="16">
               <good-floor v-for="(good,index) in order.products" :key="index" :good="good" :page="3"></good-floor>
             </el-col>
@@ -74,7 +74,7 @@
         </el-pagination>
 
       </el-col>
-      <el-col :span="22" :offset="1" v-if="order.length==0">
+      <el-col :span="22" :offset="1" v-if="!loading&&order.length==0">
          <!-- 当订单列表为空时显示的 -->
         <div class="order-empty">
           <el-row type="flex" >
@@ -117,60 +117,60 @@ export default {
       limit: 5,
       total: 100,
       order: [
-        {
-          orderId: "143194578926284844",
-          status: 1,
-          price: 10000,
-          products: [
-            {
-              page: 1,
-              grand: "美的",
-              category: "热水器",
-              name: "JSQ22-12HWA(T)",
-              tag: ["强排式", "恒温式", "防冻型"],
-              src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
-              size: "895x647x517",
-              num: 1,
-              price: 1199,
-              isCheck: false
-            },
-            {
-              page: 1,
+        // {
+        //   orderId: "143194578926284844",
+        //   status: 1,
+        //   price: 10000,
+        //   products: [
+        //     {
+        //       page: 1,
+        //       grand: "美的",
+        //       category: "热水器",
+        //       name: "JSQ22-12HWA(T)",
+        //       tag: ["强排式", "恒温式", "防冻型"],
+        //       src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
+        //       size: "895x647x517",
+        //       num: 1,
+        //       price: 1199,
+        //       isCheck: false
+        //     },
+        //     {
+        //       page: 1,
 
-              grand: "康宝",
-              category: "消毒碗柜",
-              name: "ZTP380H-1",
-              tag: ["柜式", "双门"],
-              src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
-              size: "555x410x1630",
-              num: 2,
-              price: 999,
-              isCheck: false
-            },
-            {
-              page: 1,
+        //       grand: "康宝",
+        //       category: "消毒碗柜",
+        //       name: "ZTP380H-1",
+        //       tag: ["柜式", "双门"],
+        //       src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
+        //       size: "555x410x1630",
+        //       num: 2,
+        //       price: 999,
+        //       isCheck: false
+        //     },
+        //     {
+        //       page: 1,
 
-              grand: "能率",
-              category: "热水器",
-              name: "JSQ31-E3",
-              tag: ["强排式", "防冻型", "恒温式"],
-              src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
-              size: "895x647x517",
-              num: 4,
-              price: 3098,
-              isCheck: false
-            }
-          ],
-          address: {
-            region: "广东省/茂名市/电白县",
-            detail: "电白区第一中学",
-            name: "孙文达",
-            phone: "18928651029"
-          },
-          message: "",
-          date: Date.now()
-        }
-      ]
+        //       grand: "能率",
+        //       category: "热水器",
+        //       name: "JSQ31-E3",
+        //       tag: ["强排式", "防冻型", "恒温式"],
+        //       src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
+        //       size: "895x647x517",
+        //       num: 4,
+        //       price: 3098,
+        //       isCheck: false
+        //     }
+        //   ],
+        //   address: {
+        //     region: "广东省/茂名市/电白县",
+        //     detail: "电白区第一中学",
+        //     name: "孙文达",
+        //     phone: "18928651029"
+        //   },
+        //   message: "",
+        //   date: Date.now()
+        // }
+      ] 
     };
   },
   methods: {
@@ -198,11 +198,23 @@ export default {
         type: "success"
       })
         .then(() => {
-          this.$notify.success({
-            title: "成功",
-            message: "订单已确认收货",
+          return this.$ajax.put('/order',{_id:orderId})
+        })
+        .then((response) => {
+          if (response.data.success) {
+            this.$notify.success({
+              title: "成功",
+              message: response.data.message,
+              offset: 100
+            });
+            this.loadOrderList();
+          }else{
+            this.$notify.error({
+            title: "失败",
+            message: response.data.message,
             offset: 100
           });
+          }
         })
         .catch(() => {
           this.$notify.warning({
@@ -279,19 +291,19 @@ export default {
           if (response.data.success) {
             this.total = response.data.total;
             this.order = await this.destructureOrder(response.data.order);
-            console.log(this.order);
+            this.loading = false;
           } else {
             this.$notify.error({
               title: "失败",
               message: response.data.message,
               offset: 100
             });
+            this.loading = false;
           }
         })
         .catch(err => {
           console.log(err);
         });
-        this.loading = false;
     }
   },
   components: { goodFloor },

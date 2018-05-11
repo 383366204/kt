@@ -65,7 +65,7 @@
         
         <!-- 分页 -->
         <el-pagination
-          v-if="order.length != 0"
+          v-if="total>limit"
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
           :current-page="currentPage"
@@ -179,6 +179,7 @@ export default {
       this.loadOrderList();
     },
     statusChange(tab, event) {
+      this.currentPage = 1;
       this.loadOrderList()
     },
     sumPrice(products) {

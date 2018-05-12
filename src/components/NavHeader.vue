@@ -22,7 +22,7 @@
                     <el-button><img :src="userInfo.headPicUrl" width="52"></el-button>
                   </el-badge>
                   <h1>{{userInfo.nickName}}</h1>
-                  <h2 v-if="userInfo.level==1">普通会员</h2>
+                  <h2 v-if="userInfo.level==1">普通用户</h2>
                   <h2 v-else-if="userInfo.level==2">超级会员</h2>
                 </div>
                 <el-dropdown-menu slot="dropdown">

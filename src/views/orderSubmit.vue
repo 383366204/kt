@@ -27,7 +27,13 @@ export default {
     .then(response=>{
       if (response.data.success) {
         this.$store.commit('setUserInfo',response.data);
+        console.log(response.data);
+      }else{
+
       }
+    })
+    .catch(err=>{
+      console.log(err);
     })
   }
 };
@@ -35,7 +41,7 @@ export default {
 <style scoped>
 /* 主布局 */
 .main {
-  height: 655px;
+  min-height: 685px;
   background-color: #fff;
   display: flex;
   justify-content: center;

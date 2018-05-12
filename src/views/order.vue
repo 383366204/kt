@@ -141,6 +141,7 @@ export default {
           // 成功后将购物车中结算的商品清除
           let namesArray = this.$store.state.checkOutGoods.map(good=>{return good.name});
           this.$store.commit('deleteFromCartByName',namesArray);
+          window.location = response.data.url;
         }
         else{
           this.$notify.error({

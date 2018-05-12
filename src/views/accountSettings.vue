@@ -20,7 +20,7 @@
         <div class="nav-head_msg">
           <p class="name">{{userInfo.nickName}}</p>
           <p class="vip">
-            <span v-if="userInfo.level==1">普通会员</span>
+            <span v-if="userInfo.level==1">普通用户</span>
             <span v-else-if="userInfo.level==2">超级会员</span>
             <i class="iconfont icon-huiyuan1"></i>
             </p>
@@ -28,7 +28,7 @@
       </div>
       <ul>
         <li :class="{active:activeNum==1}" @click="activeTab(1)"><a><i class="iconfont icon-zhanghao"></i>账号设置</a></li>
-        <li :class="{active:activeNum==2}" @click="activeTab(2)"><a><i class="iconfont icon-yanjing"></i>当前权限</a></li>
+        <li :class="{active:activeNum==2}" @click="activeTab(2)"><a><i class="iconfont icon-yanjing"></i>会员权限</a></li>
         <li :class="{active:activeNum==3}" @click="activeTab(3)"><a><i class="iconfont icon-shengji"></i>会员升级</a></li>
       </ul>
     </div>
@@ -43,7 +43,7 @@
           <li>
             <i class="iconfont icon-huiyuan"></i>
             会员等级：
-            <span v-if="userInfo.level==1">普通会员</span>
+            <span v-if="userInfo.level==1">普通用户</span>
             <span v-else-if="userInfo.level==2">超级会员</span>
             <a @click="activeTab(3)">升级</a>
             <span class="levelTime" v-if="userInfo.level==2">你的超级会员还有{{userInfo.levelTime}}天到期</span>
@@ -60,16 +60,16 @@
     <!-- 当前权限 -->
     <div class="view" v-else-if="activeNum==2">
       <div class="view-title">
-        <p>当前权限</p>
+        <p>会员权限</p>
       </div>
       <div class="view-content">
         <ul class="parallelogram">
-          <li><p>海量原创海报模板</p></li>
-          <li><p>海量原创衣服模板</p></li>
-          <li><p>海量原创横幅模板</p></li>
-          <li><p>无限下载海量素材</p></li>
-          <li><p>专属个性定制</p></li>
-          <li><p>专属个性定制</p></li>
+          <li><p>购买的商品均包邮</p></li>
+          <li><p>商品保修期为两年</p></li>
+          <li><p>免费更换损坏部件</p></li>
+          <li><p>购后免费上门安装</p></li>
+          <li><p>专业师傅上门维修</p></li>
+          <li><p>专属客服进行服务</p></li>
         </ul>
       </div>
     </div>
@@ -727,11 +727,12 @@ a {
 }
 /*视图框平行四边形权限*/
 .parallelogram li {
-  width: 160px;
+  width: 180px;
   text-align: center;
   transform: skew(-30deg);
-  padding: 6px 10px;
-  margin-bottom: 20px !important;
+  padding: 30px 10px;
+  margin-top:40px;
+  margin-bottom: 40px !important;
   display: inline-block;
   color: #fff;
 }

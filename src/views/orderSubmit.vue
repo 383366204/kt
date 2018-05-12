@@ -2,7 +2,7 @@
     <main class="main">
         <div class="title">
             <i class="iconfont icon-wancheng"></i>
-            <h1>我们已收到您的订单，非常感谢您对我们的支持</h1>
+            <h1>我们已收到您的付款，非常感谢您对我们的支持</h1>
         </div>
         <div class="option">
             <router-link to="/Search">

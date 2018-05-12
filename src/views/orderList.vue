@@ -47,7 +47,7 @@
             <el-col :span="2"><div><el-tag :type="statusType(order.status)">{{order.status | prettyStatus}}</el-tag></div></el-col>
             <el-col :span="3">
               <div v-if="order.status==1">
-                <div><button class="btn btn-blue">付款</button></div>
+                <div><button class="btn btn-blue" @click="payOrder(order._id)">付款</button></div>
                 <div><button class="btn btn-gray" @click="delOrder(order._id)">删除</button></div>
               </div>
               <div v-else-if="order.status==2">
@@ -191,6 +191,29 @@ export default {
     statusType(status) {
       let type = ["", "info", "warning", "", "success"];
       return type[status];
+    },
+    payOrder(orderId){
+      this.$ajax.post('/Order/pay',{_id:orderId})
+      .then(response=>{
+        if (response.data.success) {
+          this.$notify.success({
+            title: "成功",
+            message: response.data.message,
+            offset: 100
+          });
+          window.location = response.data.url;
+        }
+        else{
+          this.$notify.error({
+            title: "失败",
+            message: response.data.message,
+            offset: 100
+          });
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     },
     comfirmOrder(orderId) {
       this.$confirm("已确认收货?", "提示", {

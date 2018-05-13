@@ -1,71 +1,26 @@
 <template>
   <main>
     <div class="nav">
-      <div class="list">
+
+      <div v-for="(inform,index) in informs" :key="index" class="list" @click="informDetail(index)">
         <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p>
-          <p>2017-10-27</p>
+          <p>【通知】{{inform.msgTitle}}</p>
+          <p>{{inform.date|prettyDate}}</p>
         </div>
         <div class="list-body">
-          <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
-          与绿鲤鱼与驴。红鲤鱼与绿鲤鱼与驴红鲤鱼与绿鲤
-          鱼与驴。</p>
+          <p>{{inform.msgContent}}</p>
         </div>
       </div>
-      <div class="list">
-        <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p>
-          <p>2017-10-27</p>
-        </div>
-        <div class="list-body">
-          <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
-          与绿鲤鱼与驴。红鲤鱼与绿鲤鱼与驴红鲤鱼与绿鲤
-          鱼与驴。</p>
-        </div>
-      </div>
-      <div class="list">
-        <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p>
-          <p>2017-10-27</p>
-        </div>
-        <div class="list-body">
-          <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
-          与绿鲤鱼与驴。红鲤鱼与绿鲤鱼与驴红鲤鱼与绿鲤
-          鱼与驴。</p>
-        </div>
-      </div>
-      <div class="list">
-        <div class="list-head">
-          <p>【通知】我是标题啊标题1123......</p>
-          <p>2017-10-27</p>
-        </div>
-        <div class="list-body">
-          <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
-          与绿鲤鱼与驴。红鲤鱼与绿鲤鱼与驴红鲤鱼与绿鲤
-          鱼与驴。</p>
-        </div>
-      </div>
-      <div class="list">
-        <div class="list-head">
-          <p>【通知】我是标题啊标题啊......</p>
-          <p>2017-10-27</p>
-        </div>
-        <div class="list-body">
-          <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
-          与绿鲤鱼与驴。红鲤鱼与绿鲤鱼与驴红鲤鱼与绿鲤
-          鱼与驴。</p>
-        </div>
-      </div>
+
+
     </div>
     <div class="view">
       <div class="view-head">
-        <p>【通知】我是标题啊标题啊......</p>
-        <p>2017-10-27</p>
+        <p>【通知】{{msgTitle}}</p>
+        <p>{{date|prettyDate}}</p>
       </div>
       <div class="view-body">
-        <p>红鲤鱼与绿鲤鱼与驴，红鲤鱼与绿鲤鱼与驴红鲤鱼
-        与绿鲤鱼与驴。红鲤鱼与绿鲤鱼与驴红鲤鱼与绿鲤
-        鱼与驴。</p>
+        <p>{{msgContent}}</p>
       </div>
     </div>
   </main>
@@ -75,16 +30,47 @@
 export default {
   data() {
     return{
+      informs:[],
+      msgTitle:'',
+      msgContent:'',
+      date:''
+    }
+  },
+  filters:{
+    prettyDate(val) {
+      let orderDate = new Date(val);
+      return `${orderDate.getFullYear()}年${orderDate.getMonth() +
+        1}月${orderDate.getDate()}日`;
+    }
+  },
+  methods:{
+    informDetail(index){
+      this.msgTitle = this.informs[index].msgTitle;
+      this.msgContent = this.informs[index].msgContent;
+      this.date = this.informs[index].date;
+    }
+  },
+  mounted:function(){
+    this.$ajax.get('/inform')
+    .then(response=>{
+      if (response.data.success) {
+        this.informs = response.data.informs;
+        this.informDetail(0);
+      }
+    })
+    .catch(err=>{
+      console.log(err);
+    })
 
+    if (this.informs!=false) {
+      this.msgTitle = this.informs[0].msgTitle;
+      this.msgContent = this.informs[0].msgContent;
+      this.date = this.informs[0].date; 
     }
   }
 }
 </script>
-<style>
-/* body{
-  background-color: #f4f8fb !important;
-} */
-</style>
+
 <style scoped>
 main {
   background-color: #f4f8fb !important;
@@ -164,7 +150,7 @@ a{
   font-size: 16px;
 }
 .list-head p:last-of-type{
-  width: 77px;
+  width: 100px;
   text-align: right;
   color: #aaa;
 }

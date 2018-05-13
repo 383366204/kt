@@ -10,7 +10,6 @@ import LoginRegister from '@/views/login-register'
 import Address from '@/views/address'
 import OrderList from '@/views/orderList'
 import Order from '@/views/order'
-import CustomDesign from '@/views/customDesign'
 
 import AccountSettings from '@/views/accountSettings'
 import Inform from '@/views/inform'

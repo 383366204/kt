@@ -3,9 +3,9 @@
       <div class="carousel">
         <el-row type="flex" justify="center">
           <el-col :span="16">
-            <el-carousel :interval="5000" type="card" height="400px">
+            <el-carousel :interval="5000" type="card" height="430px">
             <el-carousel-item v-for="(img,index) in carouselImg" :key="index">
-               <img :src="img.src" width="636">
+               <img :src="img.src">
             </el-carousel-item>
            </el-carousel>
           </el-col>
@@ -124,7 +124,7 @@ export default {
     return {
       carouselImg:[
         {src:'./static/rangeHood.jpg'},
-        {src:'./static/cooker.jpg'},
+        {src:'./static/cooktop.jpg'},
         {src:'./static/sterilizer.jpg'}
       ],
       leftChat:[
@@ -200,10 +200,13 @@ export default {
   }
   /* 走马灯的宽度 */
   .carousel .el-row:first-child .el-col{
-    width: 1268px;
+    width: 860px;
   }
   .el-carousel{
     padding-bottom: 80px;
+  }
+  .el-carousel img{
+    width:430px;
   }
   /* 设定最低宽度 */
   .carousel .el-row:nth-child(2) .el-col{

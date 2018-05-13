@@ -1,34 +1,29 @@
 <template>
     <header class="header">          
          <el-row type="flex" justify="center">
-          <el-col :span="10">
-            <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>
-             <router-link to="/MyDesign"><el-button type="text">我的设计</el-button></router-link>
-             <router-link to="/CustomDesign"><el-button type="text">定制设计</el-button></router-link>
-             <el-input class="searchBox" placeholder="搜索" @keyup.enter.native="searchGoods()"  v-model="searchContent">
+          <el-col>
+            <router-link to="/"><img src="../assets/img/logo.png" width="97" height="48"></router-link>         
+              <router-link to="/Introduce">
+                <el-button type="text">公司介绍</el-button>
+              </router-link>
+              <router-link to="/Contact">
+              <el-button type="text">
+                联系我们
+              </el-button>
+             </router-link>
+             <el-input class="searchBox" placeholder="搜索" @keyup.enter.native="searchGoods()"  v-model="search">
               <el-button slot="append" icon="el-icon-search" @click="searchGoods()"></el-button>
             </el-input>
           </el-col>
-          <el-col :span="4">      
-              <router-link to="/Contact">             
-              <el-button type="text" class="hasIcon">
-               <i class="iconfont icon-duihuakuang"></i>
-                联系我们
-                </el-button>
-              </router-link>
-              <router-link to="/Message" class="message" v-if="getLogin">                 
-                  <el-button type="text" class="hasIcon">
-                    <i class="iconfont icon-xinfeng" style="font-size:18px;"></i>
-                  你的通知
-                  </el-button>
-              </router-link>
+          <el-col>
               <el-dropdown v-if="getLogin" @command="handleCommand" trigger="click">
                 <div class="headPic">
-                  <el-badge :value="100" :max="99">
-                    <el-button><img src="../assets/img/head-pic.png" width="52"></el-button>
+                  <el-badge :hidden="cartNum<=0" :value="cartNum" :max="10">
+                    <el-button><img :src="userInfo.headPicUrl" width="52"></el-button>
                   </el-badge>
                   <h1>{{userInfo.nickName}}</h1>
-                  <h2>{{userInfo.level}}</h2>
+                  <h2 v-if="userInfo.level==1">普通用户</h2>
+                  <h2 v-else-if="userInfo.level==2">超级会员</h2>
                 </div>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="accountSettings">
@@ -38,7 +33,7 @@
                   <el-dropdown-item command="inform">
                     <span class="icon"><i class="iconfont icon-tongzhi"></i></span>
                     信息中心
-                  </el-dropdown-item>
+                  </el-dropdown-item> 
                   <el-dropdown-item command="orderList">
                     <span class="icon"><i class="iconfont icon-page"></i></span>
                     订单管理
@@ -94,11 +89,22 @@
         return this.$store.state.isIndex;
       },
       getLogin(){
-        return this.$store.state.isLogin;
+        return this.$store.getters.isLogin;
       },
       userInfo(){
-        return this.$store.state.userInfo;
+        return this.$store.getters.userInfo;
       },
+      search:{
+        get:function(){
+          return this.$route.params.Filters||this.searchContent;
+        },
+        set:function(value){
+          this.searchContent = value;
+        }
+      },
+      cartNum(){
+        return this.$store.getters.cart.length;
+      }
     }
   }
 </script>
@@ -110,20 +116,22 @@
     /* 黑色底边和布局 */
     .header .el-row .el-col{
       display: flex;
-      flex-basis: 850px;
+      flex-basis: 940px;
       align-items: center;
+      padding-left: 20px;
     }
     .bottom-border{
       border-bottom: 1px solid #aaaaaa;
     }
     /* 左边Logo的布局 */
     .header .el-row .el-col:first-child img{
-      margin-right: 30px;
+      margin-right: 20px;
     }
     /* 右两个按钮布局 */
     .header .el-row .el-col:last-child{
-      justify-content: flex-end;
-      flex-basis: 360px;
+      justify-content: flex-start;
+      flex-basis: 180px;
+      padding-left: 0px;
     }
     /* 按钮样式 */
     .header .el-row a .el-button{
@@ -132,6 +140,7 @@
       line-height: 8px;
       font-size: 18px;
       color: #FFF;
+      margin-right: 4px;
     }
     /* 有icon的按钮 */
     .header .el-row a .el-button.hasIcon{
@@ -180,7 +189,8 @@
       position: relative;
       width: 55px !important;
       height: 55px !important;
-      border-radius: 50%;    
+      border-radius: 50%;
+      overflow: hidden;
     }
     /* 头像hover效果*/
     .headPic .el-badge .el-button:hover{
@@ -196,9 +206,13 @@
     .headPic h1,h2{
       position: absolute;
       color: #FFF;
-      top: 9px;
-      right: 16px;
       font-size: 16px;
+    }
+    .headPic h1{
+      top: 11px;
+      left: 64px;
+      width: 100%;
+      right: 16px;
     }
     .headPic h2{
       top:32px;
@@ -223,7 +237,7 @@
       border-color:#45c1ee;
       border-right: none;
       outline:none;
-      width: 450px;
+      width: 500px;
     }
     /* 搜索框右边按钮的样式 */
     .searchBox .el-button{

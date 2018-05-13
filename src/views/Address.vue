@@ -105,7 +105,7 @@
               </el-col>
               <el-col :span="2">
                 <div class="default" v-if="address.isDefault">默认地址</div>
-                <el-button  v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefault(index)" type="text">设为默认地址</el-button>
+                <div v-else-if="!address.isDefault&&addMode" class="default setDefault" @click="setDefaultAddress(index)" type="text">设为默认地址</div>
               </el-col>
             </el-row>
             <el-row class="add-tbody" v-if="isAddressEmpty">
@@ -155,8 +155,12 @@ export default {
         detail: [
           { required: true, message: "请输入您的详细地址", trigger: "blur" }
         ],
-        zipCode:[
-          {pattern:/^\d{6}$/,message:'请输入正确的邮政编码',trigger :'blur'}
+        zipCode: [
+          {
+            pattern: /^\d{6}$/,
+            message: "请输入正确的邮政编码",
+            trigger: "blur"
+          }
         ],
         name: [
           { required: true, message: "请输入您的姓名", trigger: "blur" },
@@ -180,7 +184,7 @@ export default {
     };
   },
   computed: {
-    isAddressEmpty: function () {
+    isAddressEmpty: function() {
       return this.addresses == false;
     }
   },
@@ -217,28 +221,82 @@ export default {
             areaTemp.areaName;
           address.detail = this.addressForm.detail;
           address.zipCode = this.addressForm.zipCode;
-          address.phone = this.addressForm.phone;
+          address.phone = this.addressForm.phone;        
           address.isDefault = this.addressForm.setDefault;
+           // 若原本没有地址则设为默认地址
+          if(this.addresses==false){
+            address.isDefault = true;
+          }
+
           //新增状态
           if (this.addMode) {
-            this.addresses.unshift(address);
-            if (address.isDefault) {
-              this.setDefault(0);
-            }
+            this.$ajax
+              .post("/api/user/address", address)
+              .then(response => {
+                if (response.data.success) {
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  // 添加时成功后，将新增的地址unshift到前面
+                  this.addresses.unshift(response.data.address);
+                  //若设为默认或地址只有一个时
+                  if (address.isDefault||this.addresses.length==1) {
+                    this.setDefault(0);
+                  }
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
           } else {
             //编辑状态
-            this.addresses[this.editIndex] = address;
-            if (address.isDefault) {
-              this.setDefault(this.editIndex);
-            }
-            this.addMode = true;
-            if (
-              !this.addresses.some(item => {
-                return item.isDefault;
+
+            // 编辑状态要带上id
+            address._id = this.addresses[this.editIndex]._id;
+            this.$ajax
+              .put("/api/user/address", address)
+              .then(response => {
+                if (response.data.success) {
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+
+                  //修改成功后的处理
+                  this.addresses[this.editIndex] = address;
+                  if (address.isDefault) {
+                    this.setDefault(this.editIndex);
+                  }
+                  //保存后变回新增模式
+                  this.addMode = true;
+                  //如果把默认地址改为了非默认地址，则将第一个设为默认地址
+                  if (
+                    !this.addresses.some(item => {
+                      return item.isDefault;
+                    })
+                  ) {
+                    this.setDefault(0);
+                  }
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
               })
-            ) {
-              this.setDefault(0);
-            }
+              .catch(err => {
+                console.log(err);
+              });
           }
           this.resetForm("addressForm"); //清空表单
           this.addressForm.setDefault = false; //清空设为默认
@@ -253,7 +311,7 @@ export default {
     },
     getProvince() {
       this.$ajax
-        .get("../../static/json/queryAllProvinces.json")
+        .get("../json/queryAllProvinces.json")
         .then(
           function(response) {
             this.allProvinces = response.data.provinces;
@@ -265,7 +323,7 @@ export default {
     },
     getCities() {
       this.$ajax
-        .get("../../static/json/queryCities.json")
+        .get("../json/queryCities.json")
         .then(
           function(response) {
             this.allCities = response.data.cities;
@@ -277,7 +335,7 @@ export default {
     },
     getAreas() {
       this.$ajax
-        .get("../../static/json/queryAllAreas.json")
+        .get("../json/queryAllAreas.json")
         .then(
           function(response) {
             this.allAreas = response.data.areas;
@@ -344,23 +402,39 @@ export default {
         type: "warning"
       })
         .then(() => {
-          //如果删除的是默认地址
-          if (this.addresses[index].isDefault) {
-            this.addresses.splice(index, 1);
-            //如果还有地址，将第一个设为默认地址
-            if (this.addresses[0]) {
-              this.addresses[0].isDefault = true;
-            }
-          } else {
-            this.addresses.splice(index, 1);
-          }
-          this.$notify.success({
-            title: "成功",
-            message: "删除地址成功",
-            offset: 100
-          });
+          this.$ajax
+            .delete("/api/user/address", {
+              // delete方法要加data
+              data: {
+                _id: this.addresses[index]._id
+              }
+            })
+            .then(response => {
+              if (response.data.success) {
+                this.$notify.success({
+                  title: "成功",
+                  message: response.data.message,
+                  offset: 100
+                });
+
+                this.addresses.splice(index, 1);
+                ////如果删除的是默认地址,而且还有地址，将第一个设为默认地址
+                if (this.addresses[0]) {
+                  this.addresses[0].isDefault = true;
+                }
+              } else {
+                this.$notify.error({
+                  title: "失败",
+                  message: response.data.message,
+                  offset: 100
+                });
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
         })
-        .catch(() => {
+        .catch(err => {
           this.$notify.warning({
             title: "提示",
             message: "已取消删除",
@@ -369,6 +443,7 @@ export default {
         });
     },
     editAddress(index) {
+      this.resetForm("addressForm");
       this.addMode = false; //设定为编辑模式
       this.editIndex = index; //正在编辑的地址名单
 
@@ -380,7 +455,7 @@ export default {
 
       let region = this.addresses[index].region.split("/"); //省市区
 
-      this.provinceName = region[0]; //省份     
+      this.provinceName = region[0]; //省份
       this.cityName = region[1]; //城市
       this.areaName = region[2]; //区县
 
@@ -407,10 +482,51 @@ export default {
           break;
         }
       }
+    },
+    setDefaultAddress(index) {
+      let address = {
+        _id : this.addresses[index]._id,
+        region:this.addresses[index].region,
+        detail : this.addresses[index].detail,
+        zipCode : this.addresses[index].zipCode,
+        name : this.addresses[index].name,
+        phone : this.addresses[index].phone,
+        isDefault: true
+      };
+      this.$ajax
+        .put("/api/user/address", address)
+        .then(response => {
+          if (response.data.success) {
+            this.$notify.success({
+              title: "成功",
+              message: response.data.message,
+              offset: 100
+            });
+            this.setDefault(index);
+          } else {
+            this.$notify.error({
+              title: "失败",
+              message: response.data.message,
+              offset: 100
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted: function() {
-    this.addresses = this.$store.state.addresses;
+    this.$ajax
+      .get("/api/user/address")
+      .then(response => {
+        if (response.data.success) {
+          this.addresses = response.data.address;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
     this.getProvince();
     this.getCities();
     this.getAreas();
@@ -502,7 +618,11 @@ button {
   color: #ff4949;
 }
 .add-tbody .default.setDefault {
+  cursor: pointer;
   display: none;
+  width: 100px;
+  padding-left: 0;
+  margin-left: -10px;
 }
 
 .add-tbody:hover .default.setDefault {

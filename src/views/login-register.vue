@@ -142,8 +142,12 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "blur" }
         ],
-        nickName:[
-          {pattern:/^[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}$/, message: "昵称为 2 到 10 个中英文字符组成", trigger: "blur"}
+        nickName: [
+          {
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}$/,
+            message: "昵称为 2 到 10 个中英文字符组成",
+            trigger: "blur"
+          }
         ],
         verification: [
           {
@@ -197,10 +201,80 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (formName == "loginForm") {
-            this.checkUser(this.loginForm.userId, this.loginForm.password);
+            this.signin();
           } else if (formName == "registerForm") {
+            let self = this;
+            let regisData = {
+              nickName: this.registerForm.nickName,
+              password: this.registerForm.password,
+              verification: this.registerForm.verification
+            };
+            //判断是用手机还是邮箱注册
+            if (this.registerForm.userId.match(/^1\d{10}$/)) {
+              regisData.phone = this.registerForm.userId;
+            } else if (
+              this.registerForm.userId.match(
+                /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+              )
+            ) {
+              regisData.email = this.registerForm.userId;
+            }
+            this.$ajax
+              .post("/api/user/signup", regisData)
+              .then(function(response) {
+                console.log(response);
+                if (response.data.success) {
+                  self.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  self.changeForm();
+                } else {
+                  self.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(function(err) {
+                console.log(err);
+              });
           } else if (formName == "forgetPasswordForm") {
-            console.log("forgetPassword");
+            //判断是用手机还是邮箱验证
+            let forgetData = {
+              password: this.forgetPasswordForm.newPassword,
+              verification: this.forgetPasswordForm.verification
+            };
+            if (this.forgetPasswordForm.userId.match(/^1\d{10}$/)) {
+              forgetData.phone = this.forgetPasswordForm.userId;
+            } else if (
+              this.forgetPasswordForm.userId.match(
+                /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+              )
+            ) {
+              forgetData.email = this.forgetPasswordForm.userId;
+            }
+            this.$ajax.post("/api/user/forget", forgetData)
+            .then(response => {             
+              if (response.data.success) {
+                this.$alert(response.data.message, "注意", {
+                  confirmButtonText: "确定",
+                  callback:action=>{
+                    this.cancelForgetPassword('forgetPasswordForm');
+                  }
+                })
+              }
+              else{
+                this.$alert(response.data.message, "注意", {
+                  confirmButtonText: "确定"
+                })
+              }
+            })
+            .catch(err=>{
+              console.log(err);
+            })
           }
         } else {
           console.log("error submit!!");
@@ -233,6 +307,24 @@ export default {
                 this.registerTiming--;
               }
             }, 1000);
+
+            let getVeriParams = {
+              type: "",
+              ajax: this.$ajax,
+              userId: this.registerForm.userId
+            };
+
+            //判断是用手机还是邮箱获取
+            if (this.registerForm.userId.match(/^1\d{10}$/)) {
+              getVeriParams.type = "phone";
+            } else if (
+              this.registerForm.userId.match(
+                /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+              )
+            ) {
+              getVeriParams.type = "email";
+            }
+            this.$store.commit("getVeriCode", getVeriParams);
           } else if (verifiForm == "forgetPasswordForm") {
             if (this.forgetPasswordVerification == true) {
               return;
@@ -247,28 +339,67 @@ export default {
                 this.forgetPasswordTiming--;
               }
             }, 1000);
+
+            let getVeriParams = {
+              type: "",
+              ajax: this.$ajax,
+              userId: this.forgetPasswordForm.userId
+            };
+            //判断是用手机还是邮箱获取
+            if (this.forgetPasswordForm.userId.match(/^1\d{10}$/)) {
+              getVeriParams.type = "phone";
+            } else if (
+              this.forgetPasswordForm.userId.match(
+                /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+              )
+            ) {
+              getVeriParams.type = "email";
+            }
+            this.$store.commit("getVeriCode", getVeriParams);
           }
         }
       });
     },
-    checkUser() {
+    signin() {
+      let self = this;
+      let loginData = {
+        password: this.loginForm.password
+      };
+      //判断是用手机还是邮箱注册
+      if (this.loginForm.userId.match(/^1\d{10}$/)) {
+        loginData.phone = this.loginForm.userId;
+      } else if (
+        this.loginForm.userId.match(
+          /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+        )
+      ) {
+        loginData.email = this.loginForm.userId;
+      }
       this.$ajax
-        .post("http://127.0.0.1:3000/login", {
-          userId: this.loginForm.userId,
-          password: this.loginForm.password
-        })
+        .post("/api/user/signin", loginData)
         .then(response => {
-          this.$store.commit("login", response.data);
-          //登录后跳转
-          let redirect = decodeURIComponent(this.$route.query.redirect || "/");
-          this.$router.push({
-            path: redirect
-          });
-          this.$notify.success({
-            title: "成功",
-            message: "登录成功",
-            offset: 100
-          });
+          console.log(response);
+          if (response.data.success) {
+            this.$store.commit("login", response.data);
+            //登录后跳转
+            let redirect = decodeURIComponent(
+              this.$route.query.redirect || "/"
+            );
+            this.$router.push({
+              path: redirect
+            });
+            this.$notify.success({
+              title: "成功",
+              message: response.data.message,
+              offset: 100
+            });
+          } else {
+            this.$notify.error({
+              title: "失败",
+              message: response.data.message,
+              offset: 100
+            });
+          }
         })
         .catch(error => {
           console.log(error);
@@ -294,7 +425,7 @@ export default {
 /* 主体的布局和长宽 */
 .main {
   width: 100%;
-  height: 655px;
+  height: 685px;
   display: flex;
   align-items: center;
 }

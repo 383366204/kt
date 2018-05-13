@@ -1,7 +1,7 @@
 <template>
   <main>
     <el-row>
-      <el-col :span="22" :offset="1">
+      <el-col class="minHeight" :span="22" :offset="1">
 
         <!-- 标题 -->
         <el-row v-if="goods!=false">
@@ -84,8 +84,8 @@ export default {
     }
   },
   methods: {
-    checkFloor(id){
-      let index = this.goods.findIndex((item)=>{return item.id==id});
+    checkFloor(name){
+      let index = this.goods.findIndex((item)=>{return item.name==name});
       this.goods[index].isCheck = !this.goods[index].isCheck;
       if (this.goods[index].isCheck) {
         this.checkNum++;
@@ -102,19 +102,20 @@ export default {
         this.ischeckAll = false;
       }
     },
-    delFloor(id){
+    delFloor(name){
       this.$confirm('删除此商品?', '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 查找要删除的元素位置
-           let index = this.goods.findIndex((item)=>{ return item.id==id});
+           let index = this.goods.findIndex((item)=>{ return item.name==name});
            if (this.goods[index].isCheck) {//判断是否选中
               this.checkNum--;//总数减少
               this.checkSum -= this.getSum(this.goods[index]);//总价减少
            }
            this.goods.splice(index,1);
+           this.$store.commit('deleteFromCart',index);
            this.$notify.success({
             title: '成功',
             message: '已从购物车中删除',
@@ -136,7 +137,6 @@ export default {
         });
         return;
       }
-      // this.hasAnyCheck();
       this.$confirm('删除所选中的商品?', '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -145,7 +145,8 @@ export default {
             let newGoods = this.goods.filter((item)=>{//找出没有选中的商品
               return !item.isCheck;
             });
-            this.goods = newGoods;//替换原来的数组
+            this.goods = newGoods;
+            this.$store.commit('replaceCart',newGoods);//替换原来的数组
             this.checkNum = 0;
             this.checkSum = 0;
             this.$notify.success({
@@ -184,14 +185,10 @@ export default {
       }
     },
     getSum(good){
-        let numSum=0;
-        for (let i = 0; i < good.num.length; i++) {
-          numSum += good.num[i];
-        }
-        return numSum*good.price;
+        return good.price*good.num;
     },
     changeNum(price,good){
-      let index = this.goods.findIndex((item)=>{return item.id == good.id});//找出good的index
+      let index = this.goods.findIndex((item)=>{return item.name == good.name});//找出good的index
       
       this.goods[index] = good;//替代原来的位置
 
@@ -232,7 +229,18 @@ export default {
     goodFloor
   },
   mounted:function(){
-    this.goods = this.$store.state.goods;
+    // 获取收货地址
+    this.$ajax
+      .get("/api/user/address")
+      .then(response => {
+        if (response.data.success) {
+          this.$store.state.addresses = response.data.address;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    this.goods = this.$store.getters.cart;
     let self = this;
     this.goods.forEach((item)=>{
       self.$set(item,'isCheck',false);
@@ -255,7 +263,6 @@ export default {
     cursor: pointer;
   }
 
-
   /*标题*/
   .cart-title{
     font-size: 18px;
@@ -267,7 +274,6 @@ export default {
     color: #2eb4e9;
     margin-right: 10px;
   }
-
 
   /*头部*/
   .cart-thead div{
@@ -331,40 +337,43 @@ export default {
   }
 
   /* 购物车为空时的样式 */
-    .cart-empty{
-      padding-top: 200px;
-      height: 410px;
-    }
-   .empty{
-       display: flex;
-       align-items: center;
-       justify-content: center;
+  .cart-empty{
+     padding-top: 200px;
+     min-height: 445px;
    }
-   .empty h1{
-       font-size: 20px;
-       color:#555;
-       padding-left: 18px;
-   }
-   .empty i{
-       font-size: 60px;
-       color: #2eb4e9;
-   }
-   .option{
-       height: 80px;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-   }
-   .option .el-button{
-       border-color: #2eb4e9;
-       color: #2eb4e9;
-       width: 144px;
-       height: 58px;
-       font-size: 20px;
-       margin:0 20px;
-   }
-   .option .el-button:hover{
-       background-color: #2eb4e9;
-       color: #FFF;
-   }
+  .empty{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .empty h1{
+      font-size: 20px;
+      color:#555;
+      padding-left: 18px;
+  }
+  .empty i{
+      font-size: 60px;
+      color: #2eb4e9;
+  }
+  .option{
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .option .el-button{
+      border-color: #2eb4e9;
+      color: #2eb4e9;
+      width: 144px;
+      height: 58px;
+      font-size: 20px;
+      margin:0 20px;
+  }
+  .option .el-button:hover{
+      background-color: #2eb4e9;
+      color: #FFF;
+  }
+  .minHeight{
+    min-height: 665px;
+  }
 </style>

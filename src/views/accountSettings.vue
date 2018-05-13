@@ -3,26 +3,32 @@
     <div class="nav">
       <div class="nav-head">
         <div class="nav-head_img">
-          <!-- <img src="../assets/img/head-pic.png"> -->
-          <el-tooltip effect="dark" content="点击更换头像" placement="left">
+          <el-tooltip effect="dark" placement="left">
+            <div slot="content">点击更换您的头像<br/>(分辨率需为64x64)</div>
             <el-upload
+              name="avatar"
               class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="uploadForm.url"
+              :headers="uploadForm.auth"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">          
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <img v-if="userInfo.headPicUrl" :src="userInfo.headPicUrl" class="avatar">
             </el-upload>
           </el-tooltip>
         </div>
         <div class="nav-head_msg">
           <p class="name">{{userInfo.nickName}}</p>
-          <p class="vip">{{userInfo.level}}<i class="iconfont icon-huiyuan1"></i></p>
+          <p class="vip">
+            <span v-if="userInfo.level==1">普通用户</span>
+            <span v-else-if="userInfo.level==2">超级会员</span>
+            <i class="iconfont icon-huiyuan1"></i>
+            </p>
         </div>
       </div>
       <ul>
         <li :class="{active:activeNum==1}" @click="activeTab(1)"><a><i class="iconfont icon-zhanghao"></i>账号设置</a></li>
-        <li :class="{active:activeNum==2}" @click="activeTab(2)"><a><i class="iconfont icon-yanjing"></i>当前权限</a></li>
+        <li :class="{active:activeNum==2}" @click="activeTab(2)"><a><i class="iconfont icon-yanjing"></i>会员权限</a></li>
         <li :class="{active:activeNum==3}" @click="activeTab(3)"><a><i class="iconfont icon-shengji"></i>会员升级</a></li>
       </ul>
     </div>
@@ -34,7 +40,14 @@
       <div class="view-content">
         <ul>
           <li><i class="iconfont icon-zhanghao"></i>昵称：<span>{{userInfo.nickName}}</span><a @click="changeNickName()">更改</a></li>
-          <li><i class="iconfont icon-huiyuan"></i>会员等级：<span>{{userInfo.level}}</span><a @click="activeTab(3)">升级</a></li>
+          <li>
+            <i class="iconfont icon-huiyuan"></i>
+            会员等级：
+            <span v-if="userInfo.level==1">普通用户</span>
+            <span v-else-if="userInfo.level==2">超级会员</span>
+            <a @click="activeTab(3)">升级</a>
+            <span class="levelTime" v-if="userInfo.level==2">你的超级会员还有{{userInfo.levelTime}}天到期</span>
+          </li>
           <li><i class="iconfont icon-youxiang"></i>邮箱：<span v-if="userInfo.email">{{userInfo.email}}</span><span v-else>暂未绑定</span><a @click="changeEmail()">更改</a></li>
           <li><i class="iconfont icon-shouji"></i>手机：<span v-if="userInfo.phone">{{userInfo.phone}}</span><span v-else>暂未绑定</span><a @click="changePhone()">更改</a></li>         
           <li><i class="iconfont icon-mima"></i>密码：*********<a @click="changePassword()">修改</a></li>
@@ -46,19 +59,17 @@
     <!-- 账号设置END -->
     <!-- 当前权限 -->
     <div class="view" v-else-if="activeNum==2">
-      <div class="view-banner">
-        <img src="../assets/img/yellowBg.jpg">
-      </div>
       <div class="view-title">
-        <p>当前权限</p>
+        <p>会员权限</p>
       </div>
       <div class="view-content">
         <ul class="parallelogram">
-          <li><p>海量原创海报模板</p></li>
-          <li><p>海量原创衣服模板</p></li>
-          <li><p>海量原创横幅模板</p></li>
-          <li><p>无限下载海量素材</p></li>
-          <li><p>专属个性定制</p></li>
+          <li><p>购买的商品均包邮</p></li>
+          <li><p>商品保修期为两年</p></li>
+          <li><p>免费更换损坏部件</p></li>
+          <li><p>购后免费上门安装</p></li>
+          <li><p>专业师傅上门维修</p></li>
+          <li><p>专属客服进行服务</p></li>
         </ul>
       </div>
     </div>
@@ -98,7 +109,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-button class="payButton" type="primary" @click="pay()">支付</el-button>
+            <el-button class="payButton" type="primary" @click="upgrade()">支付</el-button>
           </el-col>
         </el-row>
       </div>
@@ -108,19 +119,16 @@
     <!-- 修改邮箱的模式窗 -->
     <el-dialog title="修改邮箱" :visible.sync="modifyEmailFormVisible" width="30%" top="15%" @close="cancelMoEmail('modifyEmailForm')">
       <el-form :model="modifyEmailForm" :rules="modifyRules" ref="modifyEmailForm" label-width="100px">
-        <el-form-item label="验证方式" prop="veriType">
-          <el-radio-group  class="radioSize" v-model="modifyEmailForm.veriType">
-            <el-radio label="email" border>邮箱接收验证码</el-radio>
-            <el-radio label="phone" border>手机接收验证码</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="验证码" prop="verification">
-            <el-input class="modifyVerification" v-model="modifyEmailForm.verification" auto-complete="off" placeholder="验证码"></el-input>
-            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyEmailVerification}" @click="getVerification('modifyEmailForm')"><span v-if="modifyEmailVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
+        <el-form-item label="密码" prop="oldPassword">
+          <el-input type="password" v-model="modifyEmailForm.oldPassword"></el-input>
         </el-form-item>
         <el-form-item label="新邮箱" prop="newEmail">
           <el-input type="email" v-model="modifyEmailForm.newEmail" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="验证码" prop="verification">
+            <el-input class="modifyVerification" v-model="modifyEmailForm.verification" auto-complete="off" placeholder="验证码"></el-input>
+            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyEmailVerification}" @click="getVerification('modifyEmailForm')"><span v-if="modifyEmailVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
+        </el-form-item>     
         <el-form-item>
           <el-button type="primary" @click="submitForm('modifyEmailForm')">提交</el-button>
           <el-button @click="modifyEmailFormVisible = false">取消</el-button>
@@ -131,19 +139,16 @@
     <!-- 修改手机的模式窗 -->
     <el-dialog title="修改手机" :visible.sync="modifyPhoneFormVisible" width="30%" top="15%" @close="cancelMoPhone('modifyPhoneForm')">
       <el-form :model="modifyPhoneForm" :rules="modifyRules" ref="modifyPhoneForm" label-width="100px">
-        <el-form-item label="验证方式" prop="veriType">
-          <el-radio-group  class="radioSize" v-model="modifyPhoneForm.veriType">
-            <el-radio label="email" border>邮箱接收验证码</el-radio>
-            <el-radio label="phone" border>手机接收验证码</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="验证码" prop="verification">
-            <el-input class="modifyVerification" v-model="modifyPhoneForm.verification" auto-complete="off" placeholder="验证码"></el-input>
-            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyPhoneVerification}" @click="getVerification('modifyPhoneForm')"><span v-if="modifyPhoneVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
+        <el-form-item label="密码" prop="oldPassword">
+          <el-input type="password" v-model="modifyPhoneForm.oldPassword"></el-input>
         </el-form-item>
         <el-form-item label="新手机" prop="newPhone">
           <el-input v-model="modifyPhoneForm.newPhone" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="验证码" prop="verification">
+            <el-input class="modifyVerification" v-model="modifyPhoneForm.verification" auto-complete="off" placeholder="验证码"></el-input>
+            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyPhoneVerification}" @click="getVerification('modifyPhoneForm')"><span v-if="modifyPhoneVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
+        </el-form-item>      
         <el-form-item>
           <el-button type="primary" @click="submitForm('modifyPhoneForm')">提交</el-button>
           <el-button @click="modifyPhoneFormVisible = false">取消</el-button>
@@ -174,6 +179,8 @@
 </template>
 
 <script>
+import config from '../config/config';
+
 export default {
   data() {
     var confirmPassword = (rule, value, callback) => {
@@ -183,17 +190,15 @@ export default {
         callback();
       }
     };
-    var confirmVeriType = (rule, value, callback)=>{
-      if (value=='email'&& !this.$store.state.userInfo.email) {
+    var confirmVeriType = (rule, value, callback) => {
+      if (value == "email" && !this.$store.state.userInfo.email) {
         callback(new Error("你还没有绑定邮箱，请选择手机接受验证码"));
-      }
-      else if (value=='phone'&& !this.$store.state.userInfo.phone) {
+      } else if (value == "phone" && !this.$store.state.userInfo.phone) {
         callback(new Error("你还没有绑定手机，请选择邮箱接受验证码"));
-      }
-      else {
+      } else {
         callback();
       }
-    }
+    };
     return {
       value5: 100,
       activeNum: 1,
@@ -204,27 +209,27 @@ export default {
         confirmPassword: ""
       },
       modifyEmailFormVisible: false,
-      modifyEmailVerification:false,
-      modifyEmailTiming:60,
+      modifyEmailVerification: false,
+      modifyEmailTiming: 60,
       modifyEmailForm: {
-        veriType:"",
+        oldPassword: "",
         newEmail: "",
         verification: ""
       },
       modifyPhoneFormVisible: false,
-      modifyPhoneVerification:false,
-      modifyPhoneTiming:60,
+      modifyPhoneVerification: false,
+      modifyPhoneTiming: 60,
       modifyPhoneForm: {
-        veriType:"",
-        newPhone:"",
+        oldPassword: "",
+        newPhone: "",
         verification: ""
       },
       modifyRules: {
         oldPassword: [
-          { required: true, message: "请输入您的旧密码", trigger: "blur" }
+          { required: true, message: "请输入您原来的密码", trigger: "blur" }
         ],
         newPassword: [
-          { required: true, message: "请输入您的新密码", trigger: "blur" },
+          { required: true, message: "请输入您新密码", trigger: "blur" },
           {
             min: 6,
             max: 18,
@@ -244,25 +249,36 @@ export default {
             trigger: "blur"
           }
         ],
-        newEmail:[
-          {required: true, message: "请输入您的新邮箱", trigger: "blur" },
-          {type:'email',message:'请输入正确的邮箱', trigger: "blur"}
+        newEmail: [
+          { required: true, message: "请输入您的新邮箱", trigger: "blur" },
+          { type: "email", message: "请输入正确的邮箱", trigger: "blur" }
         ],
-        newPhone:[
-          {required: true, message: "请输入您的新手机", trigger: "blur" },
-          {pattern:/^1\d{10}$/,message:'请输入正确的手机号', trigger: "blur"}
+        newPhone: [
+          { required: true, message: "请输入您的新手机", trigger: "blur" },
+          {
+            pattern: /^1\d{10}$/,
+            message: "请输入正确的手机号",
+            trigger: "blur"
+          }
         ],
-        veriType:[
-          { required: true, message: '请选择验证码接收方式', trigger: 'blur' },
+        veriType: [
+          { required: true, message: "请选择验证码接收方式", trigger: "blur" },
           { validator: confirmVeriType, trigger: "change" }
         ]
       },
-      vipPrices:[{'price':20,'time':1},{'price':90,'time':6},{'price':120,'time':12}],
+      vipPrices: [
+        { price: 20, time: 1 },
+        { price: 90, time: 6 },
+        { price: 120, time: 12 }
+      ],
       //0代表第一种vip方案
-      selectVIPType:0,
-      payOption:0,
-      //头像的路径
-      imageUrl: '../static/head-pic.png'
+      selectVIPType: 0,
+      payOption: 0,
+      //上传头像的表单
+      uploadForm: {
+        auth: { Authorization: this.$store.getters.token },
+        url: config.baseURL+"api/user/headPic/"
+      }
     };
   },
   methods: {
@@ -277,18 +293,28 @@ export default {
         inputErrorMessage: "昵称为2到10个中英文字符组成"
       })
         .then(({ value }) => {
-          this.$notify.success({
-            title: "成功",
-            message: "昵称修改成功",
-            offset: 100
+          return this.$ajax.post("/api/user/info", {
+            nickName: value
           });
         })
-        .catch(() => {
-          this.$notify.error({
-            title: "失败",
-            message: "昵称修改失败",
-            offset: 100
-          });
+        .then(response => {
+          if (response.data.success) {
+            this.$notify.success({
+              title: "成功",
+              message: response.data.message,
+              offset: 100
+            });
+            this.$store.commit('setUserInfo',response.data.user);
+          } else {
+            this.$notify.error({
+              title: "失败",
+              message: response.data.message,
+              offset: 100
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
         });
     },
     changeEmail() {
@@ -303,108 +329,213 @@ export default {
     cancelMoPassword(formName) {
       this.modifyPwdFormVisible = false;
       this.$refs[formName].resetFields();
-      this.$notify.error({
-        title: "失败",
-        message: "密码修改失败",
-        offset: 100
-      });
     },
-    cancelMoEmail(formName){
+    cancelMoEmail(formName) {
       this.modifyEmailFormVisible = false;
       this.$refs[formName].resetFields();
-      this.$notify.error({
-        title: "失败",
-        message: "邮箱修改失败",
-        offset: 100
-      });
     },
-    cancelMoPhone(formName){
-      this.modifyEmailFormVisible = false;
+    cancelMoPhone(formName) {
+      this.modifyPhoneFormVisible = false;
       this.$refs[formName].resetFields();
-      this.$notify.error({
-        title: "失败",
-        message: "手机修改失败",
-        offset: 100
-      });
     },
     // 获取验证码
     getVerification(verifiForm) {
-      //先验证veriType再发送验证码
-      this.$refs[verifiForm].validateField("veriType", err => {
-        //如有错误便return
-        if (err) {
+      if (verifiForm == "modifyEmailForm") {
+        //若已经点击过发送，则不触发后面的事件
+        if (this.modifyEmailVerification == true) {
           return;
         }
-        if (verifiForm=='modifyEmailForm') {
-          //若已经点击过发送，则不触发后面的事件
-           if (this.modifyEmailVerification == true) {
-            return;
-          }
-          this.modifyEmailVerification = true;
-          let intervalId = setInterval(() => {
-            if (this.modifyEmailTiming == 0) {
-              clearInterval(intervalId);
-              this.modifyEmailVerification = false;
-              this.modifyEmailTiming = 60;
-            } else {
-              this.modifyEmailTiming--;
-            }
-          }, 1000);
-        }
-        else if (verifiForm=='modifyPhoneForm') {
-          //若已经点击过发送，则不触发后面的事件
-           if (this.modifyPhoneVerification == true) {
-            return;
-          }
-          this.modifyPhoneVerification = true;
-          let intervalId = setInterval(() => {
-            if (this.modifyPhoneTiming == 0) {
-              clearInterval(intervalId);
-              this.modifyPhoneVerification = false;
-              this.modifyPhoneTiming = 60;
-            } else {
-              this.modifyPhoneTiming--;
-            }
-          }, 1000);
-        }
+        //先验证newEmail再发送验证码
+        this.$refs[verifiForm].validateField("newEmail", err => {
+          if (!err) {
+            this.modifyEmailVerification = true;
+            let intervalId = setInterval(() => {
+              if (this.modifyEmailTiming == 0) {
+                clearInterval(intervalId);
+                this.modifyEmailVerification = false;
+                this.modifyEmailTiming = 60;
+              } else {
+                this.modifyEmailTiming--;
+              }
+            }, 1000);
 
-      });
+            let getVeriParams = {
+              type: "email",
+              ajax: this.$ajax,
+              userId: this.modifyEmailForm.newEmail
+            };
+            this.$store.commit("getVeriCode", getVeriParams);
+          }
+        });
+      } else if (verifiForm == "modifyPhoneForm") {
+        //若已经点击过发送，则不触发后面的事件
+        if (this.modifyPhoneVerification == true) {
+          return;
+        }
+        //先验证newPhone再发送验证码
+        this.$refs[verifiForm].validateField("newPhone", err => {
+          if (!err) {
+            this.modifyPhoneVerification = true;
+            let intervalId = setInterval(() => {
+              if (this.modifyPhoneTiming == 0) {
+                clearInterval(intervalId);
+                this.modifyPhoneVerification = false;
+                this.modifyPhoneTiming = 60;
+              } else {
+                this.modifyPhoneTiming--;
+              }
+            }, 1000);
+            let getVeriParams = {
+              type: "phone",
+              ajax: this.$ajax,
+              userId: this.modifyPhoneForm.newPhone
+            };
+            this.$store.commit("getVeriCode", getVeriParams);
+          }
+        });
+      }
     },
-    selectVIP(index){
-      this.selectVIPType=index;
+    selectVIP(index) {
+      this.selectVIPType = index;
     },
-    pay(){
-      console.log('pay');
+    upgrade() {
+      let days = this.vipPrices[this.selectVIPType].time * 30;
+      this.$ajax
+        .post("/api/user/upgrade", {
+          upgradeDays: days,
+          payOption: this.payOption
+        })
+        .then(response => {
+          if (response.data.success) {
+            // 重定向到支付宝支付接口
+            window.location = response.data.url;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(valid);
+          if (formName == "modifyEmailForm") {
+            this.$ajax
+              .post("/api/user/info", {
+                oldPassword: this.modifyEmailForm.oldPassword,
+                email: this.modifyEmailForm.newEmail,
+                verification: this.modifyEmailForm.verification
+              })
+              .then(response => {
+                console.log(response);
+                if (response.data.success) {
+                  this.cancelMoEmail("modifyEmailForm");
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  this.$store.commit('setUserInfo',response.data.user);
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(err => console.log(err));
+          } else if (formName == "modifyPhoneForm") {
+            this.$ajax
+              .post("/api/user/info", {
+                oldPassword: this.modifyPhoneForm.oldPassword,
+                phone: this.modifyPhoneForm.newPhone,
+                verification: this.modifyPhoneForm.verification
+              })
+              .then(response => {
+                console.log(response);
+                if (response.data.success) {
+                  this.cancelMoPhone("modifyPhoneForm");
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  this.$store.commit('setUserInfo',response.data.user);
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(err => console.log(err));
+          } else if (formName == "modifyPwdForm") {
+            this.$ajax
+              .post("/api/user/info", {
+                oldPassword: this.modifyPwdForm.oldPassword,
+                password: this.modifyPwdForm.newPassword
+              })
+              .then(response => {
+                console.log(response);
+                if (response.data.success) {
+                  this.cancelMoPassword("modifyPwdForm");
+                  this.$notify.success({
+                    title: "成功",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                  this.$store.commit('setUserInfo',response.data.user);
+                } else {
+                  this.$notify.error({
+                    title: "失败",
+                    message: response.data.message,
+                    offset: 100
+                  });
+                }
+              })
+              .catch(err => console.log(err));
+          }
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleAvatarSuccess(response, file) {
+      console.log(response);
+      if (response.success) {
+        this.headPicUrl = response.headPicUrl;
+        this.$notify.success({
+          title: "成功",
+          message: response.message,
+          offset: 100
+        });
+        this.$store.commit('setUserInfo',response.user);
+      } else {
+        this.$notify.error({
+          title: "失败",
+          message: response.message,
+          offset: 100
+        });
+      }
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt10K = file.size / 1024 < 12;
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+      if (!isLt10K) {
+        this.$message.error("上传头像图片大小不能超过 12KB!");
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt10K;
     }
   },
-  computed:{
-    userInfo(){
-      return this.$store.state.userInfo;
-    },
+  computed: {
+    userInfo() {
+      return this.$store.getters.userInfo;
+    }
   }
 };
 </script>
@@ -419,7 +550,7 @@ body {
 }
 main {
   width: 1040px;
-  margin: 80px auto;
+  margin: 27px auto 58px auto;
   color: #555;
   font-size: 14px;
 }
@@ -440,6 +571,7 @@ button {
 a {
   text-decoration: none;
 }
+
 .iconfont {
   margin-right: 10px;
   color: #41b9ea;
@@ -472,6 +604,7 @@ a {
   margin-left: 20px;
   border-radius: 50%;
   overflow: hidden;
+  background-color: #fff;
 }
 .nav-head_msg {
   float: right;
@@ -514,21 +647,21 @@ a {
   font-size: 18px;
 }
 /* 上传头像按钮样式 */
-  .avatar-uploader{
-    width: 69px;
-    height: 69px;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-    float: left;
-  }
+.avatar-uploader {
+  width: 69px;
+  height: 69px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  float: left;
+}
 
-  /* 头像相片样式 */
-  .avatar {
-    width: 69px;
-    height: 69px;
-    display: block;
-  }
+/* 头像相片样式 */
+.avatar {
+  width: 69px;
+  height: 69px;
+  display: block;
+}
 
 /*右边视图框*/
 .view {
@@ -594,23 +727,24 @@ a {
 }
 /*视图框平行四边形权限*/
 .parallelogram li {
-  width: 160px;
+  width: 180px;
   text-align: center;
   transform: skew(-30deg);
-  padding: 6px 10px;
-  margin-bottom: 20px !important;
+  padding: 30px 10px;
+  margin-top:40px;
+  margin-bottom: 40px !important;
   display: inline-block;
   color: #fff;
 }
 .parallelogram li p {
   transform: skew(30deg);
 }
-.parallelogram li:nth-of-type(odd) {
+/* .parallelogram li:nth-of-type(odd) {
   margin-left: 20px;
 }
-.parallelogram li:nth-of-type(even) {
+.parallelogram li:nth-of-type(3n) {
   margin-left: 100px;
-}
+} */
 .parallelogram li:nth-of-type(1) {
   background-color: #8fc320;
 }
@@ -626,72 +760,79 @@ a {
 .parallelogram li:nth-of-type(5) {
   background-color: #2eb4e9;
 }
-.el-dialog{
-  width:30%;
+.parallelogram li:nth-of-type(6) {
+  background-color: #8fc320;
 }
-.el-card{
+
+.el-dialog {
+  width: 30%;
+}
+.el-card {
   cursor: pointer;
 }
-.el-card:hover,.el-card.select{
-  box-shadow:none;
-  border:2px solid rgba(46, 180, 233,0.8);
+.el-card:hover,
+.el-card.select {
+  box-shadow: none;
+  border: 2px solid rgba(46, 180, 233, 0.8);
 }
-.payOption{
-  font-size:16px;
-  color:#555;
-  margin-top:32px;
-  margin-left:30px;
+.payOption {
+  font-size: 16px;
+  color: #555;
+  margin-top: 32px;
+  margin-left: 30px;
 }
-.payOptionIcon div{
+.payOptionIcon div {
   position: relative;
   overflow: hidden;
-  width:170px;
+  width: 170px;
   height: 66px;
   display: inline-block;
-  border-radius:3px;
-  margin-left:30px;
-  margin-top:20px;
+  border-radius: 3px;
+  margin-left: 30px;
+  margin-top: 20px;
 }
-.payOptionIcon div:hover,.payOptionIcon div.select{
-  box-shadow:none;
-  border:2px solid rgba(46, 180, 233,0.8);
+.payOptionIcon div:hover,
+.payOptionIcon div.select {
+  box-shadow: none;
+  border: 2px solid rgba(46, 180, 233, 0.8);
 }
-.payOptionIcon div:first-child i{
+.payOptionIcon div:first-child i {
   position: absolute;
   top: -7px;
-  left:-16px;
-  font-size:80px;
-  color:#00a7ef;
+  left: -16px;
+  font-size: 80px;
+  color: #00a7ef;
   cursor: pointer;
 }
-.payOptionIcon div:last-child i{
+.payOptionIcon div:last-child i {
   position: absolute;
-  top:-50px;
-  left:6px;
-  font-size:160px;
-  color:#14b83b;
+  top: -50px;
+  left: 6px;
+  font-size: 160px;
+  color: #14b83b;
   cursor: pointer;
 }
-.checkOut{
-  font-size:16px;
-  color:#555;
-  margin-top:50px;
-  margin-left:30px;
+.checkOut {
+  font-size: 16px;
+  color: #555;
+  margin-top: 50px;
+  margin-left: 30px;
 }
-.checkOut h1{
+.checkOut h1 {
   display: inline-block;
 }
-.checkOut div span{
-  color:#2eb4e9;
-  font-size:24px;
+.checkOut div span {
+  color: #2eb4e9;
+  font-size: 24px;
   display: inline-block;
-  padding:0px 10px 0px 0px;
+  padding: 0px 10px 0px 0px;
 }
-.payButton{
-  width:120px;
-  margin-left:30px;
-  margin-top:40px;
-  background-color: rgba(46, 180, 233,1);
+.payButton {
+  width: 120px;
+  margin-left: 30px;
+  margin-top: 40px;
+  background-color: #2eb4e9;
+  border-color: #2eb4e9;
 }
 /* /验证码已发送后的样式 */
 .verify {
@@ -709,10 +850,15 @@ a {
   width: 29%;
 }
 /*设定radio按钮的样式*/
-.radioSize.el-radio-group{
-  width:100%
+.radioSize.el-radio-group {
+  width: 100%;
 }
-.radioSize .el-radio{
-  width:48.8%;
+.radioSize .el-radio {
+  width: 48.8%;
+}
+/*会员过期时间*/
+.levelTime {
+  margin-left: 20px;
+  color: rgb(170, 170, 170);
 }
 </style>

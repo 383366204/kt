@@ -1,117 +1,158 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import config from '../config/config.js'
 
 Vue.use(Vuex)
 const state = {
-    isIndex: true, //判断是否在首页
-    isLogin: true, //判断是否有登录
-    addresses: [ //收货地址
-        { name: '团小图', region: '福建省/福州市/闽侯县', detail: '上街镇乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '15211110000', isDefault: false },
-        { name: '孙先生', region: '福建省/福州市/闽侯县', detail: '乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '18928651029', isDefault: true },
-        { name: '团小图', region: '福建省/福州市/闽侯县', detail: '乌龙江街道高新小区 27号楼2单元101室', zipCode: '351000', phone: '17704623483', isDefault: false }
-    ],
-    goods: [{
-        id: 10001,
-        page: 1,
-        type: 1,
-        status: 1,
-        name: '冬季男款卫衣',
-        description: '红色',
-        src: '../../static/clothes2.png',
-        size: ['S', 'M', 'L', 'XL', 'XXl'],
-        num: [1, 1, 1, 1, 1],
-        price: 200
-    }, {
-        id: 10002,
-        page: 1,
-        type: 2,
-        status: 2,
-        name: '记忆协会海报',
-        description: '',
-        src: '../../static/poster2.png',
-        size: ['65*100cm'],
-        num: [1],
-        price: 50
-    }, {
-        id: 10003,
-        page: 1,
-        type: 3,
-        status: 3,
-        name: '横幅',
-        description: '',
-        src: '../../static/banner2.jpg',
-        size: ['5m'],
-        num: [1],
-        price: 50
-    }, {
-        id: 10004,
-        page: 1,
-        type: 3,
-        status: 4,
-        name: '横幅',
-        description: '',
-        src: '../../static/banner2.jpg',
-        size: ['5m'],
-        num: [1],
-        price: 50
-    }, {
-        id: 10005,
-        page: 1,
-        type: 3,
-        status: 5,
-        name: '横幅',
-        description: '',
-        src: '../../static/banner2.jpg',
-        size: ['5m'],
-        num: [1],
-        price: 50
-    }],
-    checkOutGoods: [],
-    token:null,
-    userInfo: {
-        nickName:'孙先生',
-        level:'普通会员',
-        email: "383366204@qq.com",
-        phone: "18928651029"
-    }
+  isIndex: true, //判断是否在首页
+  isLogin: false, //判断是否有登录
+  addresses: [], //收货地址
+  cart:[],
+  checkOutGoods: [],
+  token: null,
+  userInfo: {
+    nickName: '',
+    level: '',
+    email: '',
+    phone: '',
+    levelTime:Date,
+    headPicUrl:''
+  }
 }
 
 const getters = {
-
+  isLogin:state=>{
+    if (localStorage.getItem('isLogin')) {
+      state.isLogin = localStorage.getItem('isLogin')=="true"?true:false;
+      return state.isLogin;
+    }
+    else {
+      return state.isLogin;
+    }
+  },
+  token:state=>{
+    if (localStorage.getItem('token')) {
+        state.token = localStorage.getItem('token');
+        return state.token;
+    }
+    else {
+       return state.token;
+    }
+  },
+  userInfo:state=>{
+    if(localStorage.getItem('userInfo')){
+      state.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      return state.userInfo;
+    }
+    else{
+      return state.userInfo;
+    }
+  },
+  cart:state=>{
+    if(localStorage.getItem('cart')){
+      state.cart = JSON.parse(localStorage.getItem('cart'));
+      return state.cart;
+    }
+    else{
+      return state.cart;
+    }
+  }
 }
 
 const actions = {
-
+  
 }
 
 const mutations = {
-    setIndexTrue(state) {
-        state.isIndex = true;
-    },
-    setIndexFalse(state) {
-        state.isIndex = false;
-    },
-    login(state,token) {
-        state.isLogin = true;
-        state.token = token;
-    },
-    logout(state,router) {
-        state.isLogin = false;
-        state.token = null;
-        router.push({
-            path: '/'
-        });
-    },
-    setAddress(state, address) {
-        state.addresses = address;
-    },
-    setCheckOutGoods(state, checkOutGoods) {
-        state.checkOutGoods = checkOutGoods;
+  setIndexTrue(state) {
+    state.isIndex = true;
+  },
+  setIndexFalse(state) {
+    state.isIndex = false;
+  },
+  deleteFromCart(state, index){
+    state.cart.splice(index,1);
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  deleteFromCartByName(state, namesArray){
+    state.cart = state.cart.filter((product,index) => {
+      return !namesArray.includes(product.name);
+    })
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  addToCart(state, data){
+    state.cart.push(data);
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  replaceCart(state, data){
+    state.cart = data;
+    localStorage.setItem('cart',JSON.stringify(state.cart));
+  },
+  setUserInfo(state, data){
+    state.userInfo.nickName = data.nickName;
+    state.userInfo.level = data.level;
+    state.userInfo.email = data.email;
+    state.userInfo.phone = data.phone;
+    state.userInfo.levelTime = parseInt(Math.abs(new Date(data.levelTime)  - new Date())/ 1000 / 60 / 60 / 24)
+    state.userInfo.headPicUrl = config.baseURL+''+data.headPicUrl;
+
+    localStorage.setItem('userInfo',JSON.stringify(state.userInfo));
+  },
+  login(state, data) {
+    //登录
+    state.isLogin = true;
+    localStorage.setItem('isLogin',true);
+
+    state.token = data.token;
+    localStorage.setItem('token',data.token);
+
+    mutations.setUserInfo(state,data);
+
+    // 设置头部
+    Vue.prototype.$ajax.defaults.headers.common['Authorization'] = getters.token(state);
+  }
+  ,
+  logout(state, router) {
+    state.isLogin = false;
+    state.token = null;
+    localStorage.removeItem('isLogin');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('cart');
+    state.cart = [];
+    router.push({
+      path: '/'
+    });
+  },
+  setAddress(state, address) {
+    state.addresses = address;
+  },
+  setCheckOutGoods(state, checkOutGoods) {
+    state.checkOutGoods = checkOutGoods;
+  },
+  getVeriCode(state, getVeriParams) {
+    let param = {};
+    let ajax = getVeriParams.ajax;
+    if (getVeriParams.type == 'email') {
+      param.email = getVeriParams.userId;
+    } else if (getVeriParams.type == 'phone') {
+      param.phone = getVeriParams.userId;
     }
+    // 获取验证码
+    ajax.put('api/user/verification', param)
+      .then(response => {
+        if (response.data.success) {
+          console.log(response.data.message);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 }
 export default new Vuex.Store({
-    state,
-    getters,
-    actions,
-    mutations
+  state,
+  getters,
+  actions,
+  mutations
 })

@@ -1,14 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
-import MyDesign from '@/views/myDesign'
 import Cart from '@/views/cart'
 
-import DetailPost from '@/views/detailPost'
-import DetailClothes from '@/views/detailClothes'
-import DetailBanner from '@/views/detailBanner'
+import Detail from '@/views/Detail'
 import Search from '@/views/search'
-import DesignOverview from '@/views/designOverview'
 
 import LoginRegister from '@/views/login-register'
 import Address from '@/views/address'
@@ -19,7 +15,10 @@ import CustomDesign from '@/views/customDesign'
 import AccountSettings from '@/views/accountSettings'
 import Inform from '@/views/inform'
 
-import CustomDesignSubmit from '@/views/customDesignSubmit'
+import OrderSubmit from '@/views/orderSubmit'
+import Contact from '@/views/contact';
+import Introduce from '@/views/introduce';
+
 Vue.use(Router)
 
 export default new Router({
@@ -29,17 +28,17 @@ export default new Router({
             name: 'Index',
             component: Index
         }, {
-            path: '/MyDesign',
-            name: 'MyDesign',
-            component: MyDesign
+            path: '/Introduce',
+            name: 'Introduce',
+            component: Introduce
         },
         {
             path: '/Cart',
             name: 'Cart',
             component: Cart,
-            // meta:{
-            //     requireAuth:true
-            // }
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/Login',
@@ -49,32 +48,31 @@ export default new Router({
         {
             path: '/Address',
             name: 'Address',
-            component: Address
+            component: Address,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/OrderList',
             name: 'OrderList',
-            component: OrderList
+            component: OrderList,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/Order',
             name: 'Order',
-            component: Order
+            component: Order,
+            meta:{
+                requireAuth:true
+            }
         },
         {
-            path: '/DetailPost',
-            name: 'DetailPost',
-            component: DetailPost
-        },
-        {
-            path: '/DetailClothes/:Id(\\d+)',
-            name: 'DetailClothes',
-            component: DetailClothes
-        },
-        {
-            path: '/DetailBanner',
-            name: 'DetailBanner',
-            component: DetailBanner
+            path: '/Detail/:Category/:Grand/:Name',
+            name: 'Detail',
+            component: Detail
         },
         {
             path: '/Search/:Filters?',
@@ -82,29 +80,33 @@ export default new Router({
             component: Search
         },
         {
-            path: '/DesignOverview',
-            name: 'DesignOverview',
-            component: DesignOverview
-        },
-        {
-            path: '/CustomDesign',
-            name: 'CustomDesign',
-            component: CustomDesign
-        },
-        {
             path: '/AccountSettings',
             name: 'AccountSettings',
-            component: AccountSettings
+            component: AccountSettings,
+            meta:{
+                requireAuth:true
+            }
         },
         {
             path: '/Inform',
             name: 'Inform',
-            component: Inform
+            component: Inform,
+            meta:{
+                requireAuth:true
+            }
         },
         {
-            path: '/CustomDesignSubmit',
-            name: 'CustomDesignSubmit',
-            component: CustomDesignSubmit
+            path: '/OrderSubmit',
+            name: 'OrderSubmit',
+            component: OrderSubmit,
+            meta:{
+                requireAuth:true
+            }
+        },
+        {
+            path:'/Contact',
+            name:'Contact',
+            component:Contact
         }
     ]
 })

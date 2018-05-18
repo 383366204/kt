@@ -17,6 +17,7 @@ import Inform from '@/views/inform'
 import OrderSubmit from '@/views/orderSubmit'
 import Contact from '@/views/contact';
 import Introduce from '@/views/introduce';
+import NotFound from '@/views/notFound'
 
 Vue.use(Router)
 
@@ -106,6 +107,11 @@ export default new Router({
             path:'/Contact',
             name:'Contact',
             component:Contact
+        },
+        {
+            path: "*",
+            name:'NotFound',
+            component:NotFound
         }
     ]
 })

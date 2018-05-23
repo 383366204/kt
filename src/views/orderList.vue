@@ -116,61 +116,7 @@ export default {
       currentPage: 1,
       limit: 5,
       total: 100,
-      order: [
-        // {
-        //   orderId: "143194578926284844",
-        //   status: 1,
-        //   price: 10000,
-        //   products: [
-        //     {
-        //       page: 1,
-        //       grand: "美的",
-        //       category: "热水器",
-        //       name: "JSQ22-12HWA(T)",
-        //       tag: ["强排式", "恒温式", "防冻型"],
-        //       src: "http://127.0.0.1:4040/productPic/JSQ22-12HWA(T)/1.jpg",
-        //       size: "895x647x517",
-        //       num: 1,
-        //       price: 1199,
-        //       isCheck: false
-        //     },
-        //     {
-        //       page: 1,
-
-        //       grand: "康宝",
-        //       category: "消毒碗柜",
-        //       name: "ZTP380H-1",
-        //       tag: ["柜式", "双门"],
-        //       src: "http://127.0.0.1:4040/productPic/ZTP380H-1/1.jpg",
-        //       size: "555x410x1630",
-        //       num: 2,
-        //       price: 999,
-        //       isCheck: false
-        //     },
-        //     {
-        //       page: 1,
-
-        //       grand: "能率",
-        //       category: "热水器",
-        //       name: "JSQ31-E3",
-        //       tag: ["强排式", "防冻型", "恒温式"],
-        //       src: "http://127.0.0.1:4040/productPic/JSQ31-E3/1.jpg",
-        //       size: "895x647x517",
-        //       num: 4,
-        //       price: 3098,
-        //       isCheck: false
-        //     }
-        //   ],
-        //   address: {
-        //     region: "广东省/茂名市/电白县",
-        //     detail: "电白区第一中学",
-        //     name: "孙文达",
-        //     phone: "18928651029"
-        //   },
-        //   message: "",
-        //   date: Date.now()
-        // }
-      ] 
+      order: [] 
     };
   },
   methods: {
@@ -247,6 +193,28 @@ export default {
             offset: 100
           });
         });
+    },
+    remindOrder(orderId){
+      this.$ajax.post('/Order/notify',{_id:orderId})
+      .then(response=>{
+        if (response.data.success) {
+          this.$notify.success({
+            title: "成功",
+            message: response.data.message,
+            offset: 100
+          });
+        }
+        else{
+          this.$notify.error({
+            title: "失败",
+            message: response.data.message,
+            offset: 100
+          });
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     },
     delOrder(orderId) {
       this.$confirm("删除所选中的订单?", "确认删除", {

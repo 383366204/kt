@@ -147,7 +147,7 @@
         </el-form-item>
         <el-form-item label="验证码" prop="verification">
             <el-input class="modifyVerification" v-model="modifyPhoneForm.verification" auto-complete="off" placeholder="验证码"></el-input>
-            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyPhoneVerification}" @click="getVerification('modifyPhoneForm')"><span v-if="modifyPhoneVerification">重发({{modifyEmailTiming}})</span><span v-else>获取验证码</span></el-button>
+            <el-button class="modifyVerification" type="primary" :class="{'verify':modifyPhoneVerification}" @click="getVerification('modifyPhoneForm')"><span v-if="modifyPhoneVerification">重发({{modifyPhoneTiming}})</span><span v-else>获取验证码</span></el-button>
         </el-form-item>      
         <el-form-item>
           <el-button type="primary" @click="submitForm('modifyPhoneForm')">提交</el-button>
